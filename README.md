@@ -5,10 +5,10 @@ Kid Icarus (1986) clon using node.js
 
 Juego de plataformas y disparos.
 
-# Comportamientos básicos del escenario (los tres primeros niveles):
+# Comportamientos bï¿½sicos del escenario (los tres primeros niveles):
 
 * Scroll vertical (hacia arriba) de los niveles.
-Las zonas que quedan debajo de la pantalla pasan a comportarse como caídas letales.
+Las zonas que quedan debajo de la pantalla pasan a comportarse como caï¿½das letales.
 
 * Movimiento toroidal por los lados, pueden pasar de un lado de la pantalla a otro el jugador,
 los enemigos terrestres y los disparos.
@@ -18,13 +18,13 @@ los enemigos terrestres y los disparos.
 # Comportamientos del protagonista:
 
 * Disparo, puede disparar hacia los lados y arriba, la flecha avanza una corta distancia y se destruye al impactar
-con enemigos u obstáculos.
+con enemigos u obstï¿½culos.
 
 * Agacharse, puede agacharse para esquivar ataques o esconderse.
 
-* Movimiento lateral, camina hacia los lados con pequeña aceleración y algo de resbale al parar.
+* Movimiento lateral, camina hacia los lados con pequeï¿½a aceleraciï¿½n y algo de resbale al parar.
 
-* Salto, la duración se adapta al tiempo que se pulsa la tecla, la dirección puede modificarse al poco de saltar.
+* Salto, la duraciï¿½n se adapta al tiempo que se pulsa la tecla, la direcciï¿½n puede modificarse al poco de saltar.
 
 * Recoger objetos al entrar en contacto con ellos (corazones, pociones...).
 
@@ -32,35 +32,35 @@ con enemigos u obstáculos.
 
 * **Serpientes:** Se desplazan por el suelo y se dirigen hacia el jugador, mueren de un disparo.
 
-* **Ojos voladores:** Enemigos que se desplazan por el aire en trayectorias elípticas con el jugador como centro, mueren de un disparo.
+* **Ojos voladores:** Enemigos que se desplazan por el aire en trayectorias elï¿½pticas con el jugador como centro, mueren de un disparo.
 
-* **Esqueletos:** Enemigos que patrullan un área de izquierda a derecha, si su linea de visión choca con el jugador se alarman,
+* **Esqueletos:** Enemigos que patrullan un ï¿½rea de izquierda a derecha, si su linea de visiï¿½n choca con el jugador se alarman,
 se drigen hacia este e invocan esqueletos menores, requieren muchos disparos para ser eliminados.
 
-	* 		**Esqueletos menores:** Enemigos voladores que aparecen en un extremo de la pantalla y se dirigen hacia el jugador, mueren de un disparo.
-	
-* **Agachados:** Enemigos que tienen el mismo movimiento que las serpientes pero se agachan para esquivar disparos y tienen más vida.
+* **Esqueletos menores:** Enemigos voladores que aparecen en un extremo de la pantalla y se dirigen hacia el jugador, mueren de un disparo.
 
-* **Caras:** Enemigos voladores con un patrón diferente al de los ojos
+* **Agachados:** Enemigos que tienen el mismo movimiento que las serpientes pero se agachan para esquivar disparos y tienen mï¿½s vida.
+
+* **Caras:** Enemigos voladores con un patrï¿½n diferente al de los ojos
 
 
 # Elementos del escenario:
 
-* **Lava:** Causa daño mientras se esta en ella.
+* **Lava:** Causa daï¿½o mientras se esta en ella.
 
-* **Zarzas:** Causa daño por contacto.
+* **Zarzas:** Causa daï¿½o por contacto.
 
 * **Hielo:** Aumenta el resbale.
 
 * **Termas:** Restauran salud al jugador.
 
-# Elemetos no confirmados para implementación:
+# Elementos no confirmados para implementaciï¿½n:
 
 * **Puertas** que permiten desplazamiento entre salas
 
-* Salas de **bonificación con jarrones**, revelas el contenido de jarrones hasta encontrar un esqueleto
+* Salas de **bonificaciï¿½n con jarrones**, revelas el contenido de jarrones hasta encontrar un esqueleto
 
-* Salas de **bonificación enemigos**, en estas aparecen carss, el jugador puede acabar con ellas y ganar puntos o salir
+* Salas de **bonificaciï¿½n enemigos**, en estas aparecen carss, el jugador puede acabar con ellas y ganar puntos o salir
 
 * Salas con **terma**
 
@@ -68,8 +68,8 @@ se drigen hacia este e invocan esqueletos menores, requieren muchos disparos par
 
 * **Salas de prueba**
 
-* **Primer palacio/mazmorra:** Estas fases están segmentadas en salas del tamaño de la pantalla, se puede avanzar hacia salss en las cuatro direcciones
+* **Primer palacio/mazmorra:** Estas fases estï¿½n segmentadas en salas del tamaï¿½o de la pantalla, se puede avanzar hacia salss en las cuatro direcciones
 hasta que se acaba llegando a la sala del jefe. Por el camino pueden liberarse aliados de estatuas con martillos para que ayuden en la pelea contra
-el jefe. 
+el jefe.
 
 * **Primer jefe:** Cerbero
