@@ -30,46 +30,46 @@ con enemigos u obstáculos.
 
 # Tipos de enemigo:
 
-* -Serpientes: Se desplazan por el suelo y se dirigen hacia el jugador, mueren de un disparo.
+* **Serpientes:** Se desplazan por el suelo y se dirigen hacia el jugador, mueren de un disparo.
 
-* -Ojos voladores: Enemigos que se desplazan por el aire en trayectorias elípticas con el jugador como centro, mueren de un disparo.
+* **Ojos voladores:** Enemigos que se desplazan por el aire en trayectorias elípticas con el jugador como centro, mueren de un disparo.
 
-* -Esqueletos: Enemigos que patrullan un área de izquierda a derecha, si su linea de visión choca con el jugador se alarman,
+* **Esqueletos:** Enemigos que patrullan un área de izquierda a derecha, si su linea de visión choca con el jugador se alarman,
 se drigen hacia este e invocan esqueletos menores, requieren muchos disparos para ser eliminados.
 
-	** -Esqueletos menores: Enemigos voladores que aparecen en un extremo de la pantalla y se dirigen hacia el jugador, mueren de un disparo.
+	* 		**Esqueletos menores:** Enemigos voladores que aparecen en un extremo de la pantalla y se dirigen hacia el jugador, mueren de un disparo.
 	
-* -Enemigos que tienen el mismo movimiento que las serpientes pero se agachan para esquivar disparos y tienen más vida.
+* **Agachados:** Enemigos que tienen el mismo movimiento que las serpientes pero se agachan para esquivar disparos y tienen más vida.
 
-* -Caras: Enemigos voladores con un patrón diferente al de los ojos
+* **Caras:** Enemigos voladores con un patrón diferente al de los ojos
 
 
 # Elementos del escenario:
 
-* -Lava: Causa daño mientras se esta en ella.
+* **Lava:** Causa daño mientras se esta en ella.
 
-* -Zarzas: Causa daño por contacto.
+* **Zarzas:** Causa daño por contacto.
 
-* -Hielo: Aumenta el resbale.
+* **Hielo:** Aumenta el resbale.
 
-* -Termas: Restauran salud al jugador.
+* **Termas:** Restauran salud al jugador.
 
 # Elemetos no confirmados para implementación:
 
-* -Puertas, que permiten desplazamiento entre salas
+* **Puertas** que permiten desplazamiento entre salas
 
-* -Salas de bonificación con jarrones, revelas el contenido de jarrones hasta encontrar un esqueleto
+* Salas de **bonificación con jarrones**, revelas el contenido de jarrones hasta encontrar un esqueleto
 
-* -Salas de bonificación enemigos, en estas aparecen carss, el jugador puede acabar con ellas y ganar puntos o salir
+* Salas de **bonificación enemigos**, en estas aparecen carss, el jugador puede acabar con ellas y ganar puntos o salir
 
-* -Salas con terma
+* Salas con **terma**
 
-* -Tiendas
+* **Tiendas**
 
-* -Salas de prueba
+* **Salas de prueba**
 
-* -Primer palacio/mazmorra: Estas fases están segmentadas en salas del tamaño de la pantalla, se puede avanzar hacia salss en las cuatro direcciones
+* **Primer palacio/mazmorra:** Estas fases están segmentadas en salas del tamaño de la pantalla, se puede avanzar hacia salss en las cuatro direcciones
 hasta que se acaba llegando a la sala del jefe. Por el camino pueden liberarse aliados de estatuas con martillos para que ayuden en la pelea contra
 el jefe. 
 
-* -Primer jefe: Cerbero
+* **Primer jefe:** Cerbero
