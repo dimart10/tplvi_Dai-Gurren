@@ -1,6 +1,6 @@
 ﻿# Kid Icarus (1986) clon using node.js
 
-Readme by
+Created by
 [Sergio Abreu García](https://github.com/SAGGameDeveloper) and
 [Diego Martínez Simarro](https://github.com/dimart10).
 
@@ -65,8 +65,6 @@ gulp deploy:ghpages
 
 
 # GDD (Spanish)
-
-Juego de plataformas y disparos.
 
 ## Comportamientos básicos del escenario (los tres primeros niveles):
 
