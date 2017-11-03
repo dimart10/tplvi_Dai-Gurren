@@ -64,7 +64,7 @@ gulp deploy:ghpages
 ```
 
 
-# GDD
+# GDD (Spanish)
 
 Juego de plataformas y disparos.
 
