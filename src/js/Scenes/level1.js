@@ -1,4 +1,5 @@
 //level1.js
+
 var defaultScene = require('./defaultScene.js');
 
 var level1 = {
