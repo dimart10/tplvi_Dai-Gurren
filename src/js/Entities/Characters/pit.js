@@ -13,4 +13,9 @@ pit.prototype.newAnimation = function (name, frames, fps, repeat, playOnCreate){
   if (playOnCreate) this.pitSprite.animations.play(name);
 }
 
+pit.prototype.update = function(){
+  this.pitSprite.x = this.x;
+  this.pitSprite.y = this.y;
+}
+
 module.exports = pit;

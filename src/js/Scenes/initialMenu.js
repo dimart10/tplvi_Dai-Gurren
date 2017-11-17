@@ -4,7 +4,7 @@ var defaultScene = require('./defaultScene.js');
 
 var level1 = {
   preload: function(){
-    
+
   },
 
   create: function(){

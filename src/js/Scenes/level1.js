@@ -11,7 +11,7 @@ var level1 = {
   },
 
   update: function(){
-    
+    defaultScene.update.call(this);
   }
 };
 
