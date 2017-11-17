@@ -5,4 +5,6 @@ function entity(x, y){
   this.y = y;
 }
 
+entity.prototype.update = function() {}
+
 module.exports = entity;

@@ -1,17 +1,16 @@
 //pit.js
 var entity = require('../entity.js');
 
-function pit(x, y){
+function pit(x, y, pitSprite){
   entity.call(this, x, y);
-  this.game.load.spritesheet('pit', '../../images/characters/pit.png', 45, 45, 26);
+  this.pitSprite = pitSprite;
+}
 
-  this.create = function(){
-    var pitSprite = this.game.add.sprite(1, 1, 'pit');
-    pitSprite.anchor.setTo(0, 0);
+pit.prototype = Object.create(entity.prototype); //Inherits from entity
 
-    pitSprite.animations.add('walk', [21, 22, 23, 24], 5, true);
-    pitSprite.animations.play('walk');
-  };
+pit.prototype.newAnimation = function (name, frames, fps, repeat, playOnCreate){
+  this.pitSprite.animations.add(name, frames, fps, repeat);
+  if (playOnCreate) this.pitSprite.animations.play(name);
 }
 
 module.exports = pit;
