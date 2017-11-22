@@ -17,9 +17,7 @@ var defaultScene = {
   },
 
   create: function(){
-    var pitSprite = defaultScene.createSprite('pit', 0, 0, this.game);
-    defaultScene.myPit = new pit(0, 0, pitSprite);
-    defaultScene.myPit.newAnimation('walk', [21, 22, 23, 24], 5, true, true);
+    defaultScene.myPit = new pit('pit', x, y, game);
     defaultScene.entities.push(defaultScene.myPit);
   },
 
@@ -27,13 +25,6 @@ var defaultScene = {
     for (var i = 0; i < defaultScene.entities.length; i++){
       defaultScene.entities[i].update();
     }
-  },
-
-  createSprite: function(name, x, y, game){
-    var sprite = game.add.sprite(x, y, name);
-    sprite.anchor.setTo(0, 0);
-
-    return sprite;
   }
 };
 
