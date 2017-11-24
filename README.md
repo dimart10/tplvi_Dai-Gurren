@@ -109,7 +109,7 @@ se drigen hacia este e invocan esqueletos menores, requieren muchos disparos par
 
 * **Agachados:** Enemigos que tienen el mismo movimiento que las serpientes pero se agachan para esquivar disparos y tienen más vida.
 
-* **Caras:** Enemigos voladores con un patrón diferente al de los ojos
+* **Caras:** Enemigos voladores con un patrón diferente al de los ojos.
 
 
 ## Elementos del escenario:
@@ -122,18 +122,18 @@ se drigen hacia este e invocan esqueletos menores, requieren muchos disparos par
 
 * **Termas:** Restauran salud al jugador.
 
-* **Puertas** que permiten desplazamiento entre salas
+* **Puertas** que permiten desplazamiento entre salas.
 
 ## Elementos no prioritarios, cuya implementación podría descartarse según el ritmo del proyecto
 
 * Salas de **bonificación con jarrones**, revelas el contenido de jarrones, recibes su contenido a no ser que reveles un esqueleto,
-entonces pierdes todo lo que hubieras revelado
+entonces pierdes todo lo que hubieras revelado.
 
-* Salas de **bonificación enemigos**, en estas aparecen carss, el jugador puede acabar con ellas y ganar puntos o salir
+* Salas de **bonificación enemigos**, en estas aparecen carss, el jugador puede acabar con ellas y ganar puntos o salir.
 
-* **Tiendas** en la que comprar objetos y potenciadores con lso corazones recolectados.
+* **Tiendas** en la que comprar objetos y potenciadores con los corazones recolectados.
 
-* **Salas de prueba**
+* **Salas de prueba**.
 
 # Planificación (modelo inicial)
 
@@ -159,13 +159,13 @@ Este hito supone el grueso del proyecto, en este deberán implementarse los dife
 * Respecto al orden de implementacion se empezará con un **prototipo de enemigo** y el sistema de vida, para que dicho enemigo sea destruible y cause daño al jugador.
 A partir de esa base ya se podrán crear los diferentes enemigos con sus comportamientos específicos.
 
-* También es prioritario el sistema por el que el jugador **interactuú** con diferentes elementos (recolección de objetos, elementos del escenario que causan daño etc)
+* También es prioritario el sistema por el que el jugador **interactúa** con diferentes elementos (recolección de objetos, elementos del escenario que causan daño etc)
 En base a esto se podrán crear las diferentes entidades con sus características y comportamientos propios.
 
 Al final de este hito deberían estar hechos la mayoría de enemigos, elementos del escenario etc. Teniendo un implementación sólida de los tres primeros niveles y la fortaleza.
 
 ## Tercer hito
 
-Hito más amplío que el primero pero más limitado que el segundo, debería dedicarse a pulir elementos del juego como menús, gráficos, sonido, balanceo del gameplay e incluir algún elemento
+Hito más amplío que el primero pero más limitado que el segundo, debería dedicarse a **pulir** elementos del juego como menús, gráficos, sonido, **balanceo** del gameplay e incluir algún elemento
 que hubiera quedado fuera del hito 2.
 
