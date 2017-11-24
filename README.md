@@ -66,7 +66,7 @@ gulp deploy:ghpages
 
 # GDD (Spanish)
 
-##Objetivos generales
+## Objetivos generales
 
 Se pretende recrear el primer mundo de Kid Icarus, compuesto por los tres primeros niveles, la primera mazmorra y la primera fortaleza.
 Adicionalmente se implementará un modo fácil, en el que el scroll vertical de la pantalla sea reversible (no mueras al caer) y algunos
@@ -134,4 +134,38 @@ entonces pierdes todo lo que hubieras revelado
 * **Tiendas** en la que comprar objetos y potenciadores con lso corazones recolectados.
 
 * **Salas de prueba**
+
+# Planificación (modelo inicial)
+
+Versión inicial de la planificación por hitos
+
+## Primer hito
+
+Este hito icluye una demostración inicial del comportamiento del personaje y el escenario.
+
+* **Físicas básicas del escenario**. Construir un escenario básico funcional en el que el jugador pueda desplazarse y saltar, con algunas
+plataformas para probar el salto.
+
+* **Versión inicial del movimiento del personaje**. El personaje debe poder desplazarse a derecha e izqueirda, además de poder saltar.
+El salto sería una versión básica sin tener que emular con gran precisión el comportamiento del juego original.
+
+* **Disparo**. El personaje debe poder disparar flechas en las tres direcciones, esto incluye el comportamiento base de las flechas, 
+que se desplacen en la dirección que fueron lanzadas y desaparezcan tras cierto tiempo.
+
+## Segundo hito
+
+Este hito supone el grueso del proyecto, en este deberán implementarse los diferentes elementos del escenario, enemigos, sus interacciones...
+
+* Respecto al orden de implementacion se empezará con un **prototipo de enemigo** y el sistema de vida, para que dicho enemigo sea destruible y cause daño al jugador.
+A partir de esa base ya se podrán crear los diferentes enemigos con sus comportamientos específicos.
+
+* También es prioritario el sistema por el que el jugador **interactuú** con diferentes elementos (recolección de objetos, elementos del escenario que causan daño etc)
+En base a esto se podrán crear las diferentes entidades con sus características y comportamientos propios.
+
+Al final de este hito deberían estar hechos la mayoría de enemigos, elementos del escenario etc. Teniendo un implementación sólida de los tres primeros niveles y la fortaleza.
+
+## Tercer hito
+
+Hito más amplío que el primero pero más limitado que el segundo, debería dedicarse a pulir elementos del juego como menús, gráficos, sonido, balanceo del gameplay e incluir algún elemento
+que hubiera quedado fuera del hito 2.
 
