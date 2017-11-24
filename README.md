@@ -66,6 +66,13 @@ gulp deploy:ghpages
 
 # GDD (Spanish)
 
+##Objetivos generales
+
+Se pretende recrear el primer mundo de Kid Icarus, compuesto por los tres primeros niveles, la primera mazmorra y la primera fortaleza.
+Adicionalmente se implementará un modo fácil, en el que el scroll vertical de la pantalla sea reversible (no mueras al caer) y algunos
+cambios pequeños en el gameplay para hacerlo más sencillo. Algunos elementos que quedan dentro del corte que pretendemos recrear podrían
+quedar fuera de la versión final, como salas de bonus y desafío.
+
 ## Comportamientos básicos del escenario (los tres primeros niveles):
 
 * Scroll vertical (hacia arriba) de los niveles.
@@ -115,22 +122,16 @@ se drigen hacia este e invocan esqueletos menores, requieren muchos disparos par
 
 * **Termas:** Restauran salud al jugador.
 
-## Elementos no confirmados para implementaci�n:
-
 * **Puertas** que permiten desplazamiento entre salas
 
-* Salas de **bonificación con jarrones**, revelas el contenido de jarrones hasta encontrar un esqueleto
+## Elementos no prioritarios, cuya implementación podría descartarse según el ritmo del proyecto
+
+* Salas de **bonificación con jarrones**, revelas el contenido de jarrones, recibes su contenido a no ser que reveles un esqueleto,
+entonces pierdes todo lo que hubieras revelado
 
 * Salas de **bonificación enemigos**, en estas aparecen carss, el jugador puede acabar con ellas y ganar puntos o salir
 
-* Salas con **terma**
-
-* **Tiendas**
+* **Tiendas** en la que comprar objetos y potenciadores con lso corazones recolectados.
 
 * **Salas de prueba**
 
-* **Primer palacio/mazmorra:** Estas fases están segmentadas en salas del tamaño de la pantalla, se puede avanzar hacia salas en las cuatro direcciones
-hasta que se acaba llegando a la sala del jefe. Por el camino pueden liberarse aliados de estatuas con martillos para que ayuden en la pelea contra
-el jefe.
-
-* **Primer jefe:** Cerbero
