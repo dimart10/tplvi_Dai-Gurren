@@ -13,10 +13,13 @@ var defaultScene = {
 
   preload: function(){
     this.game.load.spritesheet('pit', '../../images/characters/pit.png', 45, 45, 26);
+    this.game.load.image('box', '../../images/scenary/box.png');
   },
 
   create: function(){
-    defaultScene.myPit = new pit('pit', 0, 0, this.game);
+    this.game.physics.startSystem(Phaser.Physics.P2JS);
+    this.game.physics.p2.gravity.y = 150;
+    defaultScene.myPit = new pit(this.game, 50, 480, 'pit');
     defaultScene.entities.push(defaultScene.myPit);
   },
 

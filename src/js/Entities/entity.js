@@ -1,8 +1,10 @@
 //entity.js
+'use strict'
+
 var main = require("../main.js");
 var Phaser = main.Phaser;
 
-function entity(name, x, y, game){
+function entity(game, x, y, name){
   Phaser.Sprite.call(this, game, x, y, name);
   game.add.existing(this);
   this.anchor.setTo(0, 0);
