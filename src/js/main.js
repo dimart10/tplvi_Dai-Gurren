@@ -1,5 +1,6 @@
 'use strict';
 
+module.exports.Phaser = Phaser;
 var level1 = require('./Scenes/level1.js');
 
 var BootScene = {

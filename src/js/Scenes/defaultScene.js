@@ -6,7 +6,6 @@ automatically manage entities such as Pit character or the UI, which
 are on every level.*/
 
 var pit = require('../Entities/Characters/pit.js');
-var entities = [];
 
 var defaultScene = {
   myPit: undefined,
@@ -17,7 +16,7 @@ var defaultScene = {
   },
 
   create: function(){
-    defaultScene.myPit = new pit('pit', x, y, game);
+    defaultScene.myPit = new pit('pit', 0, 0, this.game);
     defaultScene.entities.push(defaultScene.myPit);
   },
 
