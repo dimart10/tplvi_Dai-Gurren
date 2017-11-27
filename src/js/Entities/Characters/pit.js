@@ -3,6 +3,8 @@ var entity = require('../entity.js');
 
 function pit(game, x, y, name){
   entity.call(this, game, x, y, name);
+  game.camera.follow(this);
+  
   this.scale.setTo(3.12, 3.12);
   game.physics.p2.enable(this);
   this.body.fixedRotation = true;
