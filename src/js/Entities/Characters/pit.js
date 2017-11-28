@@ -4,10 +4,13 @@ var entity = require('../entity.js');
 function pit(game, x, y, name){
   entity.call(this, game, x, y, name);
   game.camera.follow(this);
-  
+
   this.scale.setTo(3.12, 3.12);
   game.physics.p2.enable(this);
   this.body.fixedRotation = true;
+
+  this.body.clearShapes();
+  this.body.addRectangle(25, 64);
 
   this.newAnimation('stillRight', [7], 0, false, true);
   this.newAnimation('stillLeft', [6], 0, false, false);
