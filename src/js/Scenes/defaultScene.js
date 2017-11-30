@@ -12,6 +12,7 @@ var defaultScene = {
   preload: function(){
     this.game.load.spritesheet('pit', '../../images/characters/pit.png', 29, 29, 180);
     this.game.load.image('box', '../../images/scenary/box.png');
+    this.game.load.image('arrow', '../..images/scenary/arrow.png');
   },
 
   create: function(){
