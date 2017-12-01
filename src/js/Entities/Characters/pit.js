@@ -17,7 +17,8 @@ function pit(game, x, y, name){
   this.newAnimation('stillLeft', [6], 0, false, false);
   this.newAnimation('walkRight', [10, 9, 8, 7], 15, true, false);
   this.newAnimation('walkLeft', [3, 4, 5, 6], 15, true, false);
-  this.newAnimation('stillUp', [13], 0, false, true);
+  this.newAnimation('stillUp', [37], 0, false, true);
+  this.newAnimation('stillDown', [0], 0, false, true);
 
   this.arrowKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
   this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -59,6 +60,10 @@ pit.prototype.move = function(){ //TESTING
         this.animations.play("stillUp");
         this.direction=0;
       }
+      else if(this.cursors.down.isDown){
+        this.animations.play("stillDown");
+        this.direction=2;
+      }
       else{
         this.body.velocity.x = 0;
         if (this.animations.name == "walkRight") this.animations.play("stillRight");
@@ -90,7 +95,7 @@ pit.prototype.jump = function(){
 }
 
 pit.prototype.shoot = function(){
-
+if(this.direction!=2)
     arrowu = new arrow(this.game, this.position.x, this.position.y, arrow, this.direction);
 
 }
