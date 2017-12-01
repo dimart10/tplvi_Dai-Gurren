@@ -1,5 +1,6 @@
 //pit.js
 var entity = require('../entity.js');
+var arrow = require('../Scenary/arrow.js');
 
 function pit(game, x, y, name){
   entity.call(this, game, x, y, name);
@@ -16,14 +17,17 @@ function pit(game, x, y, name){
   this.newAnimation('stillLeft', [6], 0, false, false);
   this.newAnimation('walkRight', [10, 9, 8, 7], 15, true, false);
   this.newAnimation('walkLeft', [3, 4, 5, 6], 15, true, false);
+  this.newAnimation('stillUp', [37], 0, false, true);
+  this.newAnimation('stillDown', [0], 0, false, true);
 
-
+  this.arrowKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
   this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   this.cursors = game.input.keyboard.createCursorKeys(); //TESTING
 
   //PROVISIONAL
   this.game = game;
   this.jumptimer=0;
+  this.direction=-1;
 }
 
 pit.prototype = Object.create(entity.prototype); //Inherits from entity
@@ -34,19 +38,31 @@ pit.prototype.newAnimation = function (name, frames, fps, repeat, playOnCreate){
 }
 
 pit.prototype.update = function(){
+  console.log(this.direction);
   this.move();
   this.jump();
+  this.arrowKey.onDown.add(this.shoot, this, 0);
 }
 
 pit.prototype.move = function(){ //TESTING
   if (this.cursors.left.isDown) {
   		    this.body.moveLeft(150);
           this.animations.play("walkLeft");
+          this.direction=-1;
       }
       else if (this.cursors.right.isDown)
       {
   		    this.body.moveRight(150);
           this.animations.play("walkRight");
+          this.direction=1;
+      }
+      else if(this.cursors.up.isDown){
+        this.animations.play("stillUp");
+        this.direction=0;
+      }
+      else if(this.cursors.down.isDown){
+        this.animations.play("stillDown");
+        this.direction=2;
       }
       else{
         this.body.velocity.x = 0;
@@ -76,6 +92,12 @@ pit.prototype.jump = function(){
   else if (this.jumptimer != 0){
     this.jumptimer=0;
   }
+}
+
+pit.prototype.shoot = function(){
+if(this.direction!=2)
+    arrowu = new arrow(this.game, this.position.x, this.position.y, arrow, this.direction);
+
 }
 
 
