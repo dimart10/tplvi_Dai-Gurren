@@ -38,7 +38,6 @@ pit.prototype.newAnimation = function (name, frames, fps, repeat, playOnCreate){
 }
 
 pit.prototype.update = function(){
-  console.log(this.direction);
   this.move();
   this.jump();
   this.arrowKey.onDown.add(this.shoot, this, 0);
@@ -80,12 +79,12 @@ pit.prototype.jump = function(){
   }
 
   else if(this.spacebar.isDown && (this.jumptimer!=0))  {
-      if(this.jumptimer > 40){
+      if(this.jumptimer > 50){
         this.jumptimer=0;
       }
       else{
         this.jumptimer++;
-        this.body.velocity.y=-150;
+        this.body.velocity.y=-200;
       }
     }
 
@@ -96,7 +95,7 @@ pit.prototype.jump = function(){
 
 pit.prototype.shoot = function(){
 if(this.direction!=2)
-    arrowu = new arrow(this.game, this.position.x, this.position.y, arrow, this.direction);
+    arrowu = new arrow(this.game, this.position.x, this.position.y, "arrow", this.direction);
 
 }
 
