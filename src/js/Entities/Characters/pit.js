@@ -17,6 +17,7 @@ function pit(game, x, y, name){
   this.newAnimation('stillLeft', [6], 0, false, false);
   this.newAnimation('walkRight', [10, 9, 8, 7], 15, true, false);
   this.newAnimation('walkLeft', [3, 4, 5, 6], 15, true, false);
+  this.newAnimation('stillUp', [13], 0, false, true);
 
   this.arrowKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
   this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -25,7 +26,7 @@ function pit(game, x, y, name){
   //PROVISIONAL
   this.game = game;
   this.jumptimer=0;
-  this.direction=0;
+  this.direction=-1;
 }
 
 pit.prototype = Object.create(entity.prototype); //Inherits from entity
@@ -39,7 +40,7 @@ pit.prototype.update = function(){
   console.log(this.direction);
   this.move();
   this.jump();
-  this.shoot();
+  this.arrowKey.onDown.add(this.shoot, this, 0);
 }
 
 pit.prototype.move = function(){ //TESTING
@@ -53,6 +54,10 @@ pit.prototype.move = function(){ //TESTING
   		    this.body.moveRight(150);
           this.animations.play("walkRight");
           this.direction=1;
+      }
+      else if(this.cursors.up.isDown){
+        this.animations.play("stillUp");
+        this.direction=0;
       }
       else{
         this.body.velocity.x = 0;
@@ -85,9 +90,9 @@ pit.prototype.jump = function(){
 }
 
 pit.prototype.shoot = function(){
-  if(this.arrowKey.isDown) {
+
     arrowu = new arrow(this.game, this.position.x, this.position.y, arrow, this.direction);
-  }
+
 }
 
 
