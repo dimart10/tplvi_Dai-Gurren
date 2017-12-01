@@ -24,14 +24,14 @@ this.cycleOfLife(this.counter);
 }
 
 arrow.prototype.move = function(){
-  if (this.direction == 1) this.body.moveRight(100);
-  else if(this.direction==-1) this.body.moveLeft(100);
-  else if(this.direction==0) this.body.moveUp(100);
+  if (this.direction == 1) this.body.moveRight(200);
+  else if(this.direction==-1) this.body.moveLeft(200);
+  else if(this.direction==0) this.body.moveUp(200);
 }
 
 arrow.prototype.cycleOfLife = function(counter){
   this.counter++;
-  if(this.counter > 200) this.kill();
+  if(this.counter > 100) this.kill();
 }
 
 module.exports = arrow;
