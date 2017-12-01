@@ -26,15 +26,15 @@ this.cycleOfLife();
 }
 
 arrow.prototype.move = function(){
-  if (this.direction == 1) this.body.moveRight(200);
-  else if(this.direction==-1) this.body.moveLeft(200);
-  else if(this.direction==0) this.body.moveUp(200);
-  else if (this.direction==2) this.body.moveDown(200);
+  if (this.direction == 1) this.body.moveRight(250);
+  else if(this.direction==-1) this.body.moveLeft(250);
+  else if(this.direction==0) this.body.moveUp(250);
+  else if (this.direction==2) this.body.moveDown(250);
 }
 
 arrow.prototype.cycleOfLife = function(){
   this.counter++;
-  if(this.counter > 100) this.kill();
+  if(this.counter > 75) this.kill();
 }
 
 module.exports = arrow;

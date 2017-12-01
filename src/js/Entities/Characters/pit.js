@@ -28,6 +28,7 @@ function pit(game, x, y, name){
   this.game = game;
   this.jumptimer=0;
   this.direction=1;
+  this.arrowtimer=0;
 }
 
 pit.prototype = Object.create(entity.prototype); //Inherits from entity
@@ -41,6 +42,7 @@ pit.prototype.update = function(){
   this.move();
   this.jump();
   this.arrowKey.onDown.add(this.shoot, this, 0);
+  this.arrowtimer++;
 }
 
 pit.prototype.move = function(){ //TESTING
@@ -94,8 +96,11 @@ pit.prototype.jump = function(){
 }
 
 pit.prototype.shoot = function(){
-if(this.direction!=2)
-    arrowu = new arrow(this.game, this.position.x, this.position.y, "arrow", this.direction);
+if(this.direction!=2 && this.arrowtimer>=30){
+    nArrow = new arrow(this.game, this.position.x, this.position.y, "arrow", this.direction);
+    this.arrowtimer=0;
+  }
+
 
 }
 
