@@ -21,8 +21,8 @@ function pit(game, x, y, name){
   this.newAnimation('stillDown', [0], 0, false, false);
 
   this.arrowKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
-  this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.cursors = game.input.keyboard.createCursorKeys(); //TESTING
+  this.spacebar = game.input.keyboard.addKey(Paser.Keyboard.SPACEBAR);
+  this.cursors = game.input.keyboard.createCursorKeys(); //TESTIN");
 
   //PROVISIONAL
   this.game = game;

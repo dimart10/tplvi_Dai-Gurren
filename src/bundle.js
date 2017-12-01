@@ -22,8 +22,8 @@ function pit(game, x, y, name){
   this.newAnimation('stillDown', [0], 0, false, false);
 
   this.arrowKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
-  this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.cursors = game.input.keyboard.createCursorKeys(); //TESTING
+  this.spacebar = game.input.keyboard.addKey(Paser.Keyboard.SPACEBAR);
+  this.cursors = game.input.keyboard.createCursorKeys(); //TESTIN");
 
   //PROVISIONAL
   this.game = game;
@@ -320,8 +320,9 @@ var level1 = require('./Scenes/level1.js');
 
 var BootScene = {
   preload: function () {
-    //this.game.load.baseURL = 'https://dimart10.github.io/tplvi_Dai-Gurren/src';
-    //this.game.load.crossOrigin = 'anonymous';
+    this.game.load.baseURL = 'https://dimart10.github.io/tplvi_Dai-Gurren/src';
+    this.game.load.crossOrigin = 'anonymous';
+
     alert("BIENVENIDO");
     // load here assets required for the loading screen
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
