@@ -5,6 +5,7 @@ var level1 = require('./Scenes/level1.js');
 
 var BootScene = {
   preload: function () {
+    alert("dafdsa");
     this.game.load.baseURL = 'https://dimart10.github.io/tplvi_Dai-Gurren/src';
     this.game.load.crossOrigin = 'anonymous';
     // load here assets required for the loading screen
