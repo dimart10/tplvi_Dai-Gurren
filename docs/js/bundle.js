@@ -1,6 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 //pit.js
 var entity = require('../entity.js');
+var arrow = require('../Scenary/arrow.js');
 
 function pit(game, x, y, name){
   entity.call(this, game, x, y, name);
@@ -17,14 +18,17 @@ function pit(game, x, y, name){
   this.newAnimation('stillLeft', [6], 0, false, false);
   this.newAnimation('walkRight', [10, 9, 8, 7], 15, true, false);
   this.newAnimation('walkLeft', [3, 4, 5, 6], 15, true, false);
+  this.newAnimation('stillUp', [37], 0, false, false);
+  this.newAnimation('stillDown', [0], 0, false, false);
 
-
+  this.arrowKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
   this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.cursors = game.input.keyboard.createCursorKeys(); //TESTING
+  this.cursors = game.input.keyboard.createCursorKeys(); //TESTIN");
 
   //PROVISIONAL
   this.game = game;
   this.jumptimer=0;
+  this.direction=1;
 }
 
 pit.prototype = Object.create(entity.prototype); //Inherits from entity
@@ -35,19 +39,31 @@ pit.prototype.newAnimation = function (name, frames, fps, repeat, playOnCreate){
 }
 
 pit.prototype.update = function(){
+  console.log(this.direction);
   this.move();
   this.jump();
+  this.arrowKey.onDown.add(this.shoot, this, 0);
 }
 
 pit.prototype.move = function(){ //TESTING
   if (this.cursors.left.isDown) {
   		    this.body.moveLeft(150);
           this.animations.play("walkLeft");
+          this.direction=-1;
       }
       else if (this.cursors.right.isDown)
       {
   		    this.body.moveRight(150);
           this.animations.play("walkRight");
+          this.direction=1;
+      }
+      else if(this.cursors.up.isDown){
+        this.animations.play("stillUp");
+        this.direction=0;
+      }
+      else if(this.cursors.down.isDown){
+        this.animations.play("stillDown");
+        this.direction=2;
       }
       else{
         this.body.velocity.x = 0;
@@ -77,6 +93,12 @@ pit.prototype.jump = function(){
   else if (this.jumptimer != 0){
     this.jumptimer=0;
   }
+}
+
+pit.prototype.shoot = function(){
+if(this.direction!=2)
+    arrowu = new arrow(this.game, this.position.x, this.position.y, arrow, this.direction);
+
 }
 
 
@@ -112,7 +134,46 @@ pit.prototype.checkIfCanJump = function() {
 
 module.exports = pit;
 
-},{"../entity.js":4}],2:[function(require,module,exports){
+},{"../Scenary/arrow.js":2,"../entity.js":5}],2:[function(require,module,exports){
+
+var entity = require('../entity.js');
+
+function arrow(game, x, y, name, direction){
+  this.direction = direction;
+  if(this.direction==1)  entity.call(this, game, x +25, y, name);
+  else if (this.direction==-1)  entity.call(this, game, x -25, y, name);
+  else if (this.direction==0)  entity.call(this, game, x, y - 50, name);
+  this.counter= 0;
+  game.physics.p2.enable(this);
+  this.body.data.gravityScale = 0;
+
+
+//if(direction==0) this.body.rotation=90;
+//else if(direction==-1) this.body.rotation=180;
+
+}
+
+arrow.prototype = Object.create(entity.prototype);
+
+arrow.prototype.update = function(){
+this.move();
+this.cycleOfLife(this.counter);
+}
+
+arrow.prototype.move = function(){
+  if (this.direction == 1) this.body.moveRight(200);
+  else if(this.direction==-1) this.body.moveLeft(200);
+  else if(this.direction==0) this.body.moveUp(200);
+}
+
+arrow.prototype.cycleOfLife = function(counter){
+  this.counter++;
+  if(this.counter > 100) this.kill();
+}
+
+module.exports = arrow;
+
+},{"../entity.js":5}],3:[function(require,module,exports){
 //background.js
 'use strict'
 
@@ -127,7 +188,7 @@ background.prototype = Object.create(entity.prototype);
 
 module.exports = background;
 
-},{"../entity.js":4}],3:[function(require,module,exports){
+},{"../entity.js":5}],4:[function(require,module,exports){
 //terrain.js
 'use strict'
 
@@ -145,7 +206,7 @@ terrain.prototype = Object.create(entity.prototype);
 
 module.exports = terrain;
 
-},{"../entity.js":4}],4:[function(require,module,exports){
+},{"../entity.js":5}],5:[function(require,module,exports){
 //entity.js
 'use strict'
 
@@ -164,7 +225,7 @@ entity.prototype.update = function() {}
 
 module.exports = entity;
 
-},{"../main.js":7}],5:[function(require,module,exports){
+},{"../main.js":8}],6:[function(require,module,exports){
 //defaultScene.js
 
 /*Every normal level of the game should call these object's methods
@@ -179,6 +240,7 @@ var defaultScene = {
   preload: function(){
     this.game.load.spritesheet('pit', '../../images/characters/pit.png', 29, 29, 180);
     this.game.load.image('box', '../../images/scenary/box.png');
+    this.game.load.image('arrow', '../..images/scenary/arrow.png');
   },
 
   create: function(){
@@ -195,7 +257,7 @@ var defaultScene = {
 
 module.exports = defaultScene;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 //level1.js
 
 var defaultScene = require('./defaultScene.js');
@@ -250,7 +312,7 @@ this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
 module.exports = level1;
 
-},{"../Entities/Characters/pit.js":1,"../Entities/Scenary/background.js":2,"../Entities/Scenary/terrain.js":3,"./defaultScene.js":5}],7:[function(require,module,exports){
+},{"../Entities/Characters/pit.js":1,"../Entities/Scenary/background.js":3,"../Entities/Scenary/terrain.js":4,"./defaultScene.js":6}],8:[function(require,module,exports){
 'use strict';
 
 module.exports.Phaser = Phaser;
@@ -258,8 +320,7 @@ var level1 = require('./Scenes/level1.js');
 
 var BootScene = {
   preload: function () {
-    this.game.load.baseURL = 'https://dimart10.github.io/tplvi_Dai-Gurren/src';
-    this.game.load.crossOrigin = 'anonymous';
+    alert("BIENVENIDO");
     // load here assets required for the loading screen
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
   },
@@ -295,4 +356,4 @@ window.onload = function () {
   game.state.start('boot');
 };
 
-},{"./Scenes/level1.js":6}]},{},[7]);
+},{"./Scenes/level1.js":7}]},{},[8]);
