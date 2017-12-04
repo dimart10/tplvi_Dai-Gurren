@@ -49,12 +49,12 @@ pit.prototype.update = function(){
 
 pit.prototype.move = function(){ //TESTING
   if (this.cursors.left.isDown) {
-		    this.body.velocity.x = -170;
+		    this.body.velocity.x = -200;
         this.animations.play("walkLeft");
         this.direction=-1;
       }
       else if (this.cursors.right.isDown){
-		    this.body.velocity.x = 170;
+		    this.body.velocity.x = 200;
         this.animations.play("walkRight");
         this.direction=1;
       }
@@ -81,7 +81,7 @@ pit.prototype.jump = function(){
 
   if(this.spacebar.isDown && this.body.onFloor()) {
     this.jumptimer=1;
-    this.body.velocity.y = -300;
+    this.body.velocity.y = -1000;
   }
 
   else if(this.spacebar.isDown && (this.jumptimer!=0))  {
@@ -89,8 +89,8 @@ pit.prototype.jump = function(){
         this.jumptimer=0;
       }
       else{
-        this.jumptimer++;
-        this.body.velocity.y=-200;
+        this.jumptimer++; //DELTA TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        this.body.velocity.y=-700;
       }
     }
 

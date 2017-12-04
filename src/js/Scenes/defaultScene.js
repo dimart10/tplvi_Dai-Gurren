@@ -11,13 +11,14 @@ var defaultScene = {
   entities: [],
 
   preload: function(){
+    this.game.time.desiredFps = 60;
     this.game.load.spritesheet('pit', '../../images/characters/pit.png', 29, 29, 180);
     this.game.load.image('arrow', '../../images/scenary/arrow(bigger).png');
   },
 
   create: function(){
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.physics.arcade.gravity.y = 300;
+    this.game.physics.arcade.gravity.y = 2500;
   },
 
   update: function(){
