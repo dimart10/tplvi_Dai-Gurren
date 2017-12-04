@@ -5,9 +5,7 @@ var level1 = require('./Scenes/level1.js');
 
 var BootScene = {
   preload: function () {
-    alert("BIENVENIDO");
-    // load here assets required for the loading screen
-    this.game.load.image('preloader_bar', 'images/preloader_bar.png');
+
   },
 
   create: function () {
@@ -18,12 +16,7 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
-    this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
-    this.loadingBar.anchor.setTo(0, 0.5);
-    this.load.setPreloadSprite(this.loadingBar);
 
-    // TODO: load here the assets for the game
-    //this.game.load.image('logo', 'images/phaser.png');
   },
 
   create: function () {

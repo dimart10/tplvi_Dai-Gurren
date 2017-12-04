@@ -1,0 +1,2 @@
+//harmful.js
+'use strict'

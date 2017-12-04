@@ -1,0 +1,2 @@
+//mortal.js
+'use strict';

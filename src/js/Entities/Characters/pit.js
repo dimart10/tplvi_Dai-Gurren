@@ -1,17 +1,20 @@
 //pit.js
+'use strict'
+
 var entity = require('../entity.js');
 var arrow = require('../Scenary/arrow.js');
 
 function pit(game, x, y, name){
   entity.call(this, game, x, y, name);
-  game.camera.follow(this);
+  this.game = game;
+
+  this.game.camera.follow(this);
 
   this.scale.setTo(3.12, 3.12);
-  game.physics.p2.enable(this);
-  this.body.fixedRotation = true;
+  this.game.physics.arcade.enable(this);
 
-  this.body.clearShapes();
-  this.body.addRectangle(25, 64);
+  this.body.setSize(13, 24, 7, 0);
+  this.body.collideWorldBounds = false;
 
   this.newAnimation('stillRight', [7], 0, false, true);
   this.newAnimation('stillLeft', [6], 0, false, false);
@@ -20,12 +23,11 @@ function pit(game, x, y, name){
   this.newAnimation('stillUp', [37], 0, false, false);
   this.newAnimation('stillDown', [0], 0, false, false);
 
-  this.arrowKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
-  this.spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.cursors = game.input.keyboard.createCursorKeys(); //TESTIN");
+  this.arrowKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+  this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  this.cursors = this.game.input.keyboard.createCursorKeys(); //TESTIN");
 
   //PROVISIONAL
-  this.game = game;
   this.jumptimer=0;
   this.direction=1;
   this.arrowtimer=0;
@@ -47,15 +49,14 @@ pit.prototype.update = function(){
 
 pit.prototype.move = function(){ //TESTING
   if (this.cursors.left.isDown) {
-  		    this.body.moveLeft(150);
-          this.animations.play("walkLeft");
-          this.direction=-1;
+		    this.body.velocity.x = -170;
+        this.animations.play("walkLeft");
+        this.direction=-1;
       }
-      else if (this.cursors.right.isDown)
-      {
-  		    this.body.moveRight(150);
-          this.animations.play("walkRight");
-          this.direction=1;
+      else if (this.cursors.right.isDown){
+		    this.body.velocity.x = 170;
+        this.animations.play("walkRight");
+        this.direction=1;
       }
       else if(this.cursors.up.isDown){
         this.animations.play("stillUp");
@@ -70,14 +71,17 @@ pit.prototype.move = function(){ //TESTING
         if (this.animations.name == "walkRight") this.animations.play("stillRight");
         else if (this.animations.name == "walkLeft") this.animations.play("stillLeft");
       }
+
+      //Processes toroidal movement
+      this.game.world.wrap(this, 0, true);
 }
 
 
 pit.prototype.jump = function(){
 
-  if(this.spacebar.isDown && this.checkIfCanJump()) {
+  if(this.spacebar.isDown && this.body.onFloor()) {
     this.jumptimer=1;
-    this.body.velocity.y = -150;
+    this.body.velocity.y = -300;
   }
 
   else if(this.spacebar.isDown && (this.jumptimer!=0))  {
@@ -96,43 +100,10 @@ pit.prototype.jump = function(){
 }
 
 pit.prototype.shoot = function(){
-if(this.direction!=2 && this.arrowtimer>=30){
-    nArrow = new arrow(this.game, this.position.x, this.position.y, "arrow", this.direction);
-    this.arrowtimer=0;
-  }
-
-
-}
-
-
-
-
-
-
-
-//Method that checks if the player is touching the ground
-pit.prototype.checkIfCanJump = function() {
-  var c, d, i, result, yAxis;
-  yAxis = p2.vec2.fromValues(0, 1);
-  result = false; //returned variable, initialized as false
-  //Loop that iterates through the collisions in the game
-  for (i=0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++ ) {
-    //Variable c contains the collisions in the i position of the vector
-    c = this.game.physics.p2.world.narrowphase.contactEquations[i];
-    //If a collisions includes this.body as either of the bodies colliding
-    if (c.bodyA === this.body.data || c.bodyB === this.body.data) {
-      //D is assigned a position to check if this.body is above or below
-      //the other body (this comment needs more work)
-      d = p2.vec2.dot(c.normalA, yAxis);
-      if (c.bodyA === this.body.data) {
-        d *= -1;
-      }
-      if (d > 0.5) {
-        result = true;
-      }
+  if(this.direction!=2 && this.arrowtimer>=30){
+      nArrow = new arrow(this.game, this.position.x, this.position.y, "arrow", this.direction);
+      this.arrowtimer=0;
     }
-  }
-  return result;
 }
 
 module.exports = pit;

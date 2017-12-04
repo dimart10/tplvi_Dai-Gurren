@@ -1,0 +1,2 @@
+//mobile.js
+'use strict';

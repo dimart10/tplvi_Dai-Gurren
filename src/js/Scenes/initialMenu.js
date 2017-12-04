@@ -1,5 +1,6 @@
 //level1.js
-ç
+'use strict';
+
 var defaultScene = require('./defaultScene.js');
 
 var level1 = {

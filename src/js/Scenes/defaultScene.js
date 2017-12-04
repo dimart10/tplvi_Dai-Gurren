@@ -1,4 +1,5 @@
 //defaultScene.js
+'use strict';
 
 /*Every normal level of the game should call these object's methods
 passing them its own scope with '.call' or '.apply'. This will
@@ -11,13 +12,12 @@ var defaultScene = {
 
   preload: function(){
     this.game.load.spritesheet('pit', '../../images/characters/pit.png', 29, 29, 180);
-    this.game.load.image('box', '../../images/scenary/box.png');
     this.game.load.image('arrow', '../../images/scenary/arrow(bigger).png');
   },
 
   create: function(){
-    this.game.physics.startSystem(Phaser.Physics.P2JS);
-    this.game.physics.p2.gravity.y = 150;
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.game.physics.arcade.gravity.y = 300;
   },
 
   update: function(){

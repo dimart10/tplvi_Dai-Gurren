@@ -1,12 +1,10 @@
 //level1.js
+'use strict';
 
 var defaultScene = require('./defaultScene.js');
 var pit = require('../Entities/Characters/pit.js');
-var terrain = require('../Entities/Scenary/terrain.js');
-var background = require('../Entities/Scenary/background.js');
 
 var level1 = {
-  level1Background: undefined,
   myPit: undefined,
   map: undefined,
   mapLayer: undefined,
@@ -21,7 +19,26 @@ var level1 = {
 
   create: function(){
     defaultScene.create.call(this);
-this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+
+    this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+
+    this.createTileMap();
+
+    this.myPit = new pit(this.game, 100, 400, 'pit');
+    defaultScene.entities.push(this.myPit);
+  },
+
+  update: function(){
+    defaultScene.update.call(this);
+
+    //Tilemap colisions
+    this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
+
+    //Pit debugging
+    this.game.debug.body(this.myPit);
+  },
+
+  createTileMap: function(){
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('level1tileset');
     this.map.addTilesetImage('ColisionsTile');
@@ -38,15 +55,6 @@ this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
-    this.game.physics.p2.convertTilemap(this.map, 'Colisions');
-
-    this.myPit = new pit(this.game, 100, 400, 'pit');
-    defaultScene.entities.push(this.myPit);
-  },
-
-  update: function(){
-    defaultScene.update.call(this);
-    this.myPit.body.debug = true; //TESTING
   }
 };
 

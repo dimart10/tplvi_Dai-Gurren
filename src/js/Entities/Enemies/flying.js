@@ -1,0 +1,2 @@
+//flying.js
+'use strict';

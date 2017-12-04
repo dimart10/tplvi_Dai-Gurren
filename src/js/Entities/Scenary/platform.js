@@ -1,0 +1,2 @@
+//platform.js
+'use strict';
