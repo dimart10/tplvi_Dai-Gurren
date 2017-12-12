@@ -23,11 +23,8 @@ var level1 = {
     defaultScene.create.call(this);
 
     this.createTileMap();
-    this.game.world.setBounds(50, 0,
-      (this.game.world.bounds.width/2)-((config.tileSize*2)*config.scale),
-      this.game.world.bounds.height);
 
-    this.myPit = new pit(this.game, 130, /*8735*/ 8000, 'pit');
+    this.myPit = new pit(this.game, 170, 8735, 'pit');
     defaultScene.entities.push(this.myPit);
   },
 
@@ -58,6 +55,12 @@ var level1 = {
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
+
+    //Set the bounds to use only the first map of the tilemap
+    this.game.world.setBounds(config.tileSize*config.scale, 0,
+      this.game.world.bounds.width/2 - (2*config.tileSize*config.scale)-1,
+      this.game.world.bounds.height);
+      //The ''-1' fixes the vagueness caused by the division/multiplication
   }
 };
 

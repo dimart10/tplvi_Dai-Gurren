@@ -76,9 +76,8 @@ pit.prototype.move = function(){ //TESTING
       }
 
       //Processes toroidal movement
-      this.game.world.wrap(this, 0, true, true, false);
+      this.game.world.wrap(this, 0, false, true, false);
 }
-
 
 pit.prototype.jump = function(){
 
