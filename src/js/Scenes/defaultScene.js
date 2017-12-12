@@ -18,7 +18,7 @@ var defaultScene = {
 
   create: function(){
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.physics.arcade.gravity.y = 2500;
+    this.game.physics.arcade.gravity.y = 3500;
   },
 
   update: function(){

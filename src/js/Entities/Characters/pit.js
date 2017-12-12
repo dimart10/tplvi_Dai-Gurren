@@ -3,6 +3,7 @@
 
 var entity = require('../entity.js');
 var arrow = require('../Scenary/arrow.js');
+var config = require('../../config.js');
 
 function pit(game, x, y, name){
   entity.call(this, game, x, y, name);
@@ -10,12 +11,12 @@ function pit(game, x, y, name){
 
   this.game.camera.follow(this);
 
-  this.scale.setTo(3.12, 3.12);
+  this.scale.setTo(config.scale, config.scale);
   this.game.physics.arcade.enable(this);
 
   this.body.setSize(13, 24, 7, 0);
   this.body.collideWorldBounds = false;
-  this.body.maxVelocity.y = 900;
+  this.body.maxVelocity.y = 800;
 
   this.newAnimation('stillRight', [7], 0, false, true);
   this.newAnimation('stillLeft', [6], 0, false, false);
@@ -30,7 +31,7 @@ function pit(game, x, y, name){
 
   //PROVISIONAL
   this.jumptimer=0;
-  this.jumpTime=30;
+  this.jumpTime=10;
   this.direction=1;
   this.arrowtimer=0;
 }
@@ -75,7 +76,7 @@ pit.prototype.move = function(){ //TESTING
       }
 
       //Processes toroidal movement
-      this.game.world.wrap(this, 0, true);
+      this.game.world.wrap(this, 0, true, true, false);
 }
 
 
@@ -92,7 +93,7 @@ pit.prototype.jump = function(){
       }
       else{
         this.jumptimer++; //DELTA TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-        this.body.velocity.y=-500;
+        this.body.velocity.y=-900;
       }
     }
 

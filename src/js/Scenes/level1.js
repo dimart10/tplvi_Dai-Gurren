@@ -3,6 +3,7 @@
 
 var defaultScene = require('./defaultScene.js');
 var pit = require('../Entities/Characters/pit.js');
+var config = require('../config.js');
 
 var level1 = {
   myPit: undefined,
@@ -14,17 +15,19 @@ var level1 = {
     defaultScene.preload.call(this);
     this.game.load.image('level1tileset', '../../images/scenes/level1tileset.png');
     this.game.load.image('ColisionsTile', '../../images/scenes/colisions.png');
-    this.game.load.tilemap('level1', '../../images/scenes/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.tilemap('level1', '../../images/scenes/level1.json', null,
+                            Phaser.Tilemap.TILED_JSON);
   },
 
   create: function(){
     defaultScene.create.call(this);
 
-    this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-
     this.createTileMap();
+    this.game.world.setBounds(50, 0,
+      (this.game.world.bounds.width/2)-((config.tileSize*2)*config.scale),
+      this.game.world.bounds.height);
 
-    this.myPit = new pit(this.game, 100, 400, 'pit');
+    this.myPit = new pit(this.game, 130, /*8735*/ 8000, 'pit');
     defaultScene.entities.push(this.myPit);
   },
 
@@ -44,11 +47,11 @@ var level1 = {
     this.map.addTilesetImage('ColisionsTile');
 
     this.mapLayer = this.map.createLayer('Map');
-    this.mapLayer.setScale(3.12);
+    this.mapLayer.setScale(config.scale);
     this.mapLayer.fixedCamera = false;
 
     this.colisionLayer = this.map.createLayer('Colisions');
-    this.colisionLayer.setScale(3.12);
+    this.colisionLayer.setScale(config.scale);
     this.colisionLayer.fixedCamera = false;
     this.colisionLayer.visible = false;
 
