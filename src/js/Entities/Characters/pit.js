@@ -15,7 +15,7 @@ function pit(game, x, y, name){
 
   this.body.setSize(13, 24, 7, 0);
   this.body.collideWorldBounds = false;
-  this.body.maxVelocity.y = 1000;
+  this.body.maxVelocity.y = 900;
 
   this.newAnimation('stillRight', [7], 0, false, true);
   this.newAnimation('stillLeft', [6], 0, false, false);
@@ -30,6 +30,7 @@ function pit(game, x, y, name){
 
   //PROVISIONAL
   this.jumptimer=0;
+  this.jumpTime=30;
   this.direction=1;
   this.arrowtimer=0;
 }
@@ -82,16 +83,16 @@ pit.prototype.jump = function(){
 
   if(this.spacebar.isDown && this.body.onFloor()) {
     this.jumptimer=1;
-    this.body.velocity.y = -1000;
+    this.body.velocity.y = -this.body.maxVelocity.y;
   }
 
   else if(this.spacebar.isDown && (this.jumptimer!=0))  {
-      if(this.jumptimer > 50){
+      if(this.jumptimer > this.jumpTime){
         this.jumptimer=0;
       }
       else{
         this.jumptimer++; //DELTA TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-        this.body.velocity.y=-700;
+        this.body.velocity.y=-500;
       }
     }
 
