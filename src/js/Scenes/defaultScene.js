@@ -14,6 +14,7 @@ var defaultScene = {
     this.game.time.desiredFps = 60;
     this.game.load.spritesheet('pit', '../../images/characters/pit.png', 29, 29, 180);
     this.game.load.image('arrow', '../../images/scenary/arrow(bigger).png');
+    this.game.load.spritesheet('enemies', '../../images/characters/enemies.png', 29, 29, 150)
   },
 
   create: function(){
