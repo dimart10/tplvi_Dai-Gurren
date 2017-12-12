@@ -15,6 +15,7 @@ function pit(game, x, y, name){
 
   this.body.setSize(13, 24, 7, 0);
   this.body.collideWorldBounds = false;
+  this.body.maxVelocity.y = 1000;
 
   this.newAnimation('stillRight', [7], 0, false, true);
   this.newAnimation('stillLeft', [6], 0, false, false);
