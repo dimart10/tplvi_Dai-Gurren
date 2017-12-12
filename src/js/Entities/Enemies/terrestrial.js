@@ -7,6 +7,7 @@ function terrestrial(game, x, y, name){
   entity.call(this, game, x, y, name);
   this.game.physics.arcade.enable(this);
   this.body.collideWorldBounds = false;
+  this.body.maxVelocity.y = 800;
 }
 
 terrestrial.prototype = Object.create(entity.prototype);//inherit from entity
