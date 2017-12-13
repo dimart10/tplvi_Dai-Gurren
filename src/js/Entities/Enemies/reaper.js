@@ -26,12 +26,13 @@ function reaper(game, x, y, name, direction){
 reaper.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
 reaper.prototype.update = function(){
-if(!this.alert)this.detectPit();
-if(!this.alert) this.spacebar.onDown.add(this.onAlert, this, 0);
+
+if(!this.alert) this.detectPit();
 this.movement();
 }
 
 reaper.prototype.onAlert = function(){
+    this.alert=true;
     if(this.direction==1) this.animations.play('alertRight');
     else if(this.direction==-1) this.animations.play('alertLeft');
     this.velocity*=2;
@@ -39,15 +40,17 @@ reaper.prototype.onAlert = function(){
 }
 
 reaper.prototype.exitAlert = function(){
-
+  this.alert=false;
+  this.alertTimer=0;
+  this.velocity/=2;
+  if(this.direction==1) this.animations.play('patrolRight');
+  else if(this.direction==-1)this.animations.play('patrolLeft');
 }
 
 reaper.prototype.detectPit = function(){
+  this.spacebar.onDown.add(this.onAlert, this, 0);
   //CODE THAT LOOKS FOR PIT
-if(false){
-  this.alert=true;
-  this.onAlert();
-}
+if(false) this.onAlert();
 }
 
 reaper.prototype.movement = function(){
@@ -60,10 +63,7 @@ if(!this.alert){
 }
 else{
   this.alertTimer++;
-  if(this.alertTimer>20) {
-    this.alert=false;
-    this.velocity/=2;
-  }
+  if(this.alertTimer>100) this.exitAlert();
 }
   this.horizMove(this.velocity, this.direction);
 }
