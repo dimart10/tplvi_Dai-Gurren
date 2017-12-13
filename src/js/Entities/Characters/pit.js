@@ -64,10 +64,12 @@ pit.prototype.move = function(){ //TESTING
       else if(this.cursors.up.isDown){
         this.animations.play("stillUp");
         this.direction=0;
+        this.body.velocity.x=0;
       }
       else if(this.cursors.down.isDown){
         this.animations.play("stillDown");
         this.direction=2;
+        this.body.velocity.x=0;
       }
       else{
         this.body.velocity.x = 0;

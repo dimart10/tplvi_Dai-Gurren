@@ -3,9 +3,12 @@
 
 var terrestrial = require('./terrestrial.js');
 
-function reaper(game, x, y, name, direction){
+function reaper(game, x, y, name, direction, player){
   terrestrial.call(this, game, x, y, name);
 
+  this.player=player;
+  this.turn=false;
+  this.turnTimer=0;
   this.alertTimer=0;
   this.alert=false;
   this.direction=direction;
@@ -31,26 +34,15 @@ if(!this.alert) this.detectPit();
 this.movement();
 }
 
-reaper.prototype.onAlert = function(){
-    this.alert=true;
-    if(this.direction==1) this.animations.play('alertRight');
-    else if(this.direction==-1) this.animations.play('alertLeft');
-    this.velocity*=2;
-    //spawn reaperets
-}
 
-reaper.prototype.exitAlert = function(){
-  this.alert=false;
-  this.alertTimer=0;
-  this.velocity/=2;
-  if(this.direction==1) this.animations.play('patrolRight');
-  else if(this.direction==-1)this.animations.play('patrolLeft');
-}
 
 reaper.prototype.detectPit = function(){
-  this.spacebar.onDown.add(this.onAlert, this, 0);
-  //CODE THAT LOOKS FOR PIT
-if(false) this.onAlert();
+  if (Math.abs(this.y - this.player.y)<20) {
+        if (this.player.x > this.x) {
+          if(this.direction==1) this.onAlert();
+        }
+        else if(this.direction==-1) this.onAlert();
+    }
 }
 
 reaper.prototype.movement = function(){
@@ -65,6 +57,51 @@ else{
   this.alertTimer++;
   if(this.alertTimer>100) this.exitAlert();
 }
-  this.horizMove(this.velocity, this.direction);
+//console.log(this.turn);
+if(!this.turn) {
+   this.horizMove(this.velocity, this.direction);
+   if(this.turnTimer>300) this.onTurn();
 }
+if(this.turn && this.turnTimer>100) this.exitTurn();
+this.turnTimer++;
+}
+
+reaper.prototype.onAlert = function(){
+  console.log('alertado');
+    this.alert=true;
+    this.turn=false;
+    this.turnTimer=0;
+    if(this.direction==1) this.animations.play('alertRight');
+    else if(this.direction==-1) this.animations.play('alertLeft');
+    this.velocity*=3;
+    //spawn reaperets
+}
+
+reaper.prototype.exitAlert = function(){
+  this.alert=false;
+  this.alertTimer=0;
+  this.velocity/=3;
+  if(this.direction==1) this.animations.play('patrolRight');
+  else if(this.direction==-1)this.animations.play('patrolLeft');
+}
+
+reaper.prototype.onTurn = function(){
+  this.turn=true;
+  this.body.velocity.x=0;
+  this.turnTimer=0;
+  if(this.direction==1)
+  {this.direction=-1; this.animations.play('patrolLeft');}
+  else if(this.direction==-1)
+  {this.direction=1; this.animations.play('patrolRight');}
+}
+
+reaper.prototype.exitTurn = function(){
+  this.turn=false;
+  this.turnTimer=0;
+  if(this.direction==1)
+  {this.direction=-1; this.animations.play('patrolLeft');}
+  else if(this.direction==-1)
+  {this.direction=1; this.animations.play('patrolRight');}
+}
+
 module.exports = reaper;

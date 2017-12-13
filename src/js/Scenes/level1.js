@@ -28,7 +28,7 @@ var level1 = {
 
     this.myPit = new pit(this.game, 170, 8735, 'pit');
     this.myShemum = new shemum(this.game, 180, 8735, 'enemies', -1);
-    this.myReaper = new reaper(this.game, 300, 8535, 'enemies', -1);
+    this.myReaper = new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit);
     defaultScene.entities.push(this.myPit);
   },
 
@@ -39,7 +39,7 @@ var level1 = {
     this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
     this.game.physics.arcade.collide(this.myShemum, this.colisionLayer);
     this.game.physics.arcade.collide(this.myReaper, this.colisionLayer);
-  //  this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
+    this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
 
     //Pit debugging
     this.game.debug.body(this.myShemum);
@@ -56,11 +56,11 @@ var level1 = {
     this.mapLayer.setScale(config.scale);
     this.mapLayer.fixedCamera = false;
 
-    /*this.edgeLayer = this.map.createLayer('Edges');
+    this.edgeLayer = this.map.createLayer('Edges');
     this.edgeLayer.setScale(config.scale);
-    this.edgeLayer.visible = true;
-    this.map.setCollision(5761, true, 'Edges');
-*/
+    this.edgeLayer.visible = false;
+    this.map.setCollision(5762, true, 'Edges');
+
     this.colisionLayer = this.map.createLayer('Colisions');
     this.colisionLayer.setScale(config.scale);
     this.colisionLayer.fixedCamera = false;
