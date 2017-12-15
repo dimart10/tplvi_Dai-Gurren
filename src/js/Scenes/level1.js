@@ -6,6 +6,7 @@ var pit = require('../Entities/Characters/pit.js');
 var shemum = require('../Entities/Enemies/shemum.js');
 var reaper = require('../Entities/Enemies/reaper.js');
 var config = require('../config.js');
+var reapette = require('../Entities/Enemies/reapette.js');
 
 var level1 = {
   myPit: undefined,
@@ -29,6 +30,7 @@ var level1 = {
     this.myPit = new pit(this.game, 170, 8735, 'pit');
     this.myShemum = new shemum(this.game, 180, 8735, 'enemies', -1);
     this.myReaper = new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit);
+    this.myReapette = new reapette(this.game, 100, 8500, 'enemies', this.myPit);
     defaultScene.entities.push(this.myPit);
   },
 
@@ -45,6 +47,7 @@ var level1 = {
     this.game.debug.body(this.myShemum);
     this.game.debug.body(this.myPit);
     this.game.debug.body(this.myReaper);
+    this.game.debug.body(this.myReapette);
   },
 
   createTileMap: function(){

@@ -2,6 +2,7 @@
 'use strict'
 
 var terrestrial = require('./terrestrial.js');
+var reapette = require('./reapette.js');
 
 function reaper(game, x, y, name, direction, player){
   terrestrial.call(this, game, x, y, name);
@@ -15,8 +16,6 @@ function reaper(game, x, y, name, direction, player){
   this.velocity = 50;
   this.scale.setTo(2.5,2.5);
   this.body.setSize(15, 24, 5, -1);
-
-  this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
   this.animations.add('patrolRight', [25], 0, false);
   this.animations.add('alertRight', [26,27], 5, true);
@@ -55,7 +54,7 @@ if(!this.alert){
 }
 else{
   this.alertTimer++;
-  if(this.alertTimer>100) this.exitAlert();
+  if(this.alertTimer>300) this.exitAlert();
 }
 //console.log(this.turn);
 if(!this.turn) {
@@ -67,15 +66,13 @@ this.turnTimer++;
 }
 
 reaper.prototype.onAlert = function(){
-  console.log('alertado');
     this.alert=true;
     this.turn=false;
     this.turnTimer=0;
     if(this.direction==1) this.animations.play('alertRight');
     else if(this.direction==-1) this.animations.play('alertLeft');
     this.velocity*=3;
-    //spawn reaperets
-}
+    this.myReapette = new reapette(this.game, this.x, this.y -200, 'enemies', this.player);}
 
 reaper.prototype.exitAlert = function(){
   this.alert=false;
