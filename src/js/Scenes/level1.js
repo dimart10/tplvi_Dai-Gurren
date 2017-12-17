@@ -14,6 +14,7 @@ var level1 = {
   map: undefined,
   mapLayer: undefined,
   colisionLayer: undefined,
+  platformsLayer: undefined,
 
   preload: function(){
     defaultScene.preload.call(this);
@@ -38,6 +39,7 @@ var level1 = {
     this.myReaper=new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit, this.groups);
     this.groups.enemies.add(this.myReaper);
     this.groups.enemies.add(new monoeye(this.game, 150, 8500, 'enemies', this.myPit));
+
     defaultScene.entities.push(this.myPit);
 
   },
@@ -46,6 +48,7 @@ var level1 = {
       defaultScene.update.call(this);
 
       //Tilemap colisions
+      this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
 
       this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
       this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
@@ -78,15 +81,30 @@ var level1 = {
     this.edgeLayer.setScale(config.scale);
     this.edgeLayer.visible = false;
     this.map.setCollision(5762, true, 'Edges');
+    //Tilemap colisions
+    this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
 
     this.colisionLayer = this.map.createLayer('Colisions');
     this.colisionLayer.setScale(config.scale);
     this.colisionLayer.fixedCamera = false;
     this.colisionLayer.visible = false;
 
+    this.platformsLayer = this.map.createLayer('Platforms');
+    this.platformsLayer.setScale(config.scale);
+    this.platformsLayer.fixedCamera = false;
+    this.platformsLayer.visible = false;
+
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
+    this.map.setCollision(5761, true, 'Platforms');
+
+    //Sets platforms specific side collisions
+    this.map.forEach(function (tile){
+      tile.collideDown = false;
+      tile.collideRight = false;
+      tile.collideLeft = false;
+    }, this.game, 0, 0, this.map.width, this.map.height, this.platformsLayer);
 
     //Set the bounds to use only the first map of the tilemap
     this.game.world.setBounds(config.tileSize*config.scale, 0,
