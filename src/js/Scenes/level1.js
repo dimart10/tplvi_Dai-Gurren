@@ -10,6 +10,7 @@ var level1 = {
   map: undefined,
   mapLayer: undefined,
   colisionLayer: undefined,
+  platformsLayer: undefined,
 
   preload: function(){
     defaultScene.preload.call(this);
@@ -24,7 +25,7 @@ var level1 = {
 
     this.createTileMap();
 
-    this.myPit = new pit(this.game, 170, 8735, 'pit');
+    this.myPit = new pit(this.game, 170, 7000/*8735*/, 'pit');
     defaultScene.entities.push(this.myPit);
   },
 
@@ -33,6 +34,7 @@ var level1 = {
 
     //Tilemap colisions
     this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
+    this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
 
     //Pit debugging
     this.game.debug.body(this.myPit);
@@ -52,9 +54,15 @@ var level1 = {
     this.colisionLayer.fixedCamera = false;
     this.colisionLayer.visible = false;
 
+    this.platformsLayer = this.map.createLayer('Platforms');
+    this.platformsLayer.setScale(config.scale);
+    this.platformsLayer.fixedCamera = false;
+    this.platformsLayer.visible = true;
+
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
+    this.map.setCollision(5761, true, 'Platforms');
 
     //Set the bounds to use only the first map of the tilemap
     this.game.world.setBounds(config.tileSize*config.scale, 0,
