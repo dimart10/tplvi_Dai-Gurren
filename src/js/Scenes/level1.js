@@ -57,12 +57,19 @@ var level1 = {
     this.platformsLayer = this.map.createLayer('Platforms');
     this.platformsLayer.setScale(config.scale);
     this.platformsLayer.fixedCamera = false;
-    this.platformsLayer.visible = true;
+    this.platformsLayer.visible = false;
 
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
     this.map.setCollision(5761, true, 'Platforms');
+
+    //Sets platforms specific side collisions
+    this.map.forEach(function (tile){
+      tile.collideDown = false;
+      tile.collideRight = false;
+      tile.collideLeft = false;
+    }, this.game, 0, 0, this.map.width, this.map.height, this.platformsLayer);
 
     //Set the bounds to use only the first map of the tilemap
     this.game.world.setBounds(config.tileSize*config.scale, 0,
