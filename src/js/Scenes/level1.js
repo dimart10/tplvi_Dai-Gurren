@@ -81,8 +81,6 @@ var level1 = {
     this.edgeLayer.setScale(config.scale);
     this.edgeLayer.visible = false;
     this.map.setCollision(5762, true, 'Edges');
-    //Tilemap colisions
-    this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
 
     this.colisionLayer = this.map.createLayer('Colisions');
     this.colisionLayer.setScale(config.scale);
