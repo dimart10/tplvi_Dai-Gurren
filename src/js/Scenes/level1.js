@@ -20,7 +20,7 @@ var level1 = {
     defaultScene.preload.call(this);
 
     this.game.load.image('level1tileset', 'images/scenes/level1tileset.png');
-    this.game.load.image('ColisionsTile', 'images/scenes/colisions.png');
+    this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
     this.game.load.tilemap('level1', 'images/scenes/level1.json', null,
                             Phaser.Tilemap.TILED_JSON);
   },
@@ -95,7 +95,7 @@ var level1 = {
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
-    this.map.setCollision(5761, true, 'Platforms');
+    this.map.setCollision(5764, true, 'Platforms');
 
     //Sets platforms specific side collisions
     this.map.forEach(function (tile){
