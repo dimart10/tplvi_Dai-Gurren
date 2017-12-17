@@ -6,15 +6,16 @@ var entity = require('../entity.js');
 var arrow = require('../Scenary/arrow.js');
 var config = require('../../config.js');
 
-function pit(game, x, y, name){
+function pit(game, x, y, name, groups){
   entity.call(this, game, x, y, name);
   this.game = game;
+  this.groups=groups;
+
 
   this.game.camera.follow(this);
 
   this.scale.setTo(config.scale, config.scale);
   this.game.physics.arcade.enable(this);
-
   this.body.setSize(13, 24, 7, 0);
   this.body.collideWorldBounds = false;
   this.body.maxVelocity.y = 800;
@@ -106,23 +107,48 @@ pit.prototype.jump = function(){
 
 pit.prototype.shoot = function(){
   if(this.direction!=2 && this.arrowtimer>=30){
-      nArrow = new arrow(this.game, this.position.x, this.position.y, "arrow", this.direction);
+      this.groups.arrows.add(new arrow(this.game, this.position.x,
+        this.position.y, "arrow", this.direction));
       this.arrowtimer=0;
     }
 }
 
 module.exports = pit;
 
-},{"../../config.js":11,"../Scenary/arrow.js":7,"../entity.js":8}],2:[function(require,module,exports){
-//flying.js
+},{"../../config.js":13,"../Scenary/arrow.js":9,"../entity.js":10}],2:[function(require,module,exports){
+//enemy.js
 'use strict';
 
 var entity = require('../entity.js');
 
-function flying(game, x, y, name, player){
+function enemy(game, x, y, name){
   entity.call(this, game, x, y, name);
   this.game.physics.arcade.enable(this);
   this.body.collideWorldBounds = false;
+  this.maxHealth;
+  this.damage;
+  this.alive=true;
+  this.health;
+
+}
+
+enemy.prototype = Object.create(entity.prototype);//inherit from entity
+
+enemy.prototype.receiveDamage =function(arrow){
+  this.health-=arrow.damage;
+  if(this.health<=0) this.destroy();
+}
+
+module.exports = enemy;
+
+},{"../entity.js":10}],3:[function(require,module,exports){
+//flying.js
+'use strict';
+
+var enemy = require('./enemy.js');
+
+function flying(game, x, y, name, player){
+  enemy.call(this, game, x, y, name);
   this.body.allowGravity= false;
   this.goalX;
   this.goalY;
@@ -131,7 +157,7 @@ function flying(game, x, y, name, player){
   this.rotateangle =0;
 }
 
-flying.prototype = Object.create(entity.prototype);//inherit from entity
+flying.prototype = Object.create(enemy.prototype);//inherit from enemy
 
 //goal does a W trajectory around the player, this chases the goal
 flying.prototype.swoop = function(){
@@ -152,16 +178,53 @@ flying.prototype.swoop = function(){
 
 module.exports = flying;
 
-},{"../entity.js":8}],3:[function(require,module,exports){
+},{"./enemy.js":2}],4:[function(require,module,exports){
+//monoeye.js
+'use strict'
+
+var flying = require('./flying.js');
+
+function monoeye(game, x, y, name, player){
+  flying.call(this, game, x, y, name);
+
+  this.player=player;
+  this.goalX=this.player.x;
+  this.goalY=this.player.y;
+  this.velocity=3;
+  this.radius=300;
+  this.scale.setTo(2.5, 2.5);
+  this.body.setSize(20,20, 5, 0);
+  this.maxHealth=1;
+  this.health=1;
+  this.damage=1;
+
+
+  this.animations.add('right', [21], 0, false);
+  this.animations.add('left', [20], 0, false);
+  if(this.x>this.player.x) this.animations.play('left');
+  else if(this.x<this.player.x) this.animations.play('right');
+}
+
+monoeye.prototype = Object.create(flying.prototype);
+
+monoeye.prototype.update = function(){
+  this.swoop();
+  if(this.x>this.player.x) this.animations.play('left');
+  else if(this.x<this.player.x) this.animations.play('right');
+}
+
+module.exports = monoeye;
+
+},{"./flying.js":3}],5:[function(require,module,exports){
 //reaper.js
 'use strict'
 
 var terrestrial = require('./terrestrial.js');
 var reapette = require('./reapette.js');
 
-function reaper(game, x, y, name, direction, player){
+function reaper(game, x, y, name, direction, player, groups){
   terrestrial.call(this, game, x, y, name);
-
+  this.groups=groups;
   this.player=player;
   this.turn=false;
   this.turnTimer=0;
@@ -171,19 +234,23 @@ function reaper(game, x, y, name, direction, player){
   this.velocity = 50;
   this.scale.setTo(2.5,2.5);
   this.body.setSize(15, 24, 5, -1);
-
+  this.maxHealth=10;
+  this.health=10;
+  this.damage=2;
   this.animations.add('patrolRight', [25], 0, false);
   this.animations.add('alertRight', [26,27], 5, true);
   this.animations.add('patrolLeft', [24], 0, false);
   this.animations.add('alertLeft', [22,23], 5, true);
   if(this.direction==1) this.animations.play('patrolRight');
   else if(this.direction==-1) this.animations.play('patrolLeft');
+
+
+
 }
 
 reaper.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
 reaper.prototype.update = function(){
-
 if(!this.alert) this.detectPit();
 this.movement();
 }
@@ -227,7 +294,9 @@ reaper.prototype.onAlert = function(){
     if(this.direction==1) this.animations.play('alertRight');
     else if(this.direction==-1) this.animations.play('alertLeft');
     this.velocity*=3;
-    this.myReapette = new reapette(this.game, this.x, this.y -200, 'enemies', this.player);}
+    this.groups.enemies.add(new reapette(this.game, this.x, this.y -200, 'enemies', this.player));
+    this.groups.enemies.add(new reapette(this.game, this.x+30, this.y -230, 'enemies', this.player));
+  }
 
 reaper.prototype.exitAlert = function(){
   this.alert=false;
@@ -258,7 +327,7 @@ reaper.prototype.exitTurn = function(){
 
 module.exports = reaper;
 
-},{"./reapette.js":4,"./terrestrial.js":6}],4:[function(require,module,exports){
+},{"./reapette.js":6,"./terrestrial.js":8}],6:[function(require,module,exports){
 //reapette.js
 'use strict'
 
@@ -274,6 +343,9 @@ function reapette(game, x, y, name, player){
   this.radius=300;
   this.scale.setTo(2.5, 2.5);
   this.body.setSize(10,20, 5, 0);
+  this.maxHealth=1;
+  this.health=1;
+  this.damage=1;
 
 
   this.animations.add('right', [75], 0, false);
@@ -286,11 +358,13 @@ reapette.prototype = Object.create(flying.prototype);
 
 reapette.prototype.update = function(){
   this.swoop();
+  if(this.x>this.player.x) this.animations.play('left');
+  else if(this.x<this.player.x) this.animations.play('right');
 }
 
 module.exports = reapette;
 
-},{"./flying.js":2}],5:[function(require,module,exports){
+},{"./flying.js":3}],7:[function(require,module,exports){
 //shemum.js
 'use strict'
 
@@ -303,6 +377,9 @@ function shemum(game, x, y, name, direction){
   this.velocity = 150;
   this.scale.setTo(2.5,2.5);
   this.body.setSize(10, 15, 10, 4);
+  this.maxHealth=1;
+  this.health=1;
+  this.damage=1;
 
   this.animations.add('walkRight', [2, 3], 5, true);
   this.animations.add('walkLeft', [0, 1], 5, true);
@@ -327,20 +404,18 @@ shemum.prototype.movement = function(){
 }
 module.exports = shemum;
 
-},{"./terrestrial.js":6}],6:[function(require,module,exports){
+},{"./terrestrial.js":8}],8:[function(require,module,exports){
 //terrestrial.js
 'use strict';
 
-var entity = require('../entity.js');
+var enemy = require('./enemy.js');
 
 function terrestrial(game, x, y, name){
-  entity.call(this, game, x, y, name);
-  this.game.physics.arcade.enable(this);
-  this.body.collideWorldBounds = false;
+  enemy.call(this, game, x, y, name);
   this.body.maxVelocity.y = 800;
 }
 
-terrestrial.prototype = Object.create(entity.prototype);//inherit from entity
+terrestrial.prototype = Object.create(enemy.prototype);//inherit from enemy
 
 //Moves toroidally either right or left depeneding on the direction given at
 //given the velocity
@@ -356,7 +431,7 @@ terrestrial.prototype.horizMove = function(velocity, direction){
 
 module.exports = terrestrial;
 
-},{"../entity.js":8}],7:[function(require,module,exports){
+},{"./enemy.js":2}],9:[function(require,module,exports){
 //arrow.js
 'use strict'
 
@@ -364,6 +439,7 @@ var entity = require('../entity.js');
 
 function arrow(game, x, y, name, direction){
   this.direction = direction;
+  this.damage=1;
   if(this.direction==1){
     entity.call(this, game, x+25, y, name);
     this.initialPosition = x;
@@ -419,7 +495,7 @@ arrow.prototype.cycleOfLife = function(){
 
 module.exports = arrow;
 
-},{"../entity.js":8}],8:[function(require,module,exports){
+},{"../entity.js":10}],10:[function(require,module,exports){
 //entity.js
 'use strict'
 
@@ -438,7 +514,7 @@ entity.prototype.update = function() {}
 
 module.exports = entity;
 
-},{"../main.js":12}],9:[function(require,module,exports){
+},{"../main.js":14}],11:[function(require,module,exports){
 //defaultScene.js
 'use strict';
 
@@ -472,7 +548,7 @@ var defaultScene = {
 
 module.exports = defaultScene;
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 //level1.js
 'use strict';
 
@@ -482,18 +558,20 @@ var shemum = require('../Entities/Enemies/shemum.js');
 var reaper = require('../Entities/Enemies/reaper.js');
 var config = require('../config.js');
 var reapette = require('../Entities/Enemies/reapette.js');
+var monoeye = require('../Entities/Enemies/monoeye.js');
 
 var level1 = {
   myPit: undefined,
   map: undefined,
   mapLayer: undefined,
   colisionLayer: undefined,
+  platformsLayer: undefined,
 
   preload: function(){
     defaultScene.preload.call(this);
 
     this.game.load.image('level1tileset', 'images/scenes/level1tileset.png');
-    this.game.load.image('ColisionsTile', 'images/scenes/colisions.png');
+    this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
     this.game.load.tilemap('level1', 'images/scenes/level1.json', null,
                             Phaser.Tilemap.TILED_JSON);
   },
@@ -503,29 +581,44 @@ var level1 = {
 
     this.createTileMap();
 
-    this.myPit = new pit(this.game, 170, 8735, 'pit');
-    this.myShemum = new shemum(this.game, 180, 8735, 'enemies', -1);
-    this.myReaper = new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit);
-    this.myReapette = new reapette(this.game, 100, 8500, 'enemies', this.myPit);
+    this.groups= {};
+    this.groups.enemies = this.game.add.group();
+    this.groups.arrows = this.game.add.group();
+
+    this.myPit = new pit(this.game, 170, 8735, 'pit', this.groups);
+    this.groups.enemies.add(new shemum(this.game, 180, 8735, 'enemies', -1));
+    this.myReaper=new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit, this.groups);
+    this.groups.enemies.add(this.myReaper);
+    this.groups.enemies.add(new monoeye(this.game, 150, 8500, 'enemies', this.myPit));
+
     defaultScene.entities.push(this.myPit);
+
   },
 
   update: function(){
-    defaultScene.update.call(this);
+      defaultScene.update.call(this);
 
-    //Tilemap colisions
-    this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
-    this.game.physics.arcade.collide(this.myShemum, this.colisionLayer);
-    this.game.physics.arcade.collide(this.myReaper, this.colisionLayer);
-    this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
+      //Tilemap colisions
+      this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
 
-    //Pit debugging
-    this.game.debug.body(this.myShemum);
-    this.game.debug.body(this.myPit);
-    this.game.debug.body(this.myReaper);
-    this.game.debug.body(this.myReapette);
-  },
+      this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
+      this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
+      this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
+      this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
+      this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, passDamage);
 
+      //Pit debugging
+      this.game.debug.body(this.myPit);
+
+      function killCollObj(obj, coll){
+        obj.kill();
+      }
+
+      function passDamage (enemy, arrow) {
+      enemy.receiveDamage(arrow);
+      arrow.kill();
+    }
+    },
   createTileMap: function(){
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('level1tileset');
@@ -545,9 +638,22 @@ var level1 = {
     this.colisionLayer.fixedCamera = false;
     this.colisionLayer.visible = false;
 
+    this.platformsLayer = this.map.createLayer('Platforms');
+    this.platformsLayer.setScale(config.scale);
+    this.platformsLayer.fixedCamera = false;
+    this.platformsLayer.visible = false;
+
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
+    this.map.setCollision(5764, true, 'Platforms');
+
+    //Sets platforms specific side collisions
+    this.map.forEach(function (tile){
+      tile.collideDown = false;
+      tile.collideRight = false;
+      tile.collideLeft = false;
+    }, this.game, 0, 0, this.map.width, this.map.height, this.platformsLayer);
 
     //Set the bounds to use only the first map of the tilemap
     this.game.world.setBounds(config.tileSize*config.scale, 0,
@@ -559,7 +665,7 @@ var level1 = {
 
 module.exports = level1;
 
-},{"../Entities/Characters/pit.js":1,"../Entities/Enemies/reaper.js":3,"../Entities/Enemies/reapette.js":4,"../Entities/Enemies/shemum.js":5,"../config.js":11,"./defaultScene.js":9}],11:[function(require,module,exports){
+},{"../Entities/Characters/pit.js":1,"../Entities/Enemies/monoeye.js":4,"../Entities/Enemies/reaper.js":5,"../Entities/Enemies/reapette.js":6,"../Entities/Enemies/shemum.js":7,"../config.js":13,"./defaultScene.js":11}],13:[function(require,module,exports){
 //config.js
 'use strict'
 
@@ -570,7 +676,7 @@ var config = {
 
 module.exports = config;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 module.exports.Phaser = Phaser;
@@ -606,4 +712,4 @@ window.onload = function () {
   game.state.start('boot');
 };
 
-},{"./Scenes/level1.js":10}]},{},[12]);
+},{"./Scenes/level1.js":12}]},{},[14]);
