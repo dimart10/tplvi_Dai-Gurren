@@ -453,9 +453,9 @@ var defaultScene = {
 
   preload: function(){
     this.game.time.desiredFps = 60;
-    this.game.load.spritesheet('pit', '../../images/characters/pit.png', 29, 29, 180);
-    this.game.load.image('arrow', '../../images/scenary/arrow(bigger).png');
-    this.game.load.spritesheet('enemies', '../../images/characters/enemies.png', 30, 30, 150)
+    this.game.load.spritesheet('pit', 'images/characters/pit.png', 29, 29, 180);
+    this.game.load.image('arrow', 'images/scenary/arrow(bigger).png');
+    this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 150)
   },
 
   create: function(){
@@ -493,8 +493,8 @@ var level1 = {
     defaultScene.preload.call(this);
 
     this.game.load.image('level1tileset', 'images/scenes/level1tileset.png');
-    this.game.load.image('ColisionsTile', '../../images/scenes/colisions.png');
-    this.game.load.tilemap('level1', '../../images/scenes/level1.json', null,
+    this.game.load.image('ColisionsTile', 'images/scenes/colisions.png');
+    this.game.load.tilemap('level1', 'images/scenes/level1.json', null,
                             Phaser.Tilemap.TILED_JSON);
   },
 

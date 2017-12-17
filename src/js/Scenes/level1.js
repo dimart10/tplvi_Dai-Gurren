@@ -18,8 +18,8 @@ var level1 = {
     defaultScene.preload.call(this);
 
     this.game.load.image('level1tileset', 'images/scenes/level1tileset.png');
-    this.game.load.image('ColisionsTile', '../../images/scenes/colisions.png');
-    this.game.load.tilemap('level1', '../../images/scenes/level1.json', null,
+    this.game.load.image('ColisionsTile', 'images/scenes/colisions.png');
+    this.game.load.tilemap('level1', 'images/scenes/level1.json', null,
                             Phaser.Tilemap.TILED_JSON);
   },
 
