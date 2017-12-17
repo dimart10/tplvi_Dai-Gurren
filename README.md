@@ -1,5 +1,7 @@
 ﻿# Kid Icarus (1986) clon using node.js
 
+##Play it [here](https://dimart10.github.io/tplvi_Dai-Gurren/)!!!
+
 Created by
 [Sergio Abreu García](https://github.com/SAGGameDeveloper) and
 [Diego Martínez Simarro](https://github.com/dimart10).
