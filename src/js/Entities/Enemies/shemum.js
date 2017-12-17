@@ -10,6 +10,9 @@ function shemum(game, x, y, name, direction){
   this.velocity = 150;
   this.scale.setTo(2.5,2.5);
   this.body.setSize(10, 15, 10, 4);
+  this.maxHealth=1;
+  this.health=1;
+  this.damage=1;
 
   this.animations.add('walkRight', [2, 3], 5, true);
   this.animations.add('walkLeft', [0, 1], 5, true);

@@ -7,6 +7,7 @@ var shemum = require('../Entities/Enemies/shemum.js');
 var reaper = require('../Entities/Enemies/reaper.js');
 var config = require('../config.js');
 var reapette = require('../Entities/Enemies/reapette.js');
+var monoeye = require('../Entities/Enemies/monoeye.js');
 
 var level1 = {
   myPit: undefined,
@@ -28,29 +29,42 @@ var level1 = {
 
     this.createTileMap();
 
-    this.myPit = new pit(this.game, 170, 8735, 'pit');
-    this.myShemum = new shemum(this.game, 180, 8735, 'enemies', -1);
-    this.myReaper = new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit);
-    this.myReapette = new reapette(this.game, 100, 8500, 'enemies', this.myPit);
+    this.groups= {};
+    this.groups.enemies = this.game.add.group();
+    this.groups.arrows = this.game.add.group();
+
+    this.myPit = new pit(this.game, 170, 8735, 'pit', this.groups);
+    this.groups.enemies.add(new shemum(this.game, 180, 8735, 'enemies', -1));
+    this.myReaper=new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit, this.groups);
+    this.groups.enemies.add(this.myReaper);
+    this.groups.enemies.add(new monoeye(this.game, 150, 8500, 'enemies', this.myPit));
     defaultScene.entities.push(this.myPit);
+
   },
 
   update: function(){
-    defaultScene.update.call(this);
+      defaultScene.update.call(this);
 
-    //Tilemap colisions
-    this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
-    this.game.physics.arcade.collide(this.myShemum, this.colisionLayer);
-    this.game.physics.arcade.collide(this.myReaper, this.colisionLayer);
-    this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
+      //Tilemap colisions
 
-    //Pit debugging
-    this.game.debug.body(this.myShemum);
-    this.game.debug.body(this.myPit);
-    this.game.debug.body(this.myReaper);
-    this.game.debug.body(this.myReapette);
-  },
+      this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
+      this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
+      this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
+      this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
+      this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, passDamage);
 
+      //Pit debugging
+      this.game.debug.body(this.myPit);
+
+      function killCollObj(obj, coll){
+        obj.kill();
+      }
+
+      function passDamage (enemy, arrow) {
+      enemy.receiveDamage(arrow);
+      arrow.kill();
+    }
+    },
   createTileMap: function(){
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('level1tileset');

@@ -1,12 +1,10 @@
 //flying.js
 'use strict';
 
-var entity = require('../entity.js');
+var enemy = require('./enemy.js');
 
 function flying(game, x, y, name, player){
-  entity.call(this, game, x, y, name);
-  this.game.physics.arcade.enable(this);
-  this.body.collideWorldBounds = false;
+  enemy.call(this, game, x, y, name);
   this.body.allowGravity= false;
   this.goalX;
   this.goalY;
@@ -15,7 +13,7 @@ function flying(game, x, y, name, player){
   this.rotateangle =0;
 }
 
-flying.prototype = Object.create(entity.prototype);//inherit from entity
+flying.prototype = Object.create(enemy.prototype);//inherit from enemy
 
 //goal does a W trajectory around the player, this chases the goal
 flying.prototype.swoop = function(){

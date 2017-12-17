@@ -5,15 +5,16 @@ var entity = require('../entity.js');
 var arrow = require('../Scenary/arrow.js');
 var config = require('../../config.js');
 
-function pit(game, x, y, name){
+function pit(game, x, y, name, groups){
   entity.call(this, game, x, y, name);
   this.game = game;
+  this.groups=groups;
+
 
   this.game.camera.follow(this);
 
   this.scale.setTo(config.scale, config.scale);
   this.game.physics.arcade.enable(this);
-
   this.body.setSize(13, 24, 7, 0);
   this.body.collideWorldBounds = false;
   this.body.maxVelocity.y = 800;
@@ -105,7 +106,8 @@ pit.prototype.jump = function(){
 
 pit.prototype.shoot = function(){
   if(this.direction!=2 && this.arrowtimer>=30){
-      nArrow = new arrow(this.game, this.position.x, this.position.y, "arrow", this.direction);
+      this.groups.arrows.add(new arrow(this.game, this.position.x,
+        this.position.y, "arrow", this.direction));
       this.arrowtimer=0;
     }
 }

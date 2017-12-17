@@ -4,9 +4,9 @@
 var terrestrial = require('./terrestrial.js');
 var reapette = require('./reapette.js');
 
-function reaper(game, x, y, name, direction, player){
+function reaper(game, x, y, name, direction, player, groups){
   terrestrial.call(this, game, x, y, name);
-
+  this.groups=groups;
   this.player=player;
   this.turn=false;
   this.turnTimer=0;
@@ -16,19 +16,23 @@ function reaper(game, x, y, name, direction, player){
   this.velocity = 50;
   this.scale.setTo(2.5,2.5);
   this.body.setSize(15, 24, 5, -1);
-
+  this.maxHealth=10;
+  this.health=10;
+  this.damage=2;
   this.animations.add('patrolRight', [25], 0, false);
   this.animations.add('alertRight', [26,27], 5, true);
   this.animations.add('patrolLeft', [24], 0, false);
   this.animations.add('alertLeft', [22,23], 5, true);
   if(this.direction==1) this.animations.play('patrolRight');
   else if(this.direction==-1) this.animations.play('patrolLeft');
+
+
+
 }
 
 reaper.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
 reaper.prototype.update = function(){
-
 if(!this.alert) this.detectPit();
 this.movement();
 }
@@ -72,7 +76,9 @@ reaper.prototype.onAlert = function(){
     if(this.direction==1) this.animations.play('alertRight');
     else if(this.direction==-1) this.animations.play('alertLeft');
     this.velocity*=3;
-    this.myReapette = new reapette(this.game, this.x, this.y -200, 'enemies', this.player);}
+    this.groups.enemies.add(new reapette(this.game, this.x, this.y -200, 'enemies', this.player));
+    this.groups.enemies.add(new reapette(this.game, this.x+30, this.y -230, 'enemies', this.player));
+  }
 
 reaper.prototype.exitAlert = function(){
   this.alert=false;

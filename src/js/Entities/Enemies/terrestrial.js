@@ -1,16 +1,14 @@
 //terrestrial.js
 'use strict';
 
-var entity = require('../entity.js');
+var enemy = require('./enemy.js');
 
 function terrestrial(game, x, y, name){
-  entity.call(this, game, x, y, name);
-  this.game.physics.arcade.enable(this);
-  this.body.collideWorldBounds = false;
+  enemy.call(this, game, x, y, name);
   this.body.maxVelocity.y = 800;
 }
 
-terrestrial.prototype = Object.create(entity.prototype);//inherit from entity
+terrestrial.prototype = Object.create(enemy.prototype);//inherit from enemy
 
 //Moves toroidally either right or left depeneding on the direction given at
 //given the velocity
