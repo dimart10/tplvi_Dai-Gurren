@@ -26,7 +26,10 @@ var PreloaderScene = {
 
 window.onload = function () {
   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
-  
+
+  this.game.load.baseURL = 'https://dimart10.github.io/tplvi_Dai-Gurren/';
+  this.game.load.crossOrigin = 'anonymous';
+
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
   game.state.add('play', level1);
