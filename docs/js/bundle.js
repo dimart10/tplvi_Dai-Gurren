@@ -5,12 +5,12 @@
 var entity = require('../entity.js');
 var arrow = require('../Scenary/arrow.js');
 var config = require('../../config.js');
+var HUD = require('../../HUD/hud.js');
 
 function pit(game, x, y, name, groups){
   entity.call(this, game, x, y, name);
   this.game = game;
   this.groups=groups;
-
 
   this.game.camera.follow(this);
 
@@ -31,11 +31,15 @@ function pit(game, x, y, name, groups){
   this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   this.cursors = this.game.input.keyboard.createCursorKeys(); //TESTIN");
 
-  //PROVISIONAL
+  this.maxHealth = config.initialPitHealth;
+  this.health = config.initialPitHealth;
+
   this.jumptimer=0;
   this.jumpTime=10;
   this.direction=1;
   this.arrowtimer=0;
+  this.canBeHit = true;
+  this.hitTimer = 0;
 }
 
 pit.prototype = Object.create(entity.prototype); //Inherits from entity
@@ -48,11 +52,14 @@ pit.prototype.newAnimation = function (name, frames, fps, repeat, playOnCreate){
 pit.prototype.update = function(){
   this.move();
   this.jump();
+  this.hitCount();
+  this.handleDead();
+
   this.arrowKey.onDown.add(this.shoot, this, 0);
   this.arrowtimer++;
 }
 
-pit.prototype.move = function(){ //TESTING
+pit.prototype.move = function(){
   if (this.cursors.left.isDown) {
 		    this.body.velocity.x = -200;
         this.animations.play("walkLeft");
@@ -95,13 +102,41 @@ pit.prototype.jump = function(){
         this.jumptimer=0;
       }
       else{
-        this.jumptimer++; //DELTA TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        this.jumptimer++;
         this.body.velocity.y=-900;
       }
     }
 
   else if (this.jumptimer != 0){
     this.jumptimer=0;
+  }
+}
+
+pit.prototype.handleDead = function(){
+  if (this.health <= 0){
+    this.x = config.level1initialPos.x;
+    this.y = config.level1initialPos.y;
+
+    this.health = this.maxHealth;
+    HUD.myHealthBar.setPercent(100);
+  }
+}
+
+pit.prototype.damage = function(points){
+  if (this.canBeHit){
+    this.health -= points;
+    HUD.myHealthBar.setPercent((this.health/this.maxHealth) * 100);
+    this.canBeHit = false;
+  }
+}
+
+pit.prototype.hitCount = function(){
+  if (!this.canBeHit){
+    if (this.hitTimer < config.framesBetweenHit) this.hitTimer++;
+    else{
+     this.canBeHit = true;
+     this.hitTimer = 0;
+    }
   }
 }
 
@@ -115,7 +150,7 @@ pit.prototype.shoot = function(){
 
 module.exports = pit;
 
-},{"../../config.js":13,"../Scenary/arrow.js":9,"../entity.js":10}],2:[function(require,module,exports){
+},{"../../HUD/hud.js":11,"../../config.js":15,"../Scenary/arrow.js":9,"../entity.js":10}],2:[function(require,module,exports){
 //enemy.js
 'use strict';
 
@@ -126,7 +161,7 @@ function enemy(game, x, y, name){
   this.game.physics.arcade.enable(this);
   this.body.collideWorldBounds = false;
   this.maxHealth;
-  this.damage;
+  this.attackDamage;
   this.alive=true;
   this.health;
 
@@ -196,7 +231,7 @@ function monoeye(game, x, y, name, player){
   this.body.setSize(20,20, 5, 0);
   this.maxHealth=1;
   this.health=1;
-  this.damage=1;
+  this.attackDamage=1;
 
 
   this.animations.add('right', [21], 0, false);
@@ -236,7 +271,7 @@ function reaper(game, x, y, name, direction, player, groups){
   this.body.setSize(15, 24, 5, -1);
   this.maxHealth=10;
   this.health=10;
-  this.damage=2;
+  this.attackDamage=2;
   this.animations.add('patrolRight', [25], 0, false);
   this.animations.add('alertRight', [26,27], 5, true);
   this.animations.add('patrolLeft', [24], 0, false);
@@ -345,7 +380,7 @@ function reapette(game, x, y, name, player){
   this.body.setSize(10,20, 5, 0);
   this.maxHealth=1;
   this.health=1;
-  this.damage=1;
+  this.attackDamage=1;
 
 
   this.animations.add('right', [75], 0, false);
@@ -379,7 +414,7 @@ function shemum(game, x, y, name, direction){
   this.body.setSize(10, 15, 10, 4);
   this.maxHealth=1;
   this.health=1;
-  this.damage=1;
+  this.attackDamage=1;
 
   this.animations.add('walkRight', [2, 3], 5, true);
   this.animations.add('walkLeft', [0, 1], 5, true);
@@ -439,7 +474,8 @@ var entity = require('../entity.js');
 
 function arrow(game, x, y, name, direction){
   this.direction = direction;
-  this.damage=1;
+  this.attackDamage=1;
+
   if(this.direction==1){
     entity.call(this, game, x+25, y, name);
     this.initialPosition = x;
@@ -514,7 +550,31 @@ entity.prototype.update = function() {}
 
 module.exports = entity;
 
-},{"../main.js":14}],11:[function(require,module,exports){
+},{"../main.js":16}],11:[function(require,module,exports){
+//hud.js
+'use strict'
+
+var HealthBar = require("../Utilities/HealthBar.js");
+var config = require("../config.js");
+
+var HUD = {
+  myHealthBar: undefined,
+  game: undefined,
+
+  create: function(game){
+    this.game = game;
+
+    config.barConfig.width = config.initialPitHealth * config.pixelsPerLifePoint;
+
+    this.myHealthBar = new HealthBar(game, config.barConfig);
+    this.myHealthBar.setFixedToCamera(true);
+    this.myHealthBar.setPercent(100);
+  }
+}
+
+module.exports = HUD;
+
+},{"../Utilities/HealthBar.js":14,"../config.js":15}],12:[function(require,module,exports){
 //defaultScene.js
 'use strict';
 
@@ -548,7 +608,7 @@ var defaultScene = {
 
 module.exports = defaultScene;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //level1.js
 'use strict';
 
@@ -559,6 +619,7 @@ var reaper = require('../Entities/Enemies/reaper.js');
 var config = require('../config.js');
 var reapette = require('../Entities/Enemies/reapette.js');
 var monoeye = require('../Entities/Enemies/monoeye.js');
+var HUD = require("../HUD/hud.js");
 
 var level1 = {
   myPit: undefined,
@@ -580,13 +641,15 @@ var level1 = {
     defaultScene.create.call(this);
 
     this.createTileMap();
+    HUD.create(this.game);
 
     this.groups= {};
     this.groups.enemies = this.game.add.group();
     this.groups.arrows = this.game.add.group();
 
-    this.myPit = new pit(this.game, 170, 8735, 'pit', this.groups);
-    this.groups.enemies.add(new shemum(this.game, 180, 8735, 'enemies', -1));
+    this.myPit = new pit(this.game, config.level1initialPos.x,
+                          config.level1initialPos.y, 'pit', this.groups);
+    this.groups.enemies.add(new shemum(this.game, 400, 8850, 'enemies', -1));
     this.myReaper=new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit, this.groups);
     this.groups.enemies.add(this.myReaper);
     this.groups.enemies.add(new monoeye(this.game, 150, 8500, 'enemies', this.myPit));
@@ -605,19 +668,21 @@ var level1 = {
       this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
       this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
       this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
-      this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, passDamage);
-
-      //Pit debugging
-      this.game.debug.body(this.myPit);
+      this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, arrowHit);
+      this.game.physics.arcade.overlap(this.myPit, this.groups.enemies, passDamage);
 
       function killCollObj(obj, coll){
         obj.kill();
       }
 
-      function passDamage (enemy, arrow) {
-      enemy.receiveDamage(arrow);
-      arrow.kill();
-    }
+      function arrowHit (enemy, arrow) {
+        enemy.damage(arrow.attackDamage);
+        arrow.kill();
+      }
+
+      function passDamage (victim, aggressor){
+        victim.damage(aggressor.attackDamage);
+      }
     },
   createTileMap: function(){
     this.map = this.game.add.tilemap('level1');
@@ -656,7 +721,7 @@ var level1 = {
     }, this.game, 0, 0, this.map.width, this.map.height, this.platformsLayer);
 
     //Set the bounds to use only the first map of the tilemap
-    this.game.world.setBounds(config.tileSize*config.scale, 0,
+    this.game.world.setBounds(config.tileSize*config.scale+1, 0,
       this.game.world.bounds.width/2 - (2*config.tileSize*config.scale)-1,
       this.game.world.bounds.height);
       //The ''-1' fixes the vagueness caused by the division/multiplication
@@ -665,18 +730,216 @@ var level1 = {
 
 module.exports = level1;
 
-},{"../Entities/Characters/pit.js":1,"../Entities/Enemies/monoeye.js":4,"../Entities/Enemies/reaper.js":5,"../Entities/Enemies/reapette.js":6,"../Entities/Enemies/shemum.js":7,"../config.js":13,"./defaultScene.js":11}],13:[function(require,module,exports){
+},{"../Entities/Characters/pit.js":1,"../Entities/Enemies/monoeye.js":4,"../Entities/Enemies/reaper.js":5,"../Entities/Enemies/reapette.js":6,"../Entities/Enemies/shemum.js":7,"../HUD/hud.js":11,"../config.js":15,"./defaultScene.js":12}],14:[function(require,module,exports){
+/**
+  https://github.com/bmarwane/phaser.healthbar
+
+ Copyright (c) 2015 Belahcen Marwane (b.marwane@gmail.com)
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
+var HealthBar = function(game, providedConfig) {
+    this.game = game;
+
+    this.setupConfiguration(providedConfig);
+    this.setPosition(this.config.x, this.config.y);
+    this.drawBackground();
+    this.drawHealthBar();
+    this.setFixedToCamera(this.config.isFixedToCamera);
+};
+HealthBar.prototype.constructor = HealthBar;
+
+HealthBar.prototype.setupConfiguration = function (providedConfig) {
+    this.config = this.mergeWithDefaultConfiguration(providedConfig);
+    this.flipped = this.config.flipped;
+};
+
+HealthBar.prototype.mergeWithDefaultConfiguration = function(newConfig) {
+    var defaultConfig= {
+        width: 250,
+        height: 40,
+        x: 0,
+        y: 0,
+        bg: {
+            color: '#651828'
+        },
+        bar: {
+            color: '#FEFF03'
+        },
+        animationDuration: 200,
+        flipped: false,
+        isFixedToCamera: false
+    };
+
+    return mergeObjetcs(defaultConfig, newConfig);
+};
+
+function mergeObjetcs(targetObj, newObj) {
+    for (var p in newObj) {
+        try {
+            targetObj[p] = newObj[p].constructor==Object ? mergeObjetcs(targetObj[p], newObj[p]) : newObj[p];
+        } catch(e) {
+            targetObj[p] = newObj[p];
+        }
+    }
+    return targetObj;
+}
+
+HealthBar.prototype.drawBackground = function() {
+
+    var bmd = this.game.add.bitmapData(this.config.width, this.config.height);
+    bmd.ctx.fillStyle = this.config.bg.color;
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, this.config.width, this.config.height);
+    bmd.ctx.fill();
+    bmd.update();
+
+    this.bgSprite = this.game.add.sprite(this.x, this.y, bmd);
+    this.bgSprite.anchor.set(0.5);
+
+    if(this.flipped){
+        this.bgSprite.scale.x = -1;
+    }
+};
+
+HealthBar.prototype.drawHealthBar = function() {
+    var bmd = this.game.add.bitmapData(this.config.width, this.config.height);
+    bmd.ctx.fillStyle = this.config.bar.color;
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, this.config.width, this.config.height);
+    bmd.ctx.fill();
+    bmd.update();
+
+    this.barSprite = this.game.add.sprite(this.x - this.bgSprite.width/2, this.y, bmd);
+    this.barSprite.anchor.y = 0.5;
+
+    if(this.flipped){
+        this.barSprite.scale.x = -1;
+    }
+};
+
+HealthBar.prototype.setPosition = function (x, y) {
+    this.x = x;
+    this.y = y;
+
+    if(this.bgSprite !== undefined && this.barSprite !== undefined){
+        this.bgSprite.position.x = x;
+        this.bgSprite.position.y = y;
+
+        this.barSprite.position.x = x - this.config.width/2;
+        this.barSprite.position.y = y;
+    }
+};
+
+
+HealthBar.prototype.setPercent = function(newValue){
+    if(newValue < 0) newValue = 0;
+    if(newValue > 100) newValue = 100;
+
+    var newWidth =  (newValue * this.config.width) / 100;
+
+    this.setWidth(newWidth);
+};
+
+/*
+ Hex format, example #ad3aa3
+ */
+HealthBar.prototype.setBarColor = function(newColor) {
+    var bmd = this.barSprite.key;
+    bmd.update();
+
+    var currentRGBColor = bmd.getPixelRGB(0, 0);
+    var newRGBColor = hexToRgb(newColor);
+    bmd.replaceRGB(currentRGBColor.r,
+        currentRGBColor.g,
+        currentRGBColor.b,
+        255 ,
+
+        newRGBColor.r,
+        newRGBColor.g,
+        newRGBColor.b,
+        255);
+
+};
+
+HealthBar.prototype.setWidth = function(newWidth){
+    if(this.flipped) {
+        newWidth = -1 * newWidth;
+    }
+    this.game.add.tween(this.barSprite).to( { width: newWidth }, this.config.animationDuration, Phaser.Easing.Linear.None, true);
+};
+
+HealthBar.prototype.setFixedToCamera = function(fixedToCamera) {
+    this.bgSprite.fixedToCamera = fixedToCamera;
+    this.barSprite.fixedToCamera = fixedToCamera;
+};
+
+HealthBar.prototype.kill = function() {
+    this.bgSprite.kill();
+    this.barSprite.kill();
+};
+
+module.exports = HealthBar;
+
+
+
+/**
+ Utils
+ */
+
+function hexToRgb(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+},{}],15:[function(require,module,exports){
 //config.js
 'use strict'
 
 var config = {
   tileSize: 16,
-  scale: 3.13
+  scale: 3.13,
+  pixelsPerLifePoint: 15,
+  initialPitHealth: 7,
+  framesBetweenHit: 60,
+
+  level1initialPos: {x: 170, y: 8780},
+
+  barConfig: {x: 100, y: 50, width: 10, height: 25,
+              bg: {color: '#000074'}, bar: {color: '#e20074'}}
 }
 
 module.exports = config;
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
+//main.js
 'use strict';
 
 module.exports.Phaser = Phaser;
@@ -712,4 +975,4 @@ window.onload = function () {
   game.state.start('boot');
 };
 
-},{"./Scenes/level1.js":12}]},{},[14]);
+},{"./Scenes/level1.js":13}]},{},[16]);
