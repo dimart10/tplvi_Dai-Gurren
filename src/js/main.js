@@ -1,3 +1,4 @@
+//main.js
 'use strict';
 
 module.exports.Phaser = Phaser;

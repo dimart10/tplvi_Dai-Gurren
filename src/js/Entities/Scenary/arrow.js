@@ -5,7 +5,8 @@ var entity = require('../entity.js');
 
 function arrow(game, x, y, name, direction){
   this.direction = direction;
-  this.damage=1;
+  this.attackDamage=1;
+
   if(this.direction==1){
     entity.call(this, game, x+25, y, name);
     this.initialPosition = x;

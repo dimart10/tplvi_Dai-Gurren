@@ -8,7 +8,7 @@ function enemy(game, x, y, name){
   this.game.physics.arcade.enable(this);
   this.body.collideWorldBounds = false;
   this.maxHealth;
-  this.damage;
+  this.attackDamage;
   this.alive=true;
   this.health;
 

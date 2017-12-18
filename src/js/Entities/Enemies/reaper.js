@@ -18,7 +18,7 @@ function reaper(game, x, y, name, direction, player, groups){
   this.body.setSize(15, 24, 5, -1);
   this.maxHealth=10;
   this.health=10;
-  this.damage=2;
+  this.attackDamage=2;
   this.animations.add('patrolRight', [25], 0, false);
   this.animations.add('alertRight', [26,27], 5, true);
   this.animations.add('patrolLeft', [24], 0, false);

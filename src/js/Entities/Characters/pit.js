@@ -4,12 +4,12 @@
 var entity = require('../entity.js');
 var arrow = require('../Scenary/arrow.js');
 var config = require('../../config.js');
+var HUD = require('../../HUD/hud.js');
 
 function pit(game, x, y, name, groups){
   entity.call(this, game, x, y, name);
   this.game = game;
   this.groups=groups;
-
 
   this.game.camera.follow(this);
 
@@ -30,11 +30,15 @@ function pit(game, x, y, name, groups){
   this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   this.cursors = this.game.input.keyboard.createCursorKeys(); //TESTIN");
 
-  //PROVISIONAL
+  this.maxHealth = config.initialPitHealth;
+  this.health = config.initialPitHealth;
+
   this.jumptimer=0;
   this.jumpTime=10;
   this.direction=1;
   this.arrowtimer=0;
+  this.canBeHit = true;
+  this.hitTimer = 0;
 }
 
 pit.prototype = Object.create(entity.prototype); //Inherits from entity
@@ -47,11 +51,14 @@ pit.prototype.newAnimation = function (name, frames, fps, repeat, playOnCreate){
 pit.prototype.update = function(){
   this.move();
   this.jump();
+  this.hitCount();
+  this.handleDead();
+
   this.arrowKey.onDown.add(this.shoot, this, 0);
   this.arrowtimer++;
 }
 
-pit.prototype.move = function(){ //TESTING
+pit.prototype.move = function(){
   if (this.cursors.left.isDown) {
 		    this.body.velocity.x = -200;
         this.animations.play("walkLeft");
@@ -94,13 +101,41 @@ pit.prototype.jump = function(){
         this.jumptimer=0;
       }
       else{
-        this.jumptimer++; //DELTA TIMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        this.jumptimer++;
         this.body.velocity.y=-900;
       }
     }
 
   else if (this.jumptimer != 0){
     this.jumptimer=0;
+  }
+}
+
+pit.prototype.handleDead = function(){
+  if (this.health <= 0){
+    this.x = config.level1initialPos.x;
+    this.y = config.level1initialPos.y;
+
+    this.health = this.maxHealth;
+    HUD.myHealthBar.setPercent(100);
+  }
+}
+
+pit.prototype.damage = function(points){
+  if (this.canBeHit){
+    this.health -= points;
+    HUD.myHealthBar.setPercent((this.health/this.maxHealth) * 100);
+    this.canBeHit = false;
+  }
+}
+
+pit.prototype.hitCount = function(){
+  if (!this.canBeHit){
+    if (this.hitTimer < config.framesBetweenHit) this.hitTimer++;
+    else{
+     this.canBeHit = true;
+     this.hitTimer = 0;
+    }
   }
 }
 

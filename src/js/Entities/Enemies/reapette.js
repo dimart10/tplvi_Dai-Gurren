@@ -15,7 +15,7 @@ function reapette(game, x, y, name, player){
   this.body.setSize(10,20, 5, 0);
   this.maxHealth=1;
   this.health=1;
-  this.damage=1;
+  this.attackDamage=1;
 
 
   this.animations.add('right', [75], 0, false);
