@@ -48,31 +48,36 @@ var level1 = {
   },
 
   update: function(){
-      defaultScene.update.call(this);
+    defaultScene.update.call(this);
 
-      //Tilemap colisions
-      this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
+    //Tilemap colisions
+    this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
 
-      this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
-      this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
-      this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
-      this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
-      this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, arrowHit);
-      this.game.physics.arcade.overlap(this.myPit, this.groups.enemies, passDamage);
+    this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
+    this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
+    this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
+    this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
+    this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, arrowHit);
+    this.game.physics.arcade.overlap(this.myPit, this.groups.enemies, passDamage);
 
-      function killCollObj(obj, coll){
-        obj.kill();
-      }
+    function killCollObj(obj, coll){
+      obj.kill();
+    }
 
-      function arrowHit (enemy, arrow) {
-        enemy.damage(arrow.attackDamage);
-        arrow.kill();
-      }
+    function arrowHit (enemy, arrow) {
+      enemy.damage(arrow.attackDamage);
+      arrow.kill();
+    }
 
-      function passDamage (victim, aggressor){
-        victim.damage(aggressor.attackDamage);
-      }
-    },
+    function passDamage (victim, aggressor){
+      victim.damage(aggressor.attackDamage);
+    }
+  },
+
+  shutdown: function(){
+    this.myPit = null;
+  },
+
   createTileMap: function(){
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('level1tileset');

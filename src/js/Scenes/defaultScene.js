@@ -7,7 +7,6 @@ automatically manage entities such as Pit character or the UI, which
 are on every level.*/
 
 var defaultScene = {
-  myPit: undefined,
   entities: [],
 
   preload: function(){
@@ -26,6 +25,11 @@ var defaultScene = {
     for (var i = 0; i < defaultScene.entities.length; i++){
       defaultScene.entities[i].update();
     }
+    console.log(2);
+  },
+
+  shutdown: function(){
+    defaultScene.entities = null;
   }
 };
 
