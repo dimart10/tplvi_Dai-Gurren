@@ -33,6 +33,6 @@ shemum.prototype.movement = function(){
     if(this.direction==1) this.animations.play('walkRight');
     else if(this.direction==-1) this.animations.play('walkLeft');
   }
-  this.horizMove(this.velocity, this.direction);
+  this.horizMove(this.velocity);
 }
 module.exports = shemum;

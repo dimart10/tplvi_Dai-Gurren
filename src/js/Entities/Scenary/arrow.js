@@ -56,8 +56,6 @@ arrow.prototype.cycleOfLife = function(){
   }
   if (Math.abs(currentPosition - this.initialPosition) >= this.maximumDistance)
     this.kill();
-
-  if(this.counter > 75) this.kill();
 }
 
 module.exports = arrow;

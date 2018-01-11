@@ -16,8 +16,8 @@ function enemy(game, x, y, name){
 
 enemy.prototype = Object.create(entity.prototype);//inherit from entity
 
-enemy.prototype.receiveDamage =function(arrow){
-  this.health-=arrow.damage;
+enemy.prototype.receiveDamage =function(damage){
+  this.health-=damage;
   if(this.health<=0) this.destroy();
 }
 

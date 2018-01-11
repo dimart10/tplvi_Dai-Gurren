@@ -62,7 +62,7 @@ else{
 }
 //console.log(this.turn);
 if(!this.turn) {
-   this.horizMove(this.velocity, this.direction);
+   this.horizMove(this.velocity);
    if(this.turnTimer>300) this.onTurn();
 }
 if(this.turn && this.turnTimer>100) this.exitTurn();

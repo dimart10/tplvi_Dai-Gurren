@@ -8,6 +8,7 @@ var reaper = require('../Entities/Enemies/reaper.js');
 var config = require('../config.js');
 var reapette = require('../Entities/Enemies/reapette.js');
 var monoeye = require('../Entities/Enemies/monoeye.js');
+var mcgoo = require('../Entities/Enemies/mcgoo.js');
 var HUD = require("../HUD/hud.js");
 
 var level1 = {
@@ -35,6 +36,7 @@ var level1 = {
     this.groups= {};
     this.groups.enemies = this.game.add.group();
     this.groups.arrows = this.game.add.group();
+    this.groups.projectiles = this.game.add.group();
 
     this.myPit = new pit(this.game, config.level1initialPos.x,
                           config.level1initialPos.y, 'pit', this.groups);
@@ -42,6 +44,7 @@ var level1 = {
     this.myReaper=new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit, this.groups);
     this.groups.enemies.add(this.myReaper);
     this.groups.enemies.add(new monoeye(this.game, 150, 8500, 'enemies', this.myPit));
+    this.groups.enemies.add(new mcgoo(this.game, 500, 8850, 'enemies', this.myPit, this.groups));
 
     defaultScene.entities.push(this.myPit);
 
@@ -52,20 +55,21 @@ var level1 = {
 
       //Tilemap colisions
       this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
-
       this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
       this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
       this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
       this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
       this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, arrowHit);
       this.game.physics.arcade.overlap(this.myPit, this.groups.enemies, passDamage);
+      this.game.physics.arcade.overlap(this.myPit, this.groups.projectiles, passDamage);
+
 
       function killCollObj(obj, coll){
         obj.kill();
       }
 
       function arrowHit (enemy, arrow) {
-        enemy.damage(arrow.attackDamage);
+        enemy.receiveDamage(arrow.attackDamage);
         arrow.kill();
       }
 

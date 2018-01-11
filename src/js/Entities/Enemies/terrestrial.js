@@ -12,7 +12,7 @@ terrestrial.prototype = Object.create(enemy.prototype);//inherit from enemy
 
 //Moves toroidally either right or left depeneding on the direction given at
 //given the velocity
-terrestrial.prototype.horizMove = function(velocity, direction){
+terrestrial.prototype.horizMove = function(velocity){
   if(this.direction==-1){
     this.body.velocity.x=- velocity;
   }
