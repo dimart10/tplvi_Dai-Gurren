@@ -25,14 +25,16 @@ function mcgoo(game, x, y, name, player, groups){
 mcgoo.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
 mcgoo.prototype.update = function(){
-  if(!this.alert) this.detectPit();
-  else{
-    this.attackTimer++;
-    if(this.attackTimer>=100){
-      this.animations.play('attack');
-      this.body.setSize(12, 20, 5, 0);
-      this.aimTimer++;
-      if(this.aimTimer>=40) this.attack();
+  if (this.inCamera){
+    if(!this.alert) this.detectPit();
+    else{
+      this.attackTimer++;
+      if(this.attackTimer>=100){
+        this.animations.play('attack');
+        this.body.setSize(12, 20, 5, 0);
+        this.aimTimer++;
+        if(this.aimTimer>=40) this.attack();
+      }
     }
   }
 }
@@ -55,10 +57,10 @@ mcgoo.prototype.attack = function(){
 mcgoo.prototype.shoot = function(direction){
   this.groups.projectiles.add(new magmaShot(this.game, this.position.x,
     this.position.y, "magmaShot", direction));
+
   this.attackTimer=0;
   this.aimTimer=0;
 
 }
-
 
 module.exports = mcgoo;

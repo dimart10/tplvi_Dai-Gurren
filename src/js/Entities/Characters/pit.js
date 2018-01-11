@@ -28,7 +28,8 @@ function pit(game, x, y, name, groups){
 
   this.arrowKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
   this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.cursors = this.game.input.keyboard.createCursorKeys(); //TESTIN");
+  this.cursors = this.game.input.keyboard.createCursorKeys();
+  this.arrowKey.onDown.add(this.shoot, this, 0);
 
   this.maxHealth = config.initialPitHealth;
   this.health = config.initialPitHealth;
@@ -54,7 +55,6 @@ pit.prototype.update = function(){
   this.hitCount();
   this.handleDead();
 
-  this.arrowKey.onDown.add(this.shoot, this, 0);
   this.arrowtimer++;
 }
 
@@ -115,7 +115,7 @@ pit.prototype.handleDead = function(){
   if (this.health <= 0){
     this.health = 1; //If not set to a value higher than 0, the restart
                     //will enter an infinite loop
-    this.game.state.restart(false, true);
+    this.game.state.restart(false, false);
   }
 }
 

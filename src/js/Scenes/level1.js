@@ -80,6 +80,13 @@ var level1 = {
 
   shutdown: function(){
     this.myPit = null;
+    this.map = null;
+    this.mapLayer = null;
+    this.colisionLayer = null;
+    this.platformsLayer = null;
+
+    this.game.load.reset();
+    this.game.world.removeAll();
   },
 
   createTileMap: function(){

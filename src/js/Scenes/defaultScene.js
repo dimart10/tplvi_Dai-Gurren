@@ -29,7 +29,10 @@ var defaultScene = {
   },
 
   shutdown: function(){
-    defaultScene.entities = null;
+    for (var i = 0; i < defaultScene.entities.length; i++){
+      defaultScene.entities[i] = null;
+    }
+    entities = null;
   }
 };
 
