@@ -25,7 +25,6 @@ var defaultScene = {
     for (var i = 0; i < defaultScene.entities.length; i++){
       defaultScene.entities[i].update();
     }
-    console.log(2);
   },
 
   shutdown: function(){
