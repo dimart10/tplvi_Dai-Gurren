@@ -113,11 +113,9 @@ pit.prototype.jump = function(){
 
 pit.prototype.handleDead = function(){
   if (this.health <= 0){
-    this.x = config.level1initialPos.x;
-    this.y = config.level1initialPos.y;
-
-    this.health = this.maxHealth;
-    HUD.myHealthBar.setPercent(100);
+    this.health = 1; //If not set to a value higher than 0, the restart
+                    //will enter an infinite loop
+    this.game.state.restart(false, true);
   }
 }
 

@@ -51,7 +51,7 @@ var level1 = {
   },
 
   update: function(){
-      defaultScene.update.call(this);
+    defaultScene.update.call(this);
 
       //Tilemap colisions
       this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
@@ -73,10 +73,15 @@ var level1 = {
         arrow.kill();
       }
 
-      function passDamage (victim, aggressor){
-        victim.damage(aggressor.attackDamage);
-      }
-    },
+    function passDamage (victim, aggressor){
+      victim.damage(aggressor.attackDamage);
+    }
+  },
+
+  shutdown: function(){
+    this.myPit = null;
+  },
+
   createTileMap: function(){
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('level1tileset');
