@@ -7,7 +7,6 @@ automatically manage entities such as Pit character or the UI, which
 are on every level.*/
 
 var defaultScene = {
-  entities: [],
 
   preload: function(){
     this.game.time.desiredFps = 60;
@@ -23,9 +22,7 @@ var defaultScene = {
   },
 
   update: function(){
-    for (var i = 0; i < defaultScene.entities.length; i++){
-      defaultScene.entities[i].update();
-    }
+
   },
 
   shutdown: function(){
@@ -33,12 +30,6 @@ var defaultScene = {
 
     this.game.load.reset();
     this.game.world.removeAll(true);
-
-    for (var i = 0; i < defaultScene.entities.length; i++){
-      defaultScene.entities[i] = null;
-    }
-
-    defaultScene.entities = [];
   }
 };
 

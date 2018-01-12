@@ -17,12 +17,14 @@ var level1 = {
   mapLayer: undefined,
   colisionLayer: undefined,
   platformsLayer: undefined,
+  enemiesLayer: undefined,
 
   preload: function(){
     defaultScene.preload.call(this);
 
     this.game.load.image('level1tileset', 'images/scenes/level1tileset.png');
     this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
+    this.game.load.image('EnemiesTileset', 'images/scenes/EnemiesTileset.png');
     this.game.load.tilemap('level1', 'images/scenes/level1.json', null,
                             Phaser.Tilemap.TILED_JSON);
   },
@@ -30,48 +32,46 @@ var level1 = {
   create: function(){
     defaultScene.create.call(this);
 
-    this.createTileMap();
-    HUD.create(this.game);
-
     this.groups= {};
     this.groups.enemies = this.game.add.group();
     this.groups.arrows = this.game.add.group();
     this.groups.projectiles = this.game.add.group();
 
-    this.myPit = new pit(this.game, config.level1initialPos.x,
-                          config.level1initialPos.y, 'pit', this.groups);
-    this.groups.enemies.add(new shemum(this.game, 400, 8850, 'enemies', -1));
-    this.myReaper=new reaper(this.game, 300, 8535, 'enemies', -1, this.myPit, this.groups);
-    this.groups.enemies.add(this.myReaper);
-    this.groups.enemies.add(new monoeye(this.game, 150, 8500, 'enemies', this.myPit));
-    this.groups.enemies.add(new mcgoo(this.game, 500, 8850, 'enemies', this.myPit, this.groups));
 
-    defaultScene.entities.push(this.myPit);
+        this.myPit = new pit(this.game, config.level1initialPos.x,
+                              config.level1initialPos.y, 'pit', this.groups);
 
+    this.createTileMap();
+    HUD.create(this.game);
+
+    //Set the rendering order correctly
+    this.game.world.bringToTop(this.groups.arrows);
+    this.game.world.bringToTop(this.groups.projectiles);
+    this.game.world.bringToTop(this.groups.enemies);
+    this.game.world.bringToTop(this.myPit);
   },
 
   update: function(){
     defaultScene.update.call(this);
 
-      //Tilemap colisions
-      this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
-      this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
-      this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
-      this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
-      this.game.physics.arcade.collide(this.myReaper, this.edgeLayer);
-      this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, arrowHit);
-      this.game.physics.arcade.overlap(this.myPit, this.groups.enemies, passDamage);
-      this.game.physics.arcade.overlap(this.myPit, this.groups.projectiles, passDamage);
+    //Tilemap colisions
+    this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
+    this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
+    this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
+    this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
+    this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, arrowHit);
+    this.game.physics.arcade.overlap(this.myPit, this.groups.enemies, passDamage);
+    this.game.physics.arcade.overlap(this.myPit, this.groups.projectiles, passDamage);
 
 
-      function killCollObj(obj, coll){
-        obj.kill();
-      }
+    function killCollObj(obj, coll){
+      obj.kill();
+    }
 
-      function arrowHit (enemy, arrow) {
-        enemy.receiveDamage(arrow.attackDamage);
-        arrow.kill();
-      }
+    function arrowHit (enemy, arrow) {
+      enemy.receiveDamage(arrow.attackDamage);
+      arrow.kill();
+    }
 
     function passDamage (victim, aggressor){
       victim.damage(aggressor.attackDamage);
@@ -80,7 +80,7 @@ var level1 = {
 
   shutdown: function(){
     //Cleans up the memory
-    
+
     defaultScene.shutdown.call(this);
 
     this.myPit = null;
@@ -88,12 +88,14 @@ var level1 = {
     this.mapLayer = null;
     this.colisionLayer = null;
     this.platformsLayer = null;
+    this.enemiesLayer = null;
   },
 
   createTileMap: function(){
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('level1tileset');
     this.map.addTilesetImage('ColisionsTile');
+    this.map.addTilesetImage('EnemiesTileset');
 
     this.mapLayer = this.map.createLayer('Map');
     this.mapLayer.setScale(config.scale);
@@ -102,7 +104,6 @@ var level1 = {
     this.edgeLayer = this.map.createLayer('Edges');
     this.edgeLayer.setScale(config.scale);
     this.edgeLayer.visible = false;
-    this.map.setCollision(5762, true, 'Edges');
 
     this.colisionLayer = this.map.createLayer('Colisions');
     this.colisionLayer.setScale(config.scale);
@@ -114,10 +115,35 @@ var level1 = {
     this.platformsLayer.fixedCamera = false;
     this.platformsLayer.visible = false;
 
+    this.enemiesLayer = this.map.createLayer('Enemies');
+    this.enemiesLayer.setScale(config.scale);
+    this.enemiesLayer.fixedCamera = false;
+    this.enemiesLayer.visible = false;
+
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
+    this.map.setCollision(5762, true, 'Edges');
     this.map.setCollision(5764, true, 'Platforms');
+
+    //Spawns enemies UNFINISHED
+    this.map.forEach(function (tile){
+      var newEnemy = null;
+      if (tile.properties != undefined && tile.properties.enemyType != undefined){
+        switch (tile.properties.enemyType){
+          case "shemum": newEnemy = new shemum(this.game, tile.worldX, tile.worldY, 'enemies', -1); break;
+          case "monoeye": newEnemy = new monoeye(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit); break;
+          case "reaper": newEnemy = new reaper(this.game, tile.worldX, tile.worldY, 'enemies', -1, this.myPit, this.groups, this.edgeLayer); break;
+          case "mcgoo": newEnemy = new mcgoo(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit, this.groups); break;
+
+          default: newEnemy = null; break;
+        }
+      }
+
+      if (newEnemy != null){
+        this.groups.enemies.add(newEnemy);
+      }
+    }, this, 0, 0, this.map.width, this.map.height, this.enemiesLayer);
 
     //Sets platforms specific side collisions
     this.map.forEach(function (tile){

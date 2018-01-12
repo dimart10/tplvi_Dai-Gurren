@@ -4,7 +4,7 @@
 var terrestrial = require('./terrestrial.js');
 var reapette = require('./reapette.js');
 
-function reaper(game, x, y, name, direction, player, groups){
+function reaper(game, x, y, name, direction, player, groups, edgeLayer){
   terrestrial.call(this, game, x, y, name);
   this.groups=groups;
   this.player=player;
@@ -23,6 +23,9 @@ function reaper(game, x, y, name, direction, player, groups){
   this.animations.add('alertRight', [26,27], 5, true);
   this.animations.add('patrolLeft', [24], 0, false);
   this.animations.add('alertLeft', [22,23], 5, true);
+
+  this.edgeLayer = edgeLayer;
+
   if(this.direction==1) this.animations.play('patrolRight');
   else if(this.direction==-1) this.animations.play('patrolLeft');
 
@@ -33,8 +36,9 @@ function reaper(game, x, y, name, direction, player, groups){
 reaper.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
 reaper.prototype.update = function(){
-if(!this.alert) this.detectPit();
-this.movement();
+  if(!this.alert) this.detectPit();
+  this.movement();
+  this.game.physics.arcade.collide(this, this.edgeLayer);
 }
 
 
