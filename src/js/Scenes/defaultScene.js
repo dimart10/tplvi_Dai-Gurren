@@ -29,10 +29,16 @@ var defaultScene = {
   },
 
   shutdown: function(){
+    //Cleans up the memory
+
+    this.game.load.reset();
+    this.game.world.removeAll(true);
+
     for (var i = 0; i < defaultScene.entities.length; i++){
       defaultScene.entities[i] = null;
     }
-    entities = null;
+
+    defaultScene.entities = [];
   }
 };
 
