@@ -9,6 +9,8 @@ var config = require('../config.js');
 var reapette = require('../Entities/Enemies/reapette.js');
 var monoeye = require('../Entities/Enemies/monoeye.js');
 var mcgoo = require('../Entities/Enemies/mcgoo.js');
+var twinbellows = require('../Entities/Enemies/twinbellows.js');
+var nettler = require('../Entities/Enemies/nettler.js');
 var HUD = require("../HUD/hud.js");
 
 var level1 = {
@@ -135,7 +137,8 @@ var level1 = {
           case "monoeye": newEnemy = new monoeye(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit); break;
           case "reaper": newEnemy = new reaper(this.game, tile.worldX, tile.worldY, 'enemies', -1, this.myPit, this.groups, this.edgeLayer); break;
           case "mcgoo": newEnemy = new mcgoo(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit, this.groups); break;
-
+          case "nettler": newEnemy = new nettler(this.game, tile.worldX, tile.worldY, 'enemies', -1, this.myPit); break;
+          case "twinbellows": newEnemy = new twinbellows(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit, this.groups); break;
           default: newEnemy = null; break;
         }
       }

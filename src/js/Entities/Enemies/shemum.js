@@ -23,7 +23,9 @@ function shemum(game, x, y, name, direction){
 shemum.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
 shemum.prototype.update = function(){
-this.movement();
+  if(!this.alert){
+    this.movement();
+  }
 }
 
 //Walks in the current direction, if it runs into a wall, the direction is inverted

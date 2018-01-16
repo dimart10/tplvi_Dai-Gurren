@@ -36,9 +36,11 @@ function reaper(game, x, y, name, direction, player, groups, edgeLayer){
 reaper.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
 reaper.prototype.update = function(){
-  if(!this.alert) this.detectPit();
-  this.movement();
-  this.game.physics.arcade.collide(this, this.edgeLayer);
+  if (this.inCamera){
+    if(!this.alert) this.detectPit();
+    this.game.physics.arcade.collide(this, this.edgeLayer);
+      this.movement();
+  }
 }
 
 

@@ -27,9 +27,11 @@ function reapette(game, x, y, name, player){
 reapette.prototype = Object.create(flying.prototype);
 
 reapette.prototype.update = function(){
-  this.swoop();
-  if(this.x>this.player.x) this.animations.play('left');
-  else if(this.x<this.player.x) this.animations.play('right');
+  if(!this.alert){
+    this.swoop();
+    if(this.x>this.player.x) this.animations.play('left');
+    else if(this.x<this.player.x) this.animations.play('right');
+  }
 }
 
 module.exports = reapette;

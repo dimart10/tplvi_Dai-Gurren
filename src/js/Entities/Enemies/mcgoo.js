@@ -52,6 +52,7 @@ mcgoo.prototype.attack = function(){
   else this.shoot(-1);
   this.animations.play('crouch');
   this.body.setSize(12, 5, 5, 10);
+  this.body.position.y+=8;
 }
 
 mcgoo.prototype.shoot = function(direction){

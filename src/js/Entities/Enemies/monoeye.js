@@ -27,9 +27,11 @@ function monoeye(game, x, y, name, player){
 monoeye.prototype = Object.create(flying.prototype);
 
 monoeye.prototype.update = function(){
-  this.swoop();
-  if(this.x>this.player.x) this.animations.play('left');
-  else if(this.x<this.player.x) this.animations.play('right');
-}
+  if (this.inCamera){
+    this.swoop();
+    if(this.x>this.player.x) this.animations.play('left');
+    else if(this.x<this.player.x) this.animations.play('right');
+    }
+  }
 
 module.exports = monoeye;

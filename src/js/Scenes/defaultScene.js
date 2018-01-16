@@ -13,7 +13,7 @@ var defaultScene = {
     this.game.load.spritesheet('pit', 'images/characters/pit.png', 29, 29, 180);
     this.game.load.image('arrow', 'images/scenary/arrow(bigger).png');
     this.game.load.image('magmaShot', 'images/scenary/magmaShot.png');
-    this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 150)
+    this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 195)
   },
 
   create: function(){
