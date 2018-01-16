@@ -66,7 +66,6 @@ else{
   this.alertTimer++;
   if(this.alertTimer>300) this.exitAlert();
 }
-//console.log(this.turn);
 if(!this.turn) {
    this.horizMove(this.velocity);
    if(this.turnTimer>300) this.onTurn();

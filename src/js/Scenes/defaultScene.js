@@ -14,6 +14,7 @@ var defaultScene = {
     this.game.load.image('arrow', 'images/scenary/arrow(bigger).png');
     this.game.load.image('magmaShot', 'images/scenary/magmaShot.png');
     this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 195)
+    this.game.load.spritesheet('twinbellows', 'images/characters/twinbellows.png', 42, 26, 4)
   },
 
   create: function(){

@@ -138,7 +138,7 @@ var level1 = {
           case "reaper": newEnemy = new reaper(this.game, tile.worldX, tile.worldY, 'enemies', -1, this.myPit, this.groups, this.edgeLayer); break;
           case "mcgoo": newEnemy = new mcgoo(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit, this.groups); break;
           case "nettler": newEnemy = new nettler(this.game, tile.worldX, tile.worldY, 'enemies', -1, this.myPit); break;
-          case "twinbellows": newEnemy = new twinbellows(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit, this.groups); break;
+          case "twinbellows": newEnemy = new twinbellows(this.game, tile.worldX, tile.worldY, 'twinbellows', this.myPit, this.groups); break;
           default: newEnemy = null; break;
         }
       }

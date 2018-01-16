@@ -37,7 +37,7 @@ function pit(game, x, y, name, groups){
   this.jumptimer=0;
   this.jumpTime=10;
   this.direction=1;
-  this.arrowtimer=0;
+  this.arrowTimer=0;
   this.canBeHit = true;
   this.hitTimer = 0;
 }
@@ -55,7 +55,7 @@ pit.prototype.update = function(){
   this.hitCount();
   this.handleDead();
 
-  this.arrowtimer++;
+  this.arrowTimer++;
 }
 
 pit.prototype.move = function(){
@@ -138,10 +138,10 @@ pit.prototype.hitCount = function(){
 }
 
 pit.prototype.shoot = function(){
-  if(this.direction!=2 && this.arrowtimer>=30){
+  if(this.direction!=2 && this.arrowTimer>=30){
       this.groups.arrows.add(new arrow(this.game, this.position.x,
-        this.position.y, "arrow", this.direction));
-      this.arrowtimer=0;
+        this.position.y -4, "arrow", this.direction));
+      this.arrowTimer=0;
     }
 }
 

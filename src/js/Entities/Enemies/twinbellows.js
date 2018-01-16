@@ -8,8 +8,8 @@ function twinbellows(game, x, y, name, player, groups){
   terrestrial.call(this, game, x, y, name);
   this.groups=groups;
   this.player=player;
-  this.scale.setTo(2.5, 2.5);
-  this.body.setSize(24, 12, 12, 6);
+  this.scale.setTo(3.0, 3.0);
+  this.body.setSize(30, 24, 0,0);
   this.maxHealth=100;
   this.health=100;
   this.attackDamage=2;
@@ -19,8 +19,8 @@ function twinbellows(game, x, y, name, player, groups){
   this.alert=false;
   this.velocity=70;
   this.direction = -1;
-  this.animations.add('walkRight', [191, 192], 5, true);
-  this.animations.add('walkLeft', [177, 178], 5, true);
+  this.animations.add('walkRight', [1, 3], 5, true);
+  this.animations.add('walkLeft', [0, 2], 5, true);
   this.animations.play('walkLeft');
 
 }
