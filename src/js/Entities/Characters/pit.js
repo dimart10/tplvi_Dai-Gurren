@@ -94,6 +94,7 @@ pit.prototype.jump = function(){
   if(this.spacebar.isDown && this.body.onFloor()) {
     this.jumptimer=1;
     this.body.velocity.y = -this.body.maxVelocity.y;
+    this.game.jump.play();
   }
 
   else if(this.spacebar.isDown && (this.jumptimer!=0))  {
@@ -122,6 +123,7 @@ pit.prototype.handleDead = function(){
 pit.prototype.damage = function(points){
   if (this.canBeHit){
     this.health -= points;
+    this.game.pit_hit.play();
     HUD.myHealthBar.setPercent((this.health/this.maxHealth) * 100);
     this.canBeHit = false;
   }
@@ -142,6 +144,7 @@ pit.prototype.shoot = function(){
       this.groups.arrows.add(new arrow(this.game, this.position.x,
         this.position.y -4, "arrow", this.direction));
       this.arrowTimer=0;
+      this.game.arrow_shot.play();
     }
 }
 

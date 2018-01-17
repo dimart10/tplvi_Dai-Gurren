@@ -38,7 +38,16 @@ var level1 = {
     this.groups.enemies = this.game.add.group();
     this.groups.arrows = this.game.add.group();
     this.groups.projectiles = this.game.add.group();
-
+    this.game.underworld = this.game.add.audio('underworld');
+    this.game.underworld.loopFull();
+    this.game.arrow_shot = this.game.add.audio('arrow_shot');
+    this.game.jump = this.game.add.audio('jump');
+    this.game.pit_hit = this.game.add.audio('pit_hit');
+    this.game.walk = this.game.add.audio('walk');
+    this.game.game_over = this.game.add.audio('game_over');
+    this.game.reaper_spotted = this.game.add.audio('reaper_spotted');
+    this.game.enemy_damage = this.game.add.audio('enemy_damage');
+    this.game.enemy_death = this.game.add.audio('enemy_death');
 
         this.myPit = new pit(this.game, config.level1initialPos.x,
                               config.level1initialPos.y, 'pit', this.groups);

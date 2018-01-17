@@ -18,7 +18,11 @@ enemy.prototype = Object.create(entity.prototype);//inherit from entity
 
 enemy.prototype.receiveDamage =function(damage){
   this.health-=damage;
-  if(this.health<=0) this.destroy();
+  this.game.enemy_damage.play();
+  if(this.health<=0) {
+    this.game.enemy_death.play();
+    this.destroy();
+  }
 }
 
 module.exports = enemy;

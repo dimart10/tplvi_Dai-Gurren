@@ -75,6 +75,8 @@ this.turnTimer++;
 }
 
 reaper.prototype.onAlert = function(){
+    this.game.reaper_spotted.loopFull();
+    this.game.underworld.stop();
     this.alert=true;
     this.turn=false;
     this.turnTimer=0;
@@ -86,6 +88,8 @@ reaper.prototype.onAlert = function(){
   }
 
 reaper.prototype.exitAlert = function(){
+  this.game.reaper_spotted.stop();
+  this.game.underworld.loopFull();
   this.alert=false;
   this.alertTimer=0;
   this.velocity/=3;

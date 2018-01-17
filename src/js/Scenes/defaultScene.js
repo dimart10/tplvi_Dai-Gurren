@@ -15,6 +15,20 @@ var defaultScene = {
     this.game.load.image('magmaShot', 'images/scenary/magmaShot.png');
     this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 195)
     this.game.load.spritesheet('twinbellows', 'images/characters/twinbellows.png', 42, 26, 4)
+
+    this.game.load.audio('underworld', 'audio/music/underworld.mp3');
+    this.game.load.audio('game_over', 'audio/music/game_over.mp3');
+    this.game.load.audio('reaper_spotted', 'audio/music/reaper_spotted.mp3');
+    this.game.load.audio('victory', 'audio/music/victory.mp3');
+    this.game.load.audio('arrow_shot', 'audio/sfx/arrow_shot.mp3');
+    this.game.load.audio('enemy_damage', 'audio/sfx/enemy_damage.mp3');
+    this.game.load.audio('get_item', 'audio/sfx/get_item.mp3');
+    this.game.load.audio('jump', 'audio/sfx/jump.mp3');
+    this.game.load.audio('pit_hit', 'audio/sfx/pit_hit.mp3');
+    this.game.load.audio('reaper_alert', 'audio/sfx/reaper_alert.mp3');
+    this.game.load.audio('stat_boost', 'audio/sfx/stat_boost.mp3');
+    this.game.load.audio('walk', 'audio/sfx/walk.mp3');
+    this.game.load.audio('enemy_death', 'audio/sfx/enemy_death.mp3');
   },
 
   create: function(){

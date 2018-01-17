@@ -61,7 +61,6 @@ nettler.prototype.movement = function(){
 }
 
 nettler.prototype.crouch = function(){
-  console.log('crouch');
   if(this.direction==1){
     this.animations.play('crouchRight');
     this.body.setSize(12, 6, 8, 10);
