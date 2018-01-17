@@ -16,6 +16,7 @@ function reapette(game, x, y, name, player){
   this.maxHealth=1;
   this.health=1;
   this.attackDamage=1;
+  this.heartValue=1;
 
 
   this.animations.add('right', [75], 0, false);

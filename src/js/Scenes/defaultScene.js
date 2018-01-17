@@ -13,8 +13,9 @@ var defaultScene = {
     this.game.load.spritesheet('pit', 'images/characters/pit.png', 29, 29, 180);
     this.game.load.image('arrow', 'images/scenary/arrow(bigger).png');
     this.game.load.image('magmaShot', 'images/scenary/magmaShot.png');
-    this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 195)
-    this.game.load.spritesheet('twinbellows', 'images/characters/twinbellows.png', 42, 26, 4)
+    this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 195);
+    this.game.load.spritesheet('twinbellows', 'images/characters/twinbellows.png', 42, 26, 4);
+    this.game.load.spritesheet('heart', 'images/scenary/heart.png', 14, 14, 3);
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');
@@ -34,6 +35,7 @@ var defaultScene = {
   create: function(){
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 3500;
+    this.game.hearts;
   },
 
   update: function(){

@@ -4,14 +4,14 @@
 var terrestrial = require('./terrestrial.js');
 var magmaShot = require('../Scenary/magmaShot.js')
 
-function mcgoo(game, x, y, name, player, groups){
+function mcgoo(game, x, y, name, player){
   terrestrial.call(this, game, x, y, name);
-  this.groups=groups;
   this.player=player;
   this.scale.setTo(2.5,2.5);
   this.body.setSize(12, 5, 5, 10);
   this.maxHealth=1;
   this.health=1;
+  this.heartValue=5;
   this.attackDamage=1;
   this.attackTimer=0;
   this.aimTimer=0;
@@ -56,7 +56,7 @@ mcgoo.prototype.attack = function(){
 }
 
 mcgoo.prototype.shoot = function(direction){
-  this.groups.projectiles.add(new magmaShot(this.game, this.position.x,
+  this.game.groups.projectiles.add(new magmaShot(this.game, this.position.x,
     this.position.y, "magmaShot", direction));
 
   this.attackTimer=0;

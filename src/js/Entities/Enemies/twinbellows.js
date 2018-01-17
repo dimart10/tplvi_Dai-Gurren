@@ -4,9 +4,8 @@
 var terrestrial = require('./terrestrial.js');
 var magmaShot = require('../Scenary/magmaShot.js')
 
-function twinbellows(game, x, y, name, player, groups){
+function twinbellows(game, x, y, name, player){
   terrestrial.call(this, game, x, y, name);
-  this.groups=groups;
   this.player=player;
   this.scale.setTo(3.0, 3.0);
   this.body.setSize(30, 24, 0,0);
@@ -43,7 +42,7 @@ twinbellows.prototype.attack = function(){
 }
 
 twinbellows.prototype.shoot = function(direction){
-  this.groups.projectiles.add(new magmaShot(this.game, this.position.x,
+  this.game.groups.projectiles.add(new magmaShot(this.game, this.position.x,
     this.position.y, "magmaShot", direction));
   this.attackTimer=0;
 }

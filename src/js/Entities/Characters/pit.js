@@ -6,10 +6,9 @@ var arrow = require('../Scenary/arrow.js');
 var config = require('../../config.js');
 var HUD = require('../../HUD/hud.js');
 
-function pit(game, x, y, name, groups){
+function pit(game, x, y, name){
   entity.call(this, game, x, y, name);
   this.game = game;
-  this.groups=groups;
 
   this.game.camera.follow(this);
 
@@ -143,7 +142,7 @@ pit.prototype.hitCount = function(){
 
 pit.prototype.shoot = function(){
   if(this.direction!=2 && this.arrowTimer>=30){
-      this.groups.arrows.add(new arrow(this.game, this.position.x,
+      this.game.groups.arrows.add(new arrow(this.game, this.position.x,
         this.position.y -4, "arrow", this.direction));
       this.arrowTimer=0;
       this.game.arrow_shot.play();

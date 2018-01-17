@@ -15,6 +15,7 @@ function monoeye(game, x, y, name, player){
   this.body.setSize(20,20, 5, 0);
   this.maxHealth=1;
   this.health=1;
+  this.heartValue=5;
   this.attackDamage=1;
 
 

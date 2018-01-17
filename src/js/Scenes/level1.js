@@ -34,10 +34,11 @@ var level1 = {
   create: function(){
     defaultScene.create.call(this);
 
-    this.groups= {};
-    this.groups.enemies = this.game.add.group();
-    this.groups.arrows = this.game.add.group();
-    this.groups.projectiles = this.game.add.group();
+    this.game.groups= {};
+    this.game.groups.enemies = this.game.add.group();
+    this.game.groups.arrows = this.game.add.group();
+    this.game.groups.projectiles = this.game.add.group();
+    this.game.groups.items = this.game.add.group();
     this.game.underworld = this.game.add.audio('underworld');
     this.game.underworld.loopFull();
     this.game.arrow_shot = this.game.add.audio('arrow_shot');
@@ -50,15 +51,16 @@ var level1 = {
     this.game.enemy_death = this.game.add.audio('enemy_death');
 
         this.myPit = new pit(this.game, config.level1initialPos.x,
-                              config.level1initialPos.y, 'pit', this.groups);
+                              config.level1initialPos.y, 'pit');
 
     this.createTileMap();
     HUD.create(this.game);
 
     //Set the rendering order correctly
-    this.game.world.bringToTop(this.groups.arrows);
-    this.game.world.bringToTop(this.groups.projectiles);
-    this.game.world.bringToTop(this.groups.enemies);
+    this.game.world.bringToTop(this.game.groups.arrows);
+    this.game.world.bringToTop(this.game.groups.projectiles);
+    this.game.world.bringToTop(this.game.groups.items);
+    this.game.world.bringToTop(this.game.groups.enemies);
     this.game.world.bringToTop(this.myPit);
   },
 
@@ -67,12 +69,13 @@ var level1 = {
 
     //Tilemap colisions
     this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
-    this.game.physics.arcade.collide(this.groups.enemies, this.colisionLayer);
-    this.game.physics.arcade.collide(this.groups.arrows, this.colisionLayer, killCollObj);
+    this.game.physics.arcade.collide(this.game.groups.enemies, this.colisionLayer);
+    this.game.physics.arcade.collide(this.game.groups.arrows, this.colisionLayer, killCollObj);
     this.game.physics.arcade.collide(this.myPit, this.colisionLayer);
-    this.game.physics.arcade.overlap(this.groups.enemies, this.groups.arrows, arrowHit);
-    this.game.physics.arcade.overlap(this.myPit, this.groups.enemies, passDamage);
-    this.game.physics.arcade.overlap(this.myPit, this.groups.projectiles, passDamage);
+    this.game.physics.arcade.overlap(this.game.groups.enemies, this.game.groups.arrows, arrowHit);
+    this.game.physics.arcade.overlap(this.myPit, this.game.groups.enemies, passDamage);
+    this.game.physics.arcade.overlap(this.myPit, this.game.groups.projectiles, passDamage);
+    //this.game.phyiscs.arcade.overlap(this.myPit, this.game.groups.items, pickUp);
 
 
     function killCollObj(obj, coll){
@@ -86,6 +89,10 @@ var level1 = {
 
     function passDamage (victim, aggressor){
       victim.damage(aggressor.attackDamage);
+    }
+
+    function pickUp (pit, item){
+      item.onPickUp();
     }
   },
 
@@ -144,16 +151,16 @@ var level1 = {
         switch (tile.properties.enemyType){
           case "shemum": newEnemy = new shemum(this.game, tile.worldX, tile.worldY, 'enemies', -1); break;
           case "monoeye": newEnemy = new monoeye(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit); break;
-          case "reaper": newEnemy = new reaper(this.game, tile.worldX, tile.worldY, 'enemies', -1, this.myPit, this.groups, this.edgeLayer); break;
-          case "mcgoo": newEnemy = new mcgoo(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit, this.groups); break;
+          case "reaper": newEnemy = new reaper(this.game, tile.worldX, tile.worldY, 'enemies', -1, this.myPit, this.edgeLayer); break;
+          case "mcgoo": newEnemy = new mcgoo(this.game, tile.worldX, tile.worldY, 'enemies', this.myPit); break;
           case "nettler": newEnemy = new nettler(this.game, tile.worldX, tile.worldY, 'enemies', -1, this.myPit); break;
-          case "twinbellows": newEnemy = new twinbellows(this.game, tile.worldX, tile.worldY, 'twinbellows', this.myPit, this.groups); break;
+          case "twinbellows": newEnemy = new twinbellows(this.game, tile.worldX, tile.worldY, 'twinbellows', this.myPit); break;
           default: newEnemy = null; break;
         }
       }
 
       if (newEnemy != null){
-        this.groups.enemies.add(newEnemy);
+        this.game.groups.enemies.add(newEnemy);
       }
     }, this, 0, 0, this.map.width, this.map.height, this.enemiesLayer);
 

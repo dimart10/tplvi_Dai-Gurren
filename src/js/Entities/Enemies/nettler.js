@@ -13,6 +13,7 @@ function nettler(game, x, y, name, direction, player){
   this.velocity=75;
   this.health=1;
   this.attackDamage=1;
+  this.heartValue=5;
   this.alert=false;
   this.crouching=false;
   this.crouchTimer=0;
