@@ -21,7 +21,6 @@ item.prototype.onPickUp = function(){
 }
 
 item.prototype.effect = function(){
-
 }
 
 

@@ -24,7 +24,7 @@ enemy.prototype.receiveDamage =function(damage){
   if(this.health<=0) {
     this.game.enemy_death.play();
     if(this.heartValue!=0){
-      this.game.groups.items.add(new heart(this.game, this.position.x, this.positon.y, 'heart', this.heartValue));
+      this.game.groups.items.add(new heart(this.game, this.position.x, this.position.y, 'heart', this.heartValue));
     }
     if(this.hasOwnProperty('edgeLayer')){
       this.game.reaper_spotted.stop();

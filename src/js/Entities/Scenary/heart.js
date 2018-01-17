@@ -7,6 +7,7 @@ function heart(game, x, y, name, value){
   item.call(this, game, x, y, name);
   this.value = value;
   this.timer=0;
+  this.scale.setTo(2.5,2.5);
   this.animations.add('small', [0], 0, false);
   this.animations.add('medium', [1], 0, false);
   this.animations.add('big', [2], 0, false);
@@ -15,15 +16,19 @@ function heart(game, x, y, name, value){
   else if (this.value==10)this.animations.play('big');
 }
 
+heart.prototype = Object.create(item.prototype); //inherit from item
+
 heart.prototype.update = function(){
 
 }
 
-this.effect = function(){
+heart.prototype.effect = function(){
   this.game.hearts+=this.value;
+  this.game.get_item.play();
+  console.log(this.game.hearts);
 }
 
-heart.prototype.cycleOfLife() = function(){
+heart.prototype.cycleOfLife = function(){
   this.timer++;
   if(this.timer>=300) this.destroy();
 

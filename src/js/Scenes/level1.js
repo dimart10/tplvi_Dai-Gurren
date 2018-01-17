@@ -49,6 +49,7 @@ var level1 = {
     this.game.reaper_spotted = this.game.add.audio('reaper_spotted');
     this.game.enemy_damage = this.game.add.audio('enemy_damage');
     this.game.enemy_death = this.game.add.audio('enemy_death');
+    this.game.get_item = this.game.add.audio('get_item');
 
         this.myPit = new pit(this.game, config.level1initialPos.x,
                               config.level1initialPos.y, 'pit');
@@ -75,7 +76,7 @@ var level1 = {
     this.game.physics.arcade.overlap(this.game.groups.enemies, this.game.groups.arrows, arrowHit);
     this.game.physics.arcade.overlap(this.myPit, this.game.groups.enemies, passDamage);
     this.game.physics.arcade.overlap(this.myPit, this.game.groups.projectiles, passDamage);
-    //this.game.phyiscs.arcade.overlap(this.myPit, this.game.groups.items, pickUp);
+    this.game.physics.arcade.overlap(this.myPit, this.game.groups.items, pickUp);
 
 
     function killCollObj(obj, coll){
