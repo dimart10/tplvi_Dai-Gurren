@@ -63,11 +63,13 @@ pit.prototype.move = function(){
 		    this.body.velocity.x = -200;
         this.animations.play("walkLeft");
         this.direction=-1;
+        //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if (this.cursors.right.isDown){
 		    this.body.velocity.x = 200;
         this.animations.play("walkRight");
         this.direction=1;
+        //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if(this.cursors.up.isDown){
         this.animations.play("stillUp");

@@ -21,6 +21,10 @@ enemy.prototype.receiveDamage =function(damage){
   this.game.enemy_damage.play();
   if(this.health<=0) {
     this.game.enemy_death.play();
+    if(this.hasOwnProperty('edgeLayer')){
+      this.game.reaper_spotted.stop();
+      this.game.underworld.loopFull();
+    }
     this.destroy();
   }
 }
