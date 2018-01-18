@@ -3,6 +3,7 @@
 
 var entity = require('../entity.js');
 var heart = require('../Scenary/heart.js');
+var config = require('../../config.js');
 
 function enemy(game, x, y, name){
   entity.call(this, game, x, y, name);
@@ -21,14 +22,11 @@ enemy.prototype = Object.create(entity.prototype);//inherit from entity
 enemy.prototype.receiveDamage =function(damage){
   this.health-=damage;
   this.game.enemy_damage.play();
+
   if(this.health<=0) {
     this.game.enemy_death.play();
     if(this.heartValue!=0){
       this.game.groups.items.add(new heart(this.game, this.position.x, this.position.y, 'heart', this.heartValue));
-    }
-    if(this.hasOwnProperty('edgeLayer')){
-      this.game.reaper_spotted.stop();
-      this.game.underworld.loopFull();
     }
     this.destroy();
   }

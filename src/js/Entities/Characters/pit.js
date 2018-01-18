@@ -8,16 +8,17 @@ var HUD = require('../../HUD/hud.js');
 
 function pit(game, x, y, name){
   entity.call(this, game, x, y, name);
-  this.game = game;
 
   this.game.camera.follow(this);
 
+  //Set scale and pit size
   this.scale.setTo(config.scale, config.scale);
   this.game.physics.arcade.enable(this);
-  this.body.setSize(13, 24, 7, 0);
+  this.body.setSize(config.normalW, config.normalH, config.normalOX, config.normalOY);
   this.body.collideWorldBounds = false;
-  this.body.maxVelocity.y = 800;
+  this.body.maxVelocity.y = config.maxVelocity; //To avoid tunneling
 
+  //Set animations
   this.newAnimation('stillRight', [7], 0, false, true);
   this.newAnimation('stillLeft', [6], 0, false, false);
   this.newAnimation('walkRight', [10, 9, 8, 7], 15, true, false);
@@ -27,23 +28,24 @@ function pit(game, x, y, name){
   this.newAnimation('jumpLeft', [2, 1], 0, false, false);
   this.newAnimation('jumpRight', [11, 12], 0, false, false);
 
-
-  this.arrowKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-  this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  //Set controls
+  this.arrowKey = this.game.input.keyboard.addKey(config.shootKey);
+  this.spacebar = this.game.input.keyboard.addKey(config.jumpKey);
   this.cursors = this.game.input.keyboard.createCursorKeys();
   this.arrowKey.onDown.add(this.shoot, this, 0);
 
+  //Set initial health values
   this.maxHealth = config.initialPitHealth;
   this.health = config.initialPitHealth;
 
+  //Set timers and some other variables to its initial value
   this.jumptimer=0;
-  this.jumpTime=10;
-  this.direction=1;
+  this.direction=config.initialDirection;
   this.arrowTimer=0;
   this.canBeHit = true;
   this.hitTimer = 0;
 
-  this.state = "normal";
+  this.state = config.initialState;
 }
 
 pit.prototype = Object.create(entity.prototype); //Inherits from entity
@@ -58,19 +60,19 @@ pit.prototype.update = function(){
   this.jump();
   this.hitCount();
   this.handleDead();
-  this.game.debug.body(this);
+
   this.arrowTimer++;
 }
 
 pit.prototype.move = function(){
   if (this.cursors.left.isDown) {
-		    this.body.velocity.x = -200;
+		    this.body.velocity.x = -config.movementSpeed;
         if (this.state == "normal") this.animations.play("walkLeft");
         this.direction=-1;
         //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if (this.cursors.right.isDown){
-		    this.body.velocity.x = 200;
+		    this.body.velocity.x = config.movementSpeed;
         if (this.state == "normal") this.animations.play("walkRight");
         this.direction=1;
         //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
@@ -96,9 +98,9 @@ pit.prototype.move = function(){
       }
 
       if (this.direction == 2){
-        this.body.setSize(13, 13, 1, 7);
+        this.body.setSize(config.crouchW, config.crouchH, config.crouchOX, config.crouchOY);
       } else{
-        this.body.setSize(13, 24, 7, 0);
+        this.body.setSize(config.normalW, config.normalH, config.normalOX, config.normalOY);
       }
 
       //Processes toroidal movement
@@ -121,7 +123,7 @@ pit.prototype.jump = function(){
   }
 
   else if(this.spacebar.isDown && (this.jumptimer!=0))  {
-      if(this.jumptimer > this.jumpTime){
+      if(this.jumptimer > config.jumpTime){
         this.jumptimer=0;
       }
       else{

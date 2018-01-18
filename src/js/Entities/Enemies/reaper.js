@@ -3,37 +3,47 @@
 
 var terrestrial = require('./terrestrial.js');
 var reapette = require('./reapette.js');
+var config = require('../../config.js');
 
 function reaper(game, x, y, name, direction, player, edgeLayer){
   terrestrial.call(this, game, x, y, name);
   this.player=player;
-  this.turn=false;
-  this.turnTimer=0;
-  this.alertTimer=0;
-  this.alert=false;
-  this.direction=direction;
-  this.velocity = 50;
-  this.scale.setTo(2.5,2.5);
-  this.body.setSize(15, 24, 5, -1);
-  this.maxHealth=10;
-  this.health=10;
-  this.attackDamage=2;
-  this.heartValue=10;
+
+  this.velocity = config.reaperVelocity;
+  this.scale.setTo(config.scale2, config.scale2);
+  this.body.setSize(config.reaperW, config.reaperH, config.reaperOX, config.reaperOY);
+  this.maxHealth=config.reaperMaxHealth;
+  this.health=this.maxHealth;
+  this.attackDamage=config.reaperAttackDamage;
+  this.heartValue=config.reaperHeartValue;
+
   this.animations.add('patrolRight', [25], 0, false);
   this.animations.add('alertRight', [26,27], 5, true);
   this.animations.add('patrolLeft', [24], 0, false);
   this.animations.add('alertLeft', [22,23], 5, true);
 
-  this.edgeLayer = edgeLayer;
-
   if(this.direction==1) this.animations.play('patrolRight');
   else if(this.direction==-1) this.animations.play('patrolLeft');
 
+  this.turn=false;
+  this.turnTimer=0;
+  this.alertTimer=0;
+  this.alert=false;
+  this.direction=direction;
 
-
+  this.edgeLayer = edgeLayer;
 }
 
 reaper.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
+
+reaper.prototype.receiveDamage = function(damage){
+  if (this.health <= 0){
+    this.game.reaper_spotted.stop();
+    this.game.underworld.loopFull();
+  }
+
+  terrestrial.prototype.receiveDamage.call(this, damage);
+}
 
 reaper.prototype.update = function(){
   if (this.inCamera){
@@ -46,7 +56,7 @@ reaper.prototype.update = function(){
 
 
 reaper.prototype.detectPit = function(){
-  if (Math.abs(this.y - this.player.y)<20) {
+  if (Math.abs(this.y - this.player.y) < config.reaperDetectionRange) {
         if (this.player.x > this.x) {
           if(this.direction==1) this.onAlert();
         }
@@ -57,21 +67,21 @@ reaper.prototype.detectPit = function(){
 reaper.prototype.movement = function(){
 if(!this.alert){
   if(this.body.onWall()) {
-    this.direction = this.direction*(-1);
+    this.direction = this.direction * (-1);
     if(this.direction==1) this.animations.play('patrolRight');
     else if(this.direction==-1) this.animations.play('patrolLeft');
   }
 }
 else{
   this.alertTimer++;
-  if(this.alertTimer>300) this.exitAlert();
+  if(this.alertTimer > config.reaperTimeToTurn) this.exitAlert();
 }
 if(!this.turn) {
    this.horizMove(this.velocity);
-   if(this.turnTimer>300) this.onTurn();
+   if(this.turnTimer > config.reaperTimeToTurn) this.onTurn();
 }
-if(this.turn && this.turnTimer>100) this.exitTurn();
-this.turnTimer++;
+if(this.turn && this.turnTimer > config.reaperTurnTime) this.exitTurn();
+  this.turnTimer++;
 }
 
 reaper.prototype.onAlert = function(){
@@ -82,7 +92,8 @@ reaper.prototype.onAlert = function(){
     this.turnTimer=0;
     if(this.direction==1) this.animations.play('alertRight');
     else if(this.direction==-1) this.animations.play('alertLeft');
-    this.velocity*=3;
+    this.velocity*=config.reaperVelocityMultiplier
+    ;
     this.game.groups.enemies.add(new reapette(this.game, this.x, this.y -200, 'enemies', this.player));
     this.game.groups.enemies.add(new reapette(this.game, this.x+100, this.y -230, 'enemies', this.player));
   }
@@ -92,7 +103,8 @@ reaper.prototype.exitAlert = function(){
   this.game.underworld.loopFull();
   this.alert=false;
   this.alertTimer=0;
-  this.velocity/=3;
+  this.velocity/=config.reaperVelocityMultiplier;
+
   if(this.direction==1) this.animations.play('patrolRight');
   else if(this.direction==-1)this.animations.play('patrolLeft');
 }

@@ -2,10 +2,11 @@
 'use strict';
 
 var enemy = require('./enemy.js');
+var config = require('../../config.js');
 
 function terrestrial(game, x, y, name){
   enemy.call(this, game, x, y, name);
-  this.body.maxVelocity.y = 800;
+  this.body.maxVelocity.y = config.maxVelocity;
 }
 
 terrestrial.prototype = Object.create(enemy.prototype);//inherit from enemy

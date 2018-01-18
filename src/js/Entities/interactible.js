@@ -1,2 +1,0 @@
-//interactible.js
-'use strict';

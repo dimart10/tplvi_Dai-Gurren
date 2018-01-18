@@ -2,6 +2,7 @@
 'use strict';
 
 var enemy = require('./enemy.js');
+var config = require('../../config.js');
 
 function flying(game, x, y, name, player){
   enemy.call(this, game, x, y, name);
@@ -27,8 +28,6 @@ flying.prototype.swoop = function(){
   else if(this.y> this.goalY) this.y -= this.velocity;
 
   this.rotateangle+=.02;
-
-
 }
 
 
