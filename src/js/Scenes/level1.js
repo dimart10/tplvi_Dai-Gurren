@@ -16,6 +16,7 @@ var HUD = require('../HUD/hud.js');
 var levelEnd = require('../Entities/Scenary/levelEnd.js');
 var chalice = require('../Entities/Scenary/chalice.js');
 var bottle = require('../Entities/Scenary/bottle.js');
+var barrel = require('../Entities/Scenary/barrel.js');
 
 var level1 = {
   myPit: undefined,
@@ -153,7 +154,9 @@ var level1 = {
     this.map.setCollision(5764, true, 'Platforms');
 
     this.game.groups.items.add(new chalice(this.game, config.level1initialPos.x, config.level1initialPos.y -100, 'lifeWater', this.myPit));
-    this.game.groups.items.add(new bottle(this.game, config.level1initialPos.x, config.level1initialPos.y -200, 'lifeWater', this.myPit));
+    this.game.groups.items.add(new bottle(this.game, config.level1initialPos.x, config.level1initialPos.y -200, 'lifeWater'));
+    this.game.groups.items.add(new bottle(this.game, config.level1initialPos.x, config.level1initialPos.y -300, 'lifeWater'));
+    this.game.groups.items.add(new barrel(this.game, config.level1initialPos.x +100, config.level1initialPos.y -300, 'barrel'));
 
     //Spawns enemies UNFINISHED
     this.map.forEach(function (tile){
