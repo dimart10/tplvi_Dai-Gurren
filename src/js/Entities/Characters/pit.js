@@ -115,9 +115,17 @@ pit.prototype.jump = function(){
 
 pit.prototype.handleDead = function(){
   if (this.health <= 0){
+    if(this.game.bottles>0){
+      this.health+=7;
+      this.game.bottles--;
+      this.updateHealthBar();
+    }
+    else{
     this.health = 1; //If not set to a value higher than 0, the restart
                     //will enter an infinite loop
+    this.game.sound.stopAll();
     this.game.state.restart(false, false);
+    }
   }
 }
 
@@ -125,9 +133,13 @@ pit.prototype.damage = function(points){
   if (this.canBeHit){
     this.health -= points;
     this.game.pit_hit.play();
-    HUD.myHealthBar.setPercent((this.health/this.maxHealth) * 100);
+    this.updateHealthBar();
     this.canBeHit = false;
   }
+}
+
+pit.prototype.updateHealthBar = function(){
+  HUD.myHealthBar.setPercent((this.health/this.maxHealth) * 100);
 }
 
 pit.prototype.hitCount = function(){

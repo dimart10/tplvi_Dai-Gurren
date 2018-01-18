@@ -16,6 +16,7 @@ var defaultScene = {
     this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 195);
     this.game.load.spritesheet('twinbellows', 'images/characters/twinbellows.png', 42, 26, 4);
     this.game.load.spritesheet('heart', 'images/scenary/heart.png', 14, 14, 3);
+    this.game.load.spritesheet('lifeWater', 'images/scenary/lifeWater.png', 10, 16, 2)
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');
@@ -36,6 +37,8 @@ var defaultScene = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 3500;
     this.game.hearts=0;
+    this.game.bottles=0;
+    this.game.maxBottles=1;
   },
 
   update: function(){

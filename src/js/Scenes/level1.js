@@ -11,6 +11,8 @@ var monoeye = require('../Entities/Enemies/monoeye.js');
 var mcgoo = require('../Entities/Enemies/mcgoo.js');
 var twinbellows = require('../Entities/Enemies/twinbellows.js');
 var nettler = require('../Entities/Enemies/nettler.js');
+var chalice = require('../Entities/Scenary/chalice.js');
+var bottle = require('../Entities/Scenary/bottle.js');
 var HUD = require("../HUD/hud.js");
 
 var level1 = {
@@ -144,6 +146,9 @@ var level1 = {
     this.map.setCollision(5761, true, 'Colisions');
     this.map.setCollision(5762, true, 'Edges');
     this.map.setCollision(5764, true, 'Platforms');
+
+    this.game.groups.items.add(new chalice(this.game, config.level1initialPos.x, config.level1initialPos.y -100, 'lifeWater', this.myPit));
+    this.game.groups.items.add(new bottle(this.game, config.level1initialPos.x, config.level1initialPos.y -200, 'lifeWater', this.myPit));
 
     //Spawns enemies UNFINISHED
     this.map.forEach(function (tile){

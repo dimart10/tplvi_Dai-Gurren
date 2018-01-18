@@ -19,13 +19,12 @@ function heart(game, x, y, name, value){
 heart.prototype = Object.create(item.prototype); //inherit from item
 
 heart.prototype.update = function(){
-
+this.cycleOfLife();
 }
 
 heart.prototype.effect = function(){
   this.game.hearts+=this.value;
   this.game.get_item.play();
-  console.log(this.game.hearts);
 }
 
 heart.prototype.cycleOfLife = function(){
