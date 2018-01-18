@@ -5,7 +5,7 @@ var config = {
   tileSize: 16,
   scale: 3.13,
   pixelsPerLifePoint: 15,
-  initialPitHealth: 7,
+  initialPitHealth: 500,
   framesBetweenHit: 60,
 
   level1initialPos: {x: 170, y: 8780},

@@ -75,7 +75,7 @@ var level1 = {
 
   update: function(){
     defaultScene.update.call(this);
-
+    
     //Tilemap colisions
     this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
     this.game.physics.arcade.collide(this.game.groups.enemies, this.colisionLayer);

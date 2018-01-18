@@ -9,7 +9,6 @@ are on every level.*/
 var defaultScene = {
 
   preload: function(){
-    this.game.time.desiredFps = 60;
     this.game.load.spritesheet('pit', 'images/characters/pit.png', 29, 29, 180);
     this.game.load.image('arrow', 'images/scenary/arrow(bigger).png');
     this.game.load.image('magmaShot', 'images/scenary/magmaShot.png');
