@@ -11,7 +11,8 @@ var monoeye = require('../Entities/Enemies/monoeye.js');
 var mcgoo = require('../Entities/Enemies/mcgoo.js');
 var twinbellows = require('../Entities/Enemies/twinbellows.js');
 var nettler = require('../Entities/Enemies/nettler.js');
-var HUD = require("../HUD/hud.js");
+var HUD = require('../HUD/hud.js');
+var levelEnd = require('../Entities/Scenary/levelEnd.js');
 
 var level1 = {
   myPit: undefined,
@@ -34,11 +35,14 @@ var level1 = {
   create: function(){
     defaultScene.create.call(this);
 
+    //Groups
     this.game.groups= {};
     this.game.groups.enemies = this.game.add.group();
     this.game.groups.arrows = this.game.add.group();
     this.game.groups.projectiles = this.game.add.group();
     this.game.groups.items = this.game.add.group();
+
+    //Audio
     this.game.underworld = this.game.add.audio('underworld');
     this.game.underworld.loopFull();
     this.game.arrow_shot = this.game.add.audio('arrow_shot');
@@ -51,7 +55,7 @@ var level1 = {
     this.game.enemy_death = this.game.add.audio('enemy_death');
     this.game.get_item = this.game.add.audio('get_item');
 
-        this.myPit = new pit(this.game, config.level1initialPos.x,
+    this.myPit = new pit(this.game, config.level1initialPos.x,
                               config.level1initialPos.y, 'pit');
 
     this.createTileMap();
