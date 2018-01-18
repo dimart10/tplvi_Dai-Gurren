@@ -22,10 +22,10 @@ function pit(game, x, y, name){
   this.newAnimation('stillLeft', [6], 0, false, false);
   this.newAnimation('walkRight', [10, 9, 8, 7], 15, true, false);
   this.newAnimation('walkLeft', [3, 4, 5, 6], 15, true, false);
-  this.newAnimation('flyRight', [26, 12], 5, true, false);
-  this.newAnimation('flyLeft', [1, 17], 5, true, false);
   this.newAnimation('stillUp', [37], 0, false, false);
   this.newAnimation('stillDown', [0], 0, false, false);
+  this.newAnimation('jumpLeft', [2, 1], 0, false, false);
+  this.newAnimation('jumpRight', [11, 12], 0, false, false);
 
 
   this.arrowKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -42,6 +42,8 @@ function pit(game, x, y, name){
   this.arrowTimer=0;
   this.canBeHit = true;
   this.hitTimer = 0;
+
+  this.state = "normal";
 }
 
 pit.prototype = Object.create(entity.prototype); //Inherits from entity
@@ -56,43 +58,47 @@ pit.prototype.update = function(){
   this.jump();
   this.hitCount();
   this.handleDead();
-
+  this.game.debug.body(this);
   this.arrowTimer++;
 }
 
 pit.prototype.move = function(){
   if (this.cursors.left.isDown) {
 		    this.body.velocity.x = -200;
-        this.animations.play("walkLeft");
+        if (this.state == "normal") this.animations.play("walkLeft");
         this.direction=-1;
         //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if (this.cursors.right.isDown){
 		    this.body.velocity.x = 200;
-        this.animations.play("walkRight");
+        if (this.state == "normal") this.animations.play("walkRight");
         this.direction=1;
         //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if(this.cursors.up.isDown){
-        this.animations.play("stillUp");
+        if (this.state == "normal") this.animations.play("stillUp");
         this.direction=0;
         this.body.velocity.x=0;
       }
       else if(this.cursors.down.isDown){
-        this.animations.play("stillDown");
+        if (this.state == "normal") this.animations.play("stillDown");
         this.direction=2;
         this.body.velocity.x=0;
       }
 
-      else if(this.body.velocity.y!=0){
-        if(this.direction==1) this.animations.play('flyRight');
-        else this.animations.play('flyLeft');
-      }
-
       else{
         this.body.velocity.x = 0;
-        if (this.direction==1) this.animations.play("stillRight");
-        else if (this.direction==-1) this.animations.play("stillLeft");
+
+        if (this.state == "normal"){
+          if (this.direction==1) this.animations.play("stillRight");
+          else if (this.direction==-1) this.animations.play("stillLeft");
+        }
+      }
+
+      if (this.direction == 2){
+        this.body.setSize(13, 13, 1, 7);
+      } else{
+        this.body.setSize(13, 24, 7, 0);
       }
 
       //Processes toroidal movement
@@ -100,11 +106,18 @@ pit.prototype.move = function(){
 }
 
 pit.prototype.jump = function(){
+  if (this.state = "jumping" && this.body.velocity.y >= 0) this.state = "normal";
 
   if(this.spacebar.isDown && this.body.onFloor()) {
+    this.state = "jumping";
     this.jumptimer=1;
     this.body.velocity.y = -this.body.maxVelocity.y;
     this.game.jump.play();
+
+    if (this.direction != 1 && this.direction != -1) this.direction = 1;
+
+    if (this.direction == -1)this.animations.play('jumpLeft');
+    else this.animations.play('jumpRight');
   }
 
   else if(this.spacebar.isDown && (this.jumptimer!=0))  {

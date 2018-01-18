@@ -6,7 +6,7 @@ var level1 = require('./Scenes/level1.js');
 
 var BootScene = {
   preload: function () {
-
+    this.game.time.desiredFps = 60;
   },
 
   create: function () {
