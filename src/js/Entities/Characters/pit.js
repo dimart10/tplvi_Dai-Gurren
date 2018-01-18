@@ -22,8 +22,11 @@ function pit(game, x, y, name){
   this.newAnimation('stillLeft', [6], 0, false, false);
   this.newAnimation('walkRight', [10, 9, 8, 7], 15, true, false);
   this.newAnimation('walkLeft', [3, 4, 5, 6], 15, true, false);
+  this.newAnimation('flyRight', [26, 12], 5, true, false);
+  this.newAnimation('flyLeft', [1, 17], 5, true, false);
   this.newAnimation('stillUp', [37], 0, false, false);
   this.newAnimation('stillDown', [0], 0, false, false);
+
 
   this.arrowKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
   this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -80,10 +83,16 @@ pit.prototype.move = function(){
         this.direction=2;
         this.body.velocity.x=0;
       }
+
+      else if(this.body.velocity.y!=0){
+        if(this.direction==1) this.animations.play('flyRight');
+        else this.animations.play('flyLeft');
+      }
+
       else{
         this.body.velocity.x = 0;
-        if (this.animations.name == "walkRight") this.animations.play("stillRight");
-        else if (this.animations.name == "walkLeft") this.animations.play("stillLeft");
+        if (this.direction==1) this.animations.play("stillRight");
+        else if (this.direction==-1) this.animations.play("stillLeft");
       }
 
       //Processes toroidal movement
