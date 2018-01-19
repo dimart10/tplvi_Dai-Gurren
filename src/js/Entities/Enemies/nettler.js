@@ -33,7 +33,10 @@ nettler.prototype = Object.create(terrestrial.prototype);//inherit from terrestr
 
 nettler.prototype.update = function(){
   if (this.inCamera){
-    if(!this.alert) this.detectPit();
+    if(!this.alert) {
+      this.regularMovement();
+      this.detectPit();
+    }
     else{
       if(!this.crouching && this.player.arrowTimer<=8) {
         this.crouching=true;
@@ -47,12 +50,13 @@ nettler.prototype.update = function(){
           this.body.setSize(config.nettlerW, config.nettlerH, config.nettlerOX, config.nettlerOY);
         }
       }
-      this.movement();
+      this.alertMovement();
     }
   }
 }
 
-nettler.prototype.movement = function(){
+//Walks towards pit
+nettler.prototype.alertMovement = function(){
   if(this.x > this.player.x) {
       this.direction=-1;
       if(!this.crouching) this.animations.play('walkLeft');
@@ -64,6 +68,17 @@ nettler.prototype.movement = function(){
   this.horizMove(this.velocity);
 }
 
+//Walks in the current direction, if it runs into a wall, the direction is inverted
+nettler.prototype.regularMovement = function(){
+  if(this.body.onWall()) {
+    this.direction = this.direction*(-1);
+    if(this.direction==1) this.animations.play('walkRight');
+    else if(this.direction==-1) this.animations.play('walkLeft');
+  }
+  this.horizMove(this.velocity);
+}
+
+//When an arrow is fired, this crouches
 nettler.prototype.crouch = function(){
   if(this.direction==1) this.animations.play('crouchRight');
   else this.animations.play('crouchLeft');
@@ -72,6 +87,7 @@ nettler.prototype.crouch = function(){
   this.body.position.y+=4;
 }
 
+//Looks for pit in its y position
 nettler.prototype.detectPit = function(){
     if (Math.abs(this.y - this.player.y) < config.nettlerRangeDetection)
       this.alert = true;
