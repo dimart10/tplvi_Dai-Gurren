@@ -9,7 +9,7 @@ var config = {
   maxVelocity: 800, //To avoid tunneling
 
   //PIT
-  initialPitHealth: 10,
+  initialPitHealth: 40,
   framesBetweenHit: 60,
   jumpTime: 10,
   initialDirection: 1,
@@ -30,7 +30,10 @@ var config = {
   jumpKey: Phaser.Keyboard.SPACEBAR,
 
   level1initialPos: {x: 170, y: 8780},
+  //level1initialPos: {x: 200, y: 500},
   level2initialPos: {x: 170, y: 10280},
+
+  level1endLevelPos: {x: 780, y: 500},
 
   //ENEMIES
     //Mcgoo
@@ -153,7 +156,7 @@ var config = {
   magmaShotVelocity: 400,
 
     //HUD VARIABLES
-  barConfig: {x: 100, y: 50, width: 10, height: 25,
+  barConfig: {x: 50, y: 50, width: 10, height: 25,
               bg: {color: '#000074'}, bar: {color: '#e20074'}},
   pixelsPerLifePoint: 15
 }

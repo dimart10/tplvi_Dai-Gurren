@@ -60,8 +60,10 @@ arrow.prototype.cycleOfLife = function(){
 }
 
 arrow.prototype.onHit = function(){
+  var damage = this.attackDamage + this.game.bonusDamage;
   if(!this.game.hasSacredBow) this.destroy();
-  return (this.attackDamage + this.game.bonusDamage);
+  
+  return damage;
 }
 
 module.exports = arrow;

@@ -4,8 +4,11 @@
 var defaultScene = require('./defaultScene.js');
 var pit = require('../Entities/Characters/pit.js');
 var config = require('../config.js');
+var levelEnd = require('../Entities/Scenary/levelEnd.js');
 
 var level1 = {
+  currentLevelEnd: undefined,
+
   preload: function(){
     this.game.load.image('leveltileset', 'images/scenes/level1tileset.png');
     this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
@@ -23,11 +26,9 @@ var level1 = {
   create: function(){
     defaultScene.create.call(this);
 
-    this.game.hearts=0;
-    this.game.bottles=0;
-    this.game.maxBottles=1;
-    this.game.bonusDamage=0;
-    this.game.hasSacredBow=true;
+    this.currentLevelEnd = new levelEnd(this.game, config.level1endLevelPos.x,
+                        config.level1endLevelPos.y, 'currentLevelEnd', 'level2');
+    this.game.groups.items.add (this.currentLevelEnd);
 
     defaultScene.myPit.x = config.level1initialPos.x;
     defaultScene.myPit.y = config.level1initialPos.y;

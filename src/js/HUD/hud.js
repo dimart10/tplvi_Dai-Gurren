@@ -11,11 +11,14 @@ var HUD = {
   create: function(game){
     this.game = game;
 
-    config.barConfig.width = config.initialPitHealth * config.pixelsPerLifePoint;
+    var barConfig = Object.assign({}, config.barConfig);
 
-    this.myHealthBar = new HealthBar(game, config.barConfig);
+    barConfig.width = this.game.pitVariables.maxHealth * config.pixelsPerLifePoint;
+    barConfig.x = barConfig.x + barConfig.width/2;
+
+    this.myHealthBar = new HealthBar(game, barConfig);
     this.myHealthBar.setFixedToCamera(true);
-    this.myHealthBar.setPercent(100);
+    this.myHealthBar.setPercent(this.game.pitVariables.health/this.game.pitVariables.maxHealth * 100);
   }
 }
 

@@ -23,15 +23,8 @@ var level2 = {
   create: function(){
     defaultScene.create.call(this);
 
-    this.game.hearts=0;
-    this.game.bottles=0;
-    this.game.maxBottles=1;
-    this.game.bonusDamage=0;
-    this.game.hasSacredBow=true;
-
     defaultScene.myPit.x = config.level2initialPos.x;
     defaultScene.myPit.y = config.level2initialPos.y;
-
   },
 
   update: function(){

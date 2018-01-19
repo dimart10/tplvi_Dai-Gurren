@@ -11,6 +11,8 @@ function levelEnd(game, x, y, name, nextState){
 levelEnd.prototype = Object.create(item.prototype);
 
 levelEnd.prototype.effect = function(){
+  this.game.newLevel = true;
+
   this.game.state.start(this.nextState);
 }
 

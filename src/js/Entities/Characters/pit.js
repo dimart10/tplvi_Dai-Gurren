@@ -140,7 +140,7 @@ pit.prototype.jump = function(){
 pit.prototype.handleDead = function(){
   if (this.health <= 0){
     if(this.game.bottles>0){
-      this.health+=7;
+      this.health+=this.maxHealth;
       this.game.bottles--;
       this.updateHealthBar();
     }

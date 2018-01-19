@@ -18,7 +18,6 @@ angelFeather.prototype.update = function(){
 }
 
 angelFeather.prototype.effect = function(){
-  console.log('angel feather');
   this.game.power_up.play();
 }
 

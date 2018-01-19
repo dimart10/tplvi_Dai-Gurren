@@ -17,7 +17,6 @@ var twinbellows = require('../Entities/Enemies/twinbellows.js');
 var nettler = require('../Entities/Enemies/nettler.js');
 
 var HUD = require('../HUD/hud.js');
-var levelEnd = require('../Entities/Scenary/levelEnd.js');
 var chalice = require('../Entities/Scenary/chalice.js');
 var bottle = require('../Entities/Scenary/bottle.js');
 var barrel = require('../Entities/Scenary/barrel.js');
@@ -35,35 +34,10 @@ var defaultScene = {
   itemLayer: undefined,
 
   preload: function(){
-    this.game.load.spritesheet('pit', 'images/characters/pit.png', 29, 29, 180);
-    this.game.load.image('arrow', 'images/scenary/arrow.png');
-    this.game.load.image('magmaShot', 'images/scenary/magmaShot.png');
-    this.game.load.image('barrel', 'images/scenary/barrel.png');
-    this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 195);
-    this.game.load.spritesheet('twinbellows', 'images/characters/twinbellows.png', 42, 26, 4);
-    this.game.load.spritesheet('heart', 'images/scenary/heart.png', 14, 14, 3);
-    this.game.load.spritesheet('lifeWater', 'images/scenary/lifeWater.png', 10, 16, 2);
-    this.game.load.spritesheet('powerUps', 'images/scenary/powerUps.png', 8, 16, 3);
 
-    this.game.load.audio('underworld', 'audio/music/underworld.mp3');
-    this.game.load.audio('game_over', 'audio/music/game_over.mp3');
-    this.game.load.audio('reaper_spotted', 'audio/music/reaper_spotted.mp3');
-    this.game.load.audio('victory', 'audio/music/victory.mp3');
-    this.game.load.audio('arrow_shot', 'audio/sfx/arrow_shot.mp3');
-    this.game.load.audio('enemy_damage', 'audio/sfx/enemy_damage.mp3');
-    this.game.load.audio('get_item', 'audio/sfx/get_item.mp3');
-    this.game.load.audio('jump', 'audio/sfx/jump.mp3');
-    this.game.load.audio('pit_hit', 'audio/sfx/pit_hit.mp3');
-    this.game.load.audio('reaper_alert', 'audio/sfx/reaper_alert.mp3');
-    this.game.load.audio('walk', 'audio/sfx/walk.mp3');
-    this.game.load.audio('enemy_death', 'audio/sfx/enemy_death.mp3');
-    this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
   },
 
   create: function(){
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.physics.arcade.gravity.y = 3500;
-
     //Groups
     this.game.groups= {};
     this.game.groups.enemies = this.game.add.group();
@@ -85,8 +59,24 @@ var defaultScene = {
     this.game.get_item = this.game.add.audio('get_item');
     this.game.power_up = this.game.add.audio('power_up');
 
-    //Pit
     defaultScene.myPit = new pit(this.game, 0, 0, 'pit');
+
+    //Those will be the variables that are kept across all levels
+    if (this.game.pitVariables == undefined){
+      this.game.pitVariables = {hearts: 0, bottles: 0, maxBottles: 1,
+                                bonusDamage: 0, hasSacredBow: false,
+                                maxHealth: config.initialPitHealth,
+                                health: config.initialPitHealth};
+    }
+
+    this.game.hearts = this.game.pitVariables.hearts;
+    this.game.bottles = this.game.pitVariables.bottles;
+    this.game.maxBottles = this.game.pitVariables.maxBottles;
+    this.game.bonusDamage = this.game.pitVariables.bonusDamage;
+    this.game.hasSacredBow = this.game.pitVariables.hasSacredBow;
+
+    defaultScene.myPit.health = this.game.pitVariables.health;
+    defaultScene.myPit.maxHealth = this.game.pitVariables.maxHealth;
 
     defaultScene.createTileMap.call(this);
     HUD.create(this.game);
@@ -103,6 +93,7 @@ var defaultScene = {
   update: function(){
     //Tilemap colisions
     this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.platformsLayer);
+    this.game.physics.arcade.collide(this.game.groups.enemies, defaultScene.platformsLayer);
     this.game.physics.arcade.collide(this.game.groups.enemies, defaultScene.colisionLayer);
     this.game.physics.arcade.collide(this.game.groups.arrows, defaultScene.colisionLayer, killCollObj);
     this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.colisionLayer);
@@ -131,6 +122,11 @@ var defaultScene = {
   },
 
   shutdown: function(){
+    if (this.game.newLevel == true){
+      defaultScene.savePitVariables.call(this);
+      this.game.newLevel = false;
+    }
+
     //Cleans up the memory
     this.game.load.reset();
     this.game.world.removeAll(true);
@@ -236,6 +232,17 @@ var defaultScene = {
       this.game.world.bounds.width/2 - (2*config.tileSize*config.scale)-1,
       this.game.world.bounds.height);
       //The ''-1' fixes the vagueness caused by the division/multiplication
+  },
+
+  savePitVariables: function(){
+    this.game.pitVariables.hearts = this.game.hearts;
+    this.game.pitVariables.bottles = this.game.bottles;
+    this.game.pitVariables.maxBottles = this.game.maxBottles;
+    this.game.pitVariables.bonusDamage = this.game.bonusDamage;
+    this.game.pitVariables.hasSacredBow = this.game.hasSacredBow;
+
+    this.game.pitVariables.health = defaultScene.myPit.health;
+    this.game.pitVariables.maxHealth = defaultScene.myPit.maxHealth;
   }
 };
 
