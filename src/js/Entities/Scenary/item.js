@@ -19,7 +19,6 @@ item.prototype.update = function(){
 item.prototype.onPickUp = function(){
   this.effect();
   this.destroy();
-
 }
 
 item.prototype.effect = function(){

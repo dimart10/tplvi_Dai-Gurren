@@ -132,6 +132,8 @@ var defaultScene = {
   },
 
   shutdown: function(){
+    this.game.sound.stopAll();
+
     if (this.game.newLevel == true){
       defaultScene.savePitVariables.call(this);
       this.game.newLevel = false;

@@ -4,6 +4,7 @@
 var defaultScene = require('./defaultScene.js');
 var pit = require('../Entities/Characters/pit.js');
 var config = require('../config.js');
+var levelEnd = require('../Entities/Scenary/levelEnd.js');
 
 var level2 = {
   preload: function(){
@@ -25,6 +26,10 @@ var level2 = {
 
     defaultScene.myPit.x = config.level2initialPos.x;
     defaultScene.myPit.y = config.level2initialPos.y;
+
+    this.currentLevelEnd = new levelEnd(this.game, config.level2endLevelPos.x,
+                        config.level2endLevelPos.y, 'currentLevelEnd', 'level3');
+    this.game.groups.items.add (this.currentLevelEnd);
   },
 
   update: function(){
