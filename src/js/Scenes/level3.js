@@ -23,15 +23,8 @@ var level3 = {
   create: function(){
     defaultScene.create.call(this);
 
-    this.game.hearts=0;
-    this.game.bottles=0;
-    this.game.maxBottles=1;
-    this.game.bonusDamage=0;
-    this.game.hasSacredBow=false;
-
     defaultScene.myPit.x = config.level3initialPos.x;
     defaultScene.myPit.y = config.level3initialPos.y;
-
   },
 
   update: function(){
