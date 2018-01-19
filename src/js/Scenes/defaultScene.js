@@ -230,7 +230,7 @@ var defaultScene = {
       }
     }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.itemLayer);
 
-    /*//Spawns platforms
+  /*  //Spawns platforms
     defaultScene.map.forEach(function (tile){
       var newMovingPlatform = null;
       if (tile.properties != undefined && tile.properties.movingPlatform != undefined){
@@ -238,10 +238,10 @@ var defaultScene = {
         }
 
       if (newMovingPlatform != null){
-        this.game.groups.movingPlatforms.add(new);
+        this.game.groups.movingPlatforms.add(newMovingPlatform);
       }
-    }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.itemLayer);
-*/
+    }, ;*/
+
     //Sets platforms specific side collisions
     defaultScene.map.forEach(function (tile){
       tile.collideDown = false;
