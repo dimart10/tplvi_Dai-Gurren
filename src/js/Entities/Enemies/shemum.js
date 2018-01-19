@@ -26,8 +26,10 @@ function shemum(game, x, y, name, direction){
 shemum.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
 shemum.prototype.update = function(){
-  if(!this.alert){
-    this.movement();
+  if (this.inCamera){
+    if(!this.alert){
+      this.movement();
+    }
   }
 }
 
