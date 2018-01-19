@@ -40,6 +40,18 @@ twinbellows.prototype.update = function(){
     }
   }
 
+  //if reaper is killed, the music stops
+  reaper.prototype.receiveDamage = function(damage){
+    this.health-=damage;
+    this.game.boss_damage.play();
+
+    if(this.health<=0) {
+      this.game.boss_death.play();
+      this.destroy();
+    }
+  }
+  }
+
 //Fires at pit's direction
 twinbellows.prototype.attack = function(){
   if(this.x< this.player.x) this.shoot(1);

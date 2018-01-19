@@ -58,6 +58,8 @@ var defaultScene = {
     this.game.load.audio('walk', 'audio/sfx/walk.mp3');
     this.game.load.audio('enemy_death', 'audio/sfx/enemy_death.mp3');
     this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
+    this.game.load.audio('boss_damage', 'audio/sfx/boss_damage.mp3');
+    this.game.load.audio('boss_death', 'audio/sfx/boss_death.mp3');
   },
 
   create: function(){
@@ -84,6 +86,8 @@ var defaultScene = {
     this.game.enemy_death = this.game.add.audio('enemy_death');
     this.game.get_item = this.game.add.audio('get_item');
     this.game.power_up = this.game.add.audio('power_up');
+    this.game.boss_damage = this.game.add.audio('boss_damage');
+    this.game.boss_death = this.game.add.audio('boss_death');
 
     //Pit
     defaultScene.myPit = new pit(this.game, 0, 0, 'pit');
