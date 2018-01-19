@@ -66,13 +66,13 @@ pit.prototype.update = function(){
 
 pit.prototype.move = function(){
   if (this.cursors.left.isDown) {
-		    this.body.velocity.x = -config.movementSpeed;
+		    this.body.velocity.x = -config.movementSpeed * this.game.time.elapsed / 15;
         if (this.state == "normal") this.animations.play("walkLeft");
         this.direction=-1;
         //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if (this.cursors.right.isDown){
-		    this.body.velocity.x = config.movementSpeed;
+		    this.body.velocity.x = config.movementSpeed * this.game.time.elapsed / 15;
         if (this.state == "normal") this.animations.play("walkRight");
         this.direction=1;
         //if(!this.game.walk.isPlaying) this.game.walk.loopFull();

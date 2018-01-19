@@ -42,7 +42,6 @@ var defaultScene = {
   },
 
   update: function(){
-
   },
 
   shutdown: function(){
