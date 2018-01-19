@@ -4,7 +4,7 @@
 module.exports.Phaser = Phaser;
 var level1 = require('./Scenes/level1.js');
 var level2 = require('./Scenes/level2.js');
-
+var level3 = require('./Scenes/level3.js');
 var BootScene = {
   preload: function () {
     this.game.time.desiredFps = 60;
@@ -38,7 +38,7 @@ var BootScene = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 3500;
 
-    this.game.state.start('play');
+    this.game.state.start('level3');
   }
 };
 
@@ -48,6 +48,7 @@ window.onload = function () {
   game.state.add('boot', BootScene);
   game.state.add('play', level1);
   game.state.add('level2', level2);
+  game.state.add('level3', level3);
 
   game.state.start('boot');
 };

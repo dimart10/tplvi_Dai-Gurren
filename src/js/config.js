@@ -32,6 +32,7 @@ var config = {
   level1initialPos: {x: 170, y: 8780},
   //level1initialPos: {x: 200, y: 500},
   level2initialPos: {x: 170, y: 10280},
+  level3initialPos: {x: 170, y: 14800},
 
   level1endLevelPos: {x: 780, y: 500},
 
@@ -124,7 +125,7 @@ var config = {
   twinbellowsVelocity: 70,
   twinbellowsAttackTime: 100,
   twinbellowsJumpTime: 220,
-  twinbellowsJumpHeight: -900;
+  twinbellowsJumpHeight: -900,
   twinbellowsDirectionTimeRight: 150,
   twinbellowsDirectionTimeLeft: 40,
 
