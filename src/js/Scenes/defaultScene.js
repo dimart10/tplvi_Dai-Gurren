@@ -146,8 +146,8 @@ var defaultScene = {
   },
 
   createTileMap: function(){
-    defaultScene.map = this.game.add.tilemap('level1');
-    defaultScene.map.addTilesetImage('level1tileset');
+    defaultScene.map = this.game.add.tilemap('level');
+    defaultScene.map.addTilesetImage('leveltileset');
     defaultScene.map.addTilesetImage('ColisionsTile');
     defaultScene.map.addTilesetImage('EnemiesTileset');
 
@@ -181,10 +181,9 @@ var defaultScene = {
 
     defaultScene.mapLayer.resizeWorld();
 
-    defaultScene.map.setCollision(5761, true, 'Colisions');
-    defaultScene.map.setCollision(5762, true, 'Edges');
-    defaultScene.map.setCollision(5764, true, 'Platforms');
-
+    defaultScene.map.setCollision(this.colisionBlockID, true, 'Colisions');
+    defaultScene.map.setCollision(this.edgesBlockID, true, 'Edges');
+    defaultScene.map.setCollision(this.platformsBlockID, true, 'Platforms');
 
     //Spawns enemies UNFINISHED
     defaultScene.map.forEach(function (tile){

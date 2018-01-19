@@ -89,7 +89,7 @@
          "imageheight":2880,
          "imagewidth":512,
          "margin":0,
-         "name":"level1tileset",
+         "name":"leveltileset",
          "spacing":0,
          "tilecount":5760,
          "tileheight":16,

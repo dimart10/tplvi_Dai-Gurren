@@ -3,6 +3,7 @@
 
 module.exports.Phaser = Phaser;
 var level1 = require('./Scenes/level1.js');
+var level2 = require('./Scenes/level2.js');
 
 var BootScene = {
   preload: function () {
@@ -20,7 +21,7 @@ var PreloaderScene = {
   },
 
   create: function () {
-    this.game.state.start('play');
+    this.game.state.start('level2');
   }
 };
 
@@ -30,6 +31,7 @@ window.onload = function () {
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
   game.state.add('play', level1);
+  game.state.add('level2', level2);
 
   game.state.start('boot');
 };

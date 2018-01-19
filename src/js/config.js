@@ -30,6 +30,7 @@ var config = {
   jumpKey: Phaser.Keyboard.SPACEBAR,
 
   level1initialPos: {x: 170, y: 8780},
+  level2initialPos: {x: 170, y: 10280},
 
   //ENEMIES
     //Mcgoo

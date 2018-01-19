@@ -5,17 +5,17 @@ var defaultScene = require('./defaultScene.js');
 var pit = require('../Entities/Characters/pit.js');
 var config = require('../config.js');
 
-var level1 = {
+var level2 = {
   preload: function(){
-    this.game.load.image('leveltileset', 'images/scenes/level1tileset.png');
+    this.game.load.image('leveltileset', 'images/scenes/level2tileset.png');
     this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
     this.game.load.image('EnemiesTileset', 'images/scenes/EnemiesTileset.png');
-    this.game.load.tilemap('level', 'images/scenes/level1.json', null,
+    this.game.load.tilemap('level', 'images/scenes/level2.json', null,
                             Phaser.Tilemap.TILED_JSON);
 
-    this.colisionBlockID = 5761;
-    this.edgesBlockID = 5762;
-    this.platformsBlockID = 5764;
+    this.colisionBlockID = 6721;
+    this.edgesBlockID = 6722;
+    this.platformsBlockID = 6724;
 
     defaultScene.preload.call(this);
   },
@@ -29,8 +29,8 @@ var level1 = {
     this.game.bonusDamage=0;
     this.game.hasSacredBow=true;
 
-    defaultScene.myPit.x = config.level1initialPos.x;
-    defaultScene.myPit.y = config.level1initialPos.y;
+    defaultScene.myPit.x = config.level2initialPos.x;
+    defaultScene.myPit.y = config.level2initialPos.y;
 
   },
 
@@ -44,4 +44,4 @@ var level1 = {
   }
 };
 
-module.exports = level1;
+module.exports = level2;
