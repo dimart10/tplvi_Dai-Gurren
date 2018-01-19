@@ -55,7 +55,6 @@ var defaultScene = {
     this.game.load.audio('jump', 'audio/sfx/jump.mp3');
     this.game.load.audio('pit_hit', 'audio/sfx/pit_hit.mp3');
     this.game.load.audio('reaper_alert', 'audio/sfx/reaper_alert.mp3');
-    this.game.load.audio('stat_boost', 'audio/sfx/stat_boost.mp3');
     this.game.load.audio('walk', 'audio/sfx/walk.mp3');
     this.game.load.audio('enemy_death', 'audio/sfx/enemy_death.mp3');
     this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
@@ -118,8 +117,8 @@ var defaultScene = {
     }
 
     function arrowHit (enemy, arrow) {
-      enemy.receiveDamage(arrow.attackDamage /*+ this.game.bonusDamage*/);
-      /*if(!this.game.hasSacredBow)*/ arrow.kill();
+      enemy.receiveDamage(arrow.onHit());
+
     }
 
     function passDamage (victim, aggressor){

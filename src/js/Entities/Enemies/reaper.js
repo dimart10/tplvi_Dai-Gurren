@@ -36,6 +36,7 @@ function reaper(game, x, y, name, direction, player, edgeLayer){
 
 reaper.prototype = Object.create(terrestrial.prototype);//inherit from terrestrial
 
+//if reaper is killed, the music stops
 reaper.prototype.receiveDamage = function(damage){
   if (this.health <= 0){
     this.game.reaper_spotted.stop();
@@ -54,7 +55,7 @@ reaper.prototype.update = function(){
 }
 
 
-
+//looks for pit in the y axis and its direction
 reaper.prototype.detectPit = function(){
   if (Math.abs(this.y - this.player.y) < config.reaperDetectionRange) {
         if (this.player.x > this.x) {
@@ -64,6 +65,7 @@ reaper.prototype.detectPit = function(){
     }
 }
 
+//Moves until it runs into a wall or edge, then in switches direction
 reaper.prototype.movement = function(){
 if(!this.alert){
   if(this.body.onWall()) {
@@ -84,6 +86,8 @@ if(this.turn && this.turnTimer > config.reaperTurnTime) this.exitTurn();
   this.turnTimer++;
 }
 
+//When alerted it spawns two reaettes, changes its movement and animation
+//and switches the music and
 reaper.prototype.onAlert = function(){
     this.game.reaper_spotted.loopFull();
     this.game.underworld.stop();
@@ -98,6 +102,7 @@ reaper.prototype.onAlert = function(){
     this.game.groups.enemies.add(new reapette(this.game, this.x+100, this.y -230, 'enemies', this.player));
   }
 
+//When the alert ends its behaviour and the music return to normal
 reaper.prototype.exitAlert = function(){
   this.game.reaper_spotted.stop();
   this.game.underworld.loopFull();
@@ -109,6 +114,7 @@ reaper.prototype.exitAlert = function(){
   else if(this.direction==-1)this.animations.play('patrolLeft');
 }
 
+//On turn it turns and waits a few moments
 reaper.prototype.onTurn = function(){
   this.turn=true;
   this.body.velocity.x=0;
@@ -119,6 +125,7 @@ reaper.prototype.onTurn = function(){
   {this.direction=1; this.animations.play('patrolRight');}
 }
 
+//After turning he returns to patrolling
 reaper.prototype.exitTurn = function(){
   this.turn=false;
   this.turnTimer=0;

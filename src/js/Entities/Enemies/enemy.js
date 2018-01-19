@@ -19,6 +19,7 @@ function enemy(game, x, y, name){
 
 enemy.prototype = Object.create(entity.prototype);//inherit from entity
 
+//Method that deals the given damage and destroys this if health<=0
 enemy.prototype.receiveDamage =function(damage){
   this.health-=damage;
   this.game.enemy_damage.play();

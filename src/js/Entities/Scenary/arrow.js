@@ -59,4 +59,9 @@ arrow.prototype.cycleOfLife = function(){
     this.kill();
 }
 
+arrow.prototype.onHit = function(){
+  if(!this.game.hasSacredBow) this.destroy();
+  return (this.attackDamage + this.game.bonusDamage);
+}
+
 module.exports = arrow;

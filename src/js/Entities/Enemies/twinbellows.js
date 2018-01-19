@@ -40,6 +40,7 @@ twinbellows.prototype.update = function(){
     }
   }
 
+//Fires at pit's direction
 twinbellows.prototype.attack = function(){
   if(this.x< this.player.x) this.shoot(1);
   else this.shoot(-1);
@@ -51,6 +52,7 @@ twinbellows.prototype.shoot = function(direction){
   this.attackTimer=0;
 }
 
+//Moves towards pit, he has some delay when turning
 twinbellows.prototype.movement = function(){
   if(this.x > this.player.x) {
     if(this.direction==1){
@@ -73,6 +75,7 @@ twinbellows.prototype.movement = function(){
   this.horizMove(this.velocity);
 }
 
+//It jumps briefly
 twinbellows.prototype.jump = function(){
   this.body.velocity.y = -800;
   this.jumpTimer=0;
