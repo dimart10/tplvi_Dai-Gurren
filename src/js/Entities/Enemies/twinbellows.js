@@ -2,7 +2,7 @@
 'use strict'
 
 var terrestrial = require('./terrestrial.js');
-var magmaShot = require('../Scenary/magmaShot.js')
+var magmaShot = require('../Scenary/magmaShot.js');
 var config = require('../../config.js');
 
 function twinbellows(game, x, y, name, player){
@@ -14,6 +14,7 @@ function twinbellows(game, x, y, name, player){
   this.health=this.maxHealth;
   this.attackDamage=config.twinbellowsAttackDamage;
   this.velocity=config.twinbellowsVelocity;
+  this.jumpHeight=conig.twinbellowsJumpHeight;
 
   this.animations.add('walkRight', [1, 3], 5, true);
   this.animations.add('walkLeft', [0, 2], 5, true);
@@ -87,7 +88,7 @@ twinbellows.prototype.movement = function(){
 
 //It jumps briefly
 twinbellows.prototype.jump = function(){
-  this.body.velocity.y = -800;
+  this.body.velocity.y = this.jumpHeight;
   this.jumpTimer=0;
 }
 
