@@ -1961,7 +1961,7 @@ var config = {
   jumpKey: Phaser.Keyboard.SPACEBAR,
 
   level1initialPos: {x: 170, y: 8780},
-  level2initialPos: {x: 170, y: 10280},
+  level2initialPos: {x: 170, y: 500},
   level3initialPos: {x: 170, y: 14800},
   level1endLevelPos: {x: 780, y: 500},
   level2endLevelPos: {x: 780, y: 500},
