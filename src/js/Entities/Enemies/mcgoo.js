@@ -42,6 +42,7 @@ mcgoo.prototype.update = function(){
   }
 }
 
+//Looks for pit in the y ais
 mcgoo.prototype.detectPit = function(){
   if (Math.abs(this.y - this.player.y) < config.mcgooDetectionRange){
     this.alert = true;
@@ -50,6 +51,7 @@ mcgoo.prototype.detectPit = function(){
   }
 }
 
+//Fires a magmashot at pit and changes the animation
 mcgoo.prototype.attack = function(){
   if(this.x< this.player.x) this.shoot(1);
   else this.shoot(-1);
@@ -58,6 +60,7 @@ mcgoo.prototype.attack = function(){
   this.body.position.y+=config.mcgooHiddenOY;
 }
 
+//Fires a magma shot in the given direction
 mcgoo.prototype.shoot = function(direction){
   this.game.groups.projectiles.add(new magmaShot(this.game, this.position.x,
     this.position.y, "magmaShot", direction));

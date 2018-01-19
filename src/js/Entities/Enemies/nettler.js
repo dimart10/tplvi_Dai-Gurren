@@ -87,10 +87,15 @@ nettler.prototype.crouch = function(){
   this.body.position.y+=4;
 }
 
-//Looks for pit in its y position
+//Looks for pit in its y position and its direction
 nettler.prototype.detectPit = function(){
-    if (Math.abs(this.y - this.player.y) < config.nettlerRangeDetection)
-      this.alert = true;
+    if (Math.abs(this.y - this.player.y) < config.nettlerRangeDetection){
+      if (this.player.x > this.x) {
+        if(this.direction==1) this.alert=true;
+
+      else if(this.direction==-1) this.alert=true;
+    }
+  }
 }
 
 
