@@ -27,9 +27,7 @@ shemum.prototype = Object.create(terrestrial.prototype);//inherit from terrestri
 
 shemum.prototype.update = function(){
   if (this.inCamera){
-    if(!this.alert){
       this.movement();
-    }
   }
 }
 

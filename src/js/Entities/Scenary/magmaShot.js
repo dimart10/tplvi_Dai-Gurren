@@ -29,11 +29,13 @@ magmaShot.prototype.update = function(){
   this.cycleOfLife();
 }
 
+//moves in its direction
 magmaShot.prototype.move = function(){
   if (this.direction == 1) this.body.velocity.x = config.magmaShotVelocity;
   else if(this.direction==-1) this.body.velocity.x = -config.magmaShotVelocity;
 }
 
+//dissapears after traveling a certain distance
 magmaShot.prototype.cycleOfLife = function(){
   var currentPosition;
   if (this.direction == 1 || this.direction == -1){

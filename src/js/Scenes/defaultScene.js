@@ -58,6 +58,8 @@ var defaultScene = {
     this.game.enemy_death = this.game.add.audio('enemy_death');
     this.game.get_item = this.game.add.audio('get_item');
     this.game.power_up = this.game.add.audio('power_up');
+    this.game.boss_damage = this.game.add.audio('boss_damage');
+    this.game.boss_death = this.game.add.audio('boss_death');
 
     defaultScene.myPit = new pit(this.game, 0, 0, 'pit');
 

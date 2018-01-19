@@ -119,11 +119,12 @@ var config = {
   twinbellowsH: 24,
   twinbellowsOX: 0,
   twinbellowsOH: 0,
-  twinbellowsMaxHealth: 100,
+  twinbellowsMaxHealth: 30,
   twinbellowsAttackDamage: 2,
   twinbellowsVelocity: 70,
   twinbellowsAttackTime: 100,
   twinbellowsJumpTime: 220,
+  twinbellowsJumpHeight: -900;
   twinbellowsDirectionTimeRight: 150,
   twinbellowsDirectionTimeLeft: 40,
 

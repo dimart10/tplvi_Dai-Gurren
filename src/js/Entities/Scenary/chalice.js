@@ -18,6 +18,7 @@ chalice.prototype.update = function(){
 
 }
 
+//heals the player for the given amount
 chalice.prototype.effect = function(){
   this.player.health += config.chacliceHealing;
   if(this.player.health > this.player.maxHealth) {

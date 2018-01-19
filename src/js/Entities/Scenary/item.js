@@ -15,6 +15,7 @@ item.prototype = Object.create(entity.prototype);
 item.prototype.update = function(){
 }
 
+//when a item is picked up it does its effect and is destroyed
 item.prototype.onPickUp = function(){
   this.effect();
   this.destroy();

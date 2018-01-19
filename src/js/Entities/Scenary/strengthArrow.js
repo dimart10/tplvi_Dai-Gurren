@@ -17,6 +17,7 @@ strengthArrow.prototype.update = function(){
 
 }
 
+//Increases the damage of the arrows
 strengthArrow.prototype.effect = function(){
   this.game.bonusDamage++;
   this.game.power_up.play();

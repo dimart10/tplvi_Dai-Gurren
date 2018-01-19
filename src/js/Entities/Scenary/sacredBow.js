@@ -17,6 +17,7 @@ sacredBow.prototype.update = function(){
 
 }
 
+//Sets hasSacredBow as true
 sacredBow.prototype.effect = function(){
   this.game.hasSacredBow=true;
   this.game.power_up.play();
