@@ -30,11 +30,10 @@ var config = {
   jumpKey: Phaser.Keyboard.SPACEBAR,
 
   level1initialPos: {x: 170, y: 8780},
-  //level1initialPos: {x: 200, y: 500},
   level2initialPos: {x: 170, y: 10280},
   level3initialPos: {x: 170, y: 14800},
-
   level1endLevelPos: {x: 780, y: 500},
+  level2endLevelPos: {x: 780, y: 500},
 
   //ENEMIES
     //Mcgoo
@@ -156,6 +155,9 @@ var config = {
   magmaShotOffset: 10,
   magmaShotDistance: 300,
   magmaShotVelocity: 400,
+
+//moving platforms
+  movingPlatformVelocity: 150,
 
     //HUD VARIABLES
   barConfig: {x: 50, y: 50, width: 10, height: 25,

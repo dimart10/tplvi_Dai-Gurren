@@ -23,6 +23,7 @@ var barrel = require('../Entities/Scenary/barrel.js');
 var strengthArrow = require('../Entities/Scenary/strengthArrow.js');
 var angelFeather = require('../Entities/Scenary/angelFeather.js');
 var sacredBow = require('../Entities/Scenary/sacredBow.js');
+var movingPlatform = require('../Entities/Scenary/movingPlatform.js');
 
 var defaultScene = {
   myPit: undefined,
@@ -44,6 +45,7 @@ var defaultScene = {
     this.game.groups.arrows = this.game.add.group();
     this.game.groups.projectiles = this.game.add.group();
     this.game.groups.items = this.game.add.group();
+    this.game.groups.movingPlatforms = this.game.add.group();
 
     //Audio
     this.game.underworld = this.game.add.audio('underworld');
@@ -84,12 +86,15 @@ var defaultScene = {
     HUD.create(this.game);
 
     //Set the rendering order correctly
+    this.game.world.bringToTop(this.game.groups.movingPlatforms);
     this.game.world.bringToTop(this.game.groups.arrows);
     this.game.world.bringToTop(this.game.groups.projectiles);
     this.game.world.bringToTop(this.game.groups.items);
     this.game.world.bringToTop(this.game.groups.enemies);
     this.game.world.bringToTop(defaultScene.myPit);
 
+
+    this.game.groups.movingPlatforms.add(new movingPlatform(this.game, 2000, 14700, 'movingPlatform'));
   },
 
   update: function(){
@@ -97,12 +102,15 @@ var defaultScene = {
     this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.platformsLayer);
     this.game.physics.arcade.collide(this.game.groups.enemies, defaultScene.platformsLayer);
     this.game.physics.arcade.collide(this.game.groups.enemies, defaultScene.colisionLayer);
+    this.game.physics.arcade.collide(this.game.groups.enemies, this.game.groups.movingPlatforms);
     this.game.physics.arcade.collide(this.game.groups.arrows, defaultScene.colisionLayer, killCollObj);
     this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.colisionLayer);
     this.game.physics.arcade.overlap(this.game.groups.enemies, this.game.groups.arrows, arrowHit);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.enemies, passDamage);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.projectiles, passDamage);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.items, pickUp);
+    this.game.physics.arcade.collide(defaultScene.myPit, this.game.groups.movingPlatforms);
+    this.game.physics.arcade.collide(this.game.groups.movingPlatforms, defaultScene.colisionLayer);
 
 
     function killCollObj(obj, coll){
@@ -222,6 +230,18 @@ var defaultScene = {
       }
     }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.itemLayer);
 
+    /*//Spawns platforms
+    defaultScene.map.forEach(function (tile){
+      var newMovingPlatform = null;
+      if (tile.properties != undefined && tile.properties.movingPlatform != undefined){
+          newMovingPlatform = new movingPlatform(this.game, tile.worldX, tile.worldY, 'movingPlatform');
+        }
+
+      if (newMovingPlatform != null){
+        this.game.groups.movingPlatforms.add(new);
+      }
+    }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.itemLayer);
+*/
     //Sets platforms specific side collisions
     defaultScene.map.forEach(function (tile){
       tile.collideDown = false;

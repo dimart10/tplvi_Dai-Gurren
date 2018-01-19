@@ -14,7 +14,7 @@ function twinbellows(game, x, y, name, player){
   this.health=this.maxHealth;
   this.attackDamage=config.twinbellowsAttackDamage;
   this.velocity=config.twinbellowsVelocity;
-  this.jumpHeight=conig.twinbellowsJumpHeight;
+  this.jumpHeight=config.twinbellowsJumpHeight;
 
   this.animations.add('walkRight', [1, 3], 5, true);
   this.animations.add('walkLeft', [0, 2], 5, true);
