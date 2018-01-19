@@ -17,6 +17,9 @@ var levelEnd = require('../Entities/Scenary/levelEnd.js');
 var chalice = require('../Entities/Scenary/chalice.js');
 var bottle = require('../Entities/Scenary/bottle.js');
 var barrel = require('../Entities/Scenary/barrel.js');
+var strengthArrow = require('../Entities/Scenary/strengthArrow.js');
+var angelFeather = require('../Entities/Scenary/angelFeather.js');
+var sacredBow = require('../Entities/Scenary/sacredBow.js');
 
 var level1 = {
   myPit: undefined,
@@ -25,6 +28,7 @@ var level1 = {
   colisionLayer: undefined,
   platformsLayer: undefined,
   enemiesLayer: undefined,
+  itemLayer: undefined,
 
   preload: function(){
     defaultScene.preload.call(this);
@@ -58,6 +62,7 @@ var level1 = {
     this.game.enemy_damage = this.game.add.audio('enemy_damage');
     this.game.enemy_death = this.game.add.audio('enemy_death');
     this.game.get_item = this.game.add.audio('get_item');
+    this.game.power_up = this.game.add.audio('power_up');
 
     this.myPit = new pit(this.game, config.level1initialPos.x,
                               config.level1initialPos.y, 'pit');
@@ -75,7 +80,7 @@ var level1 = {
 
   update: function(){
     defaultScene.update.call(this);
-    
+
     //Tilemap colisions
     this.game.physics.arcade.collide(this.myPit, this.platformsLayer);
     this.game.physics.arcade.collide(this.game.groups.enemies, this.colisionLayer);
@@ -92,8 +97,8 @@ var level1 = {
     }
 
     function arrowHit (enemy, arrow) {
-      enemy.receiveDamage(arrow.attackDamage);
-      arrow.kill();
+      enemy.receiveDamage(arrow.attackDamage /*+ this.game.bonusDamage*/);
+      /*if(!this.game.hasSacredBow)*/ arrow.kill();
     }
 
     function passDamage (victim, aggressor){
@@ -116,6 +121,7 @@ var level1 = {
     this.colisionLayer = null;
     this.platformsLayer = null;
     this.enemiesLayer = null;
+    this.itemLayer = null;
   },
 
   createTileMap: function(){
@@ -147,16 +153,17 @@ var level1 = {
     this.enemiesLayer.fixedCamera = false;
     this.enemiesLayer.visible = false;
 
+    this.itemLayer = this.map.createLayer('Items');
+    this.itemLayer.setScale(config.scale);
+    this.itemLayer.fixedCamera = false;
+    this.itemLayer.visible = false;
+
     this.mapLayer.resizeWorld();
 
     this.map.setCollision(5761, true, 'Colisions');
     this.map.setCollision(5762, true, 'Edges');
     this.map.setCollision(5764, true, 'Platforms');
 
-    this.game.groups.items.add(new chalice(this.game, config.level1initialPos.x, config.level1initialPos.y -100, 'lifeWater', this.myPit));
-    this.game.groups.items.add(new bottle(this.game, config.level1initialPos.x, config.level1initialPos.y -200, 'lifeWater'));
-    this.game.groups.items.add(new bottle(this.game, config.level1initialPos.x, config.level1initialPos.y -300, 'lifeWater'));
-    this.game.groups.items.add(new barrel(this.game, config.level1initialPos.x +100, config.level1initialPos.y -300, 'barrel'));
 
     //Spawns enemies UNFINISHED
     this.map.forEach(function (tile){
@@ -177,6 +184,26 @@ var level1 = {
         this.game.groups.enemies.add(newEnemy);
       }
     }, this, 0, 0, this.map.width, this.map.height, this.enemiesLayer);
+
+    //Spawns items
+    this.map.forEach(function (tile){
+      var newItem = null;
+      if (tile.properties != undefined && tile.properties.itemType != undefined){
+        switch (tile.properties.itemType){
+          case "chalice": newItem = new chalice(this.game, tile.worldX, tile.worldY, 'lifeWater', this.myPit); break;
+          case "bottle": newItem = new bottle(this.game, tile.worldX, tile.worldY, 'lifeWater'); break;
+          case "barrel": newItem = new barrel(this.game, tile.worldX, tile.worldY, 'barrel'); break;
+          case "strengthArrow": newItem = new strengthArrow(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
+          case "angelFeather": newItem = new angelFeather(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
+          case "sacredBow": newItem = new sacredBow(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
+          default: newItem = null; break;
+        }
+      }
+
+      if (newItem != null){
+        this.game.groups.items.add(newItem);
+      }
+    }, this, 0, 0, this.map.width, this.map.height, this.itemLayer);
 
     //Sets platforms specific side collisions
     this.map.forEach(function (tile){

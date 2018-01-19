@@ -10,13 +10,14 @@ var defaultScene = {
 
   preload: function(){
     this.game.load.spritesheet('pit', 'images/characters/pit.png', 29, 29, 180);
-    this.game.load.image('arrow', 'images/scenary/arrow(bigger).png');
+    this.game.load.image('arrow', 'images/scenary/arrow.png');
     this.game.load.image('magmaShot', 'images/scenary/magmaShot.png');
     this.game.load.image('barrel', 'images/scenary/barrel.png');
     this.game.load.spritesheet('enemies', 'images/characters/enemies.png', 30, 30, 195);
     this.game.load.spritesheet('twinbellows', 'images/characters/twinbellows.png', 42, 26, 4);
     this.game.load.spritesheet('heart', 'images/scenary/heart.png', 14, 14, 3);
-    this.game.load.spritesheet('lifeWater', 'images/scenary/lifeWater.png', 10, 16, 2)
+    this.game.load.spritesheet('lifeWater', 'images/scenary/lifeWater.png', 10, 16, 2);
+    this.game.load.spritesheet('powerUps', 'images/scenary/powerUps.png', 8, 16, 3);
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');
@@ -31,6 +32,7 @@ var defaultScene = {
     this.game.load.audio('stat_boost', 'audio/sfx/stat_boost.mp3');
     this.game.load.audio('walk', 'audio/sfx/walk.mp3');
     this.game.load.audio('enemy_death', 'audio/sfx/enemy_death.mp3');
+    this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
   },
 
   create: function(){
@@ -39,6 +41,8 @@ var defaultScene = {
     this.game.hearts=0;
     this.game.bottles=0;
     this.game.maxBottles=1;
+    this.game.bonusDamage=0;
+    this.game.hasSacredBow=true;
   },
 
   update: function(){

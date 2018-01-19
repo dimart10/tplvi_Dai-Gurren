@@ -199,18 +199,6 @@
              "2":
                 {
                  "itemType":"barrel"
-                },
-             "3":
-                {
-                 "itemType":"strengthArrow"
-                },
-             "4":
-                {
-                 "itemType":"angelFeather"
-                },
-             "5":
-                {
-                 "itemType":"sacredBow"
                 }
             },
          "tilepropertytypes":
@@ -224,18 +212,6 @@
                  "itemType":"string"
                 },
              "2":
-                {
-                 "itemType":"string"
-                },
-             "3":
-                {
-                 "itemType":"string"
-                },
-             "4":
-                {
-                 "itemType":"string"
-                },
-             "5":
                 {
                  "itemType":"string"
                 }

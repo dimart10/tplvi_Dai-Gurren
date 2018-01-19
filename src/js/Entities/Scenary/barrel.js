@@ -17,7 +17,7 @@ barrel.prototype.update = function(){
 
 barrel.prototype.effect = function(){
   this.game.maxBottles=config.maxBottles;
-  this.game.get_item.play();
+  this.game.power_up.play();
 }
 
 
