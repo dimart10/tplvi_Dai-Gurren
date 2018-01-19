@@ -17,6 +17,7 @@ bottle.prototype.update = function(){
 
 }
 
+//increases the number of bottles you are carrying (below maximum)
 bottle.prototype.effect = function(){
   this.game.bottles++;
   if(this.game.bottles>this.game.maxBottles) {

@@ -15,6 +15,7 @@ barrel.prototype.update = function(){
 
 }
 
+//increases the number of bottles you can carry
 barrel.prototype.effect = function(){
   this.game.maxBottles=config.maxBottles;
   this.game.power_up.play();

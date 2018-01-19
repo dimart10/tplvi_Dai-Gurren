@@ -26,11 +26,13 @@ heart.prototype.update = function(){
 this.cycleOfLife();
 }
 
+//increases the amount of heart by its value
 heart.prototype.effect = function(){
   this.game.hearts+=this.value;
   this.game.get_item.play();
 }
 
+//it dissapears after a given time
 heart.prototype.cycleOfLife = function(){
   this.timer++;
   if(this.timer >= config.heartTime) this.destroy();
