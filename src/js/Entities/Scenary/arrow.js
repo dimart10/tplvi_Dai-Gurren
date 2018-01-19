@@ -64,8 +64,9 @@ arrow.prototype.cycleOfLife = function(){
 //When the arrow hits an enemy it deals damage and is destroyed
 //if the sacredBow is not equiped
 arrow.prototype.onHit = function(){
-  if(!this.game.hasSacredBow) this.destroy();
+  if(!this.game.hasSacredBow) this.kill();
   return (this.attackDamage + this.game.bonusDamage);
+
 }
 
 module.exports = arrow;

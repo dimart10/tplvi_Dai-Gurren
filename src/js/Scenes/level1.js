@@ -27,7 +27,7 @@ var level1 = {
     this.game.bottles=0;
     this.game.maxBottles=1;
     this.game.bonusDamage=0;
-    this.game.hasSacredBow=true;
+    this.game.hasSacredBow=false;
 
     defaultScene.myPit.x = config.level1initialPos.x;
     defaultScene.myPit.y = config.level1initialPos.y;
