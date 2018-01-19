@@ -95,7 +95,7 @@ var defaultScene = {
     this.game.world.bringToTop(defaultScene.myPit);
 
 
-    this.game.groups.movingPlatforms.add(new movingPlatform(this.game, 2000, 14700, 'movingPlatform'));
+    this.game.groups.movingPlatforms.add(new movingPlatform(this.game, 500, 14700, 'movingPlatform'));
   },
 
   update: function(){

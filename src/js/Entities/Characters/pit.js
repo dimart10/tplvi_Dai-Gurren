@@ -168,9 +168,14 @@ pit.prototype.updateHealthBar = function(){
 
 pit.prototype.hitCount = function(){
   if (!this.canBeHit){
-    if (this.hitTimer < config.framesBetweenHit) this.hitTimer++;
+    if (this.hitTimer < config.framesBetweenHit) {
+      if (this.hitTimer % 2 === 0)this.alpha=0;
+      else if (this.hitTimer % 2 !== 0)this.alpha=1;
+      this.hitTimer++;
+    }
     else{
      this.canBeHit = true;
+     this.alpha=1;
      this.hitTimer = 0;
     }
   }

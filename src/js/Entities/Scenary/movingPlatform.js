@@ -11,9 +11,8 @@ function movingPlatform(game, x, y, name){
   this.body.allowGravity = false;
   this.direction=-1;
   this.velocity=config.movingPlatformVelocity;
-  this.body.collideDown=false;
-  this.body.collideRight=false;
-  this.body.collideLeft= false;
+  this.body.checkCollision.down = false;
+  
   this.body.immovable=true;
 }
 
