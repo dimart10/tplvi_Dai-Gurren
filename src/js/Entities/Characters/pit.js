@@ -66,13 +66,13 @@ pit.prototype.update = function(){
 
 pit.prototype.move = function(){
   if (this.cursors.left.isDown) {
-		    this.body.velocity.x = -config.movementSpeed * this.game.time.elapsed / 15;
+		    this.body.velocity.x = -config.movementSpeed;
         if (this.state == "normal") this.animations.play("walkLeft");
         this.direction=-1;
         //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if (this.cursors.right.isDown){
-		    this.body.velocity.x = config.movementSpeed * this.game.time.elapsed / 15;
+		    this.body.velocity.x = config.movementSpeed;
         if (this.state == "normal") this.animations.play("walkRight");
         this.direction=1;
         //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
@@ -113,7 +113,7 @@ pit.prototype.jump = function(){
   if(this.spacebar.isDown && this.body.onFloor()) {
     this.state = "jumping";
     this.jumptimer=1;
-    this.body.velocity.y = -this.body.maxVelocity.y;
+    this.body.velocity.y =-this.body.maxVelocity.y;
     this.game.jump.play();
 
     if (this.direction != 1 && this.direction != -1) this.direction = 1;
@@ -128,7 +128,7 @@ pit.prototype.jump = function(){
       }
       else{
         this.jumptimer++;
-        this.body.velocity.y=-900;
+        this.body.velocity.y =-this.body.maxVelocity.y;
       }
     }
 
