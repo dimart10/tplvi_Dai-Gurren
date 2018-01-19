@@ -19,6 +19,7 @@ var BootScene = {
     this.game.load.spritesheet('lifeWater', 'images/scenary/lifeWater.png', 10, 16, 2);
     this.game.load.spritesheet('powerUps', 'images/scenary/powerUps.png', 8, 16, 3);
     this.game.load.image('movingPlatform', 'images/scenary/movingPlatform.png');
+    this.game.load.image('titleScreen', 'images/scenes/title_screen.png');
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');
@@ -33,6 +34,9 @@ var BootScene = {
     this.game.load.audio('walk', 'audio/sfx/walk.mp3');
     this.game.load.audio('enemy_death', 'audio/sfx/enemy_death.mp3');
     this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
+    this.game.load.audio('boss_damage', 'audio/sfx/boss_death.mp3');
+    this.game.load.audio('boss_damage', 'audio/sfx/boss_damage.mp3');
+
   },
 
   create: function () {
