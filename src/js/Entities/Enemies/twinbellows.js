@@ -13,7 +13,7 @@ function twinbellows(game, x, y, name, player){
   this.maxHealth=config.twinbellowsMaxHealth;
   this.health=this.maxHealth;
   this.attackDamage=config.twinbellowsAttackDamage;
-  this.velocity=config.velocity;
+  this.velocity=config.twinbellowsVelocity;
 
   this.animations.add('walkRight', [1, 3], 5, true);
   this.animations.add('walkLeft', [0, 2], 5, true);
@@ -40,8 +40,7 @@ twinbellows.prototype.update = function(){
     }
   }
 
-  //if reaper is killed, the music stops
-  reaper.prototype.receiveDamage = function(damage){
+  twinbellows.prototype.receiveDamage = function(damage){
     this.health-=damage;
     this.game.boss_damage.play();
 
@@ -49,7 +48,6 @@ twinbellows.prototype.update = function(){
       this.game.boss_death.play();
       this.destroy();
     }
-  }
   }
 
 //Fires at pit's direction
