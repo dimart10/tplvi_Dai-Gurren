@@ -2,11 +2,12 @@
 'use strict'
 
 var item = require('./item.js');
+var config = require('../../config.js');
 
 function bottle(game, x, y, name, player){
   item.call(this, game, x, y, name);
   this.animations.add('bottle', [0], 0, false, 1);
-  this.scale.setTo(2.5,2.5);
+  this.scale.setTo(config.scale2, config.scale2);
   this.player = player;
 }
 
@@ -21,6 +22,7 @@ bottle.prototype.effect = function(){
   if(this.game.bottles>this.game.maxBottles) {
     this.game.bottles=this.game.maxBottles;
   }
+
   this.game.get_item.play();
 }
 

@@ -2,10 +2,11 @@
 'use strict'
 
 var entity = require('../entity.js');
+var config = require('../../config.js')
 
 function arrow(game, x, y, name, direction){
   this.direction = direction;
-  this.attackDamage=1;
+  this.attackDamage=config.arrowAttackDamage;
 
   if(this.direction==1){
     entity.call(this, game, x+25, y, name);
@@ -24,7 +25,7 @@ function arrow(game, x, y, name, direction){
     this.initialPosition = y;
   }
 
-  this.maximumDistance = 220;
+  this.maximumDistance = config.arrowDistance;
 
   game.physics.arcade.enable(this);
   this.body.allowGravity = false;
@@ -41,10 +42,10 @@ arrow.prototype.update = function(){
 }
 
 arrow.prototype.move = function(){
-  if (this.direction == 1) this.body.velocity.x = 900;
-  else if(this.direction==-1) this.body.velocity.x = -900;
-  else if(this.direction==0) this.body.velocity.y = -900;
-  else if (this.direction==2) this.body.velocity.y = 900;
+  if (this.direction == 1) this.body.velocity.x = config.arrowVelocity;
+  else if(this.direction==-1) this.body.velocity.x = -config.arrowVelocity;
+  else if(this.direction==0) this.body.velocity.y = -config.arrowVelocity;
+  else if (this.direction==2) this.body.velocity.y = config.arrowVelocity;
 }
 
 arrow.prototype.cycleOfLife = function(){

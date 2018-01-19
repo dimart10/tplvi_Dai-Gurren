@@ -2,21 +2,20 @@
 'use strict'
 
 var entity = require('../entity.js');
+var config = require('../../config.js');
 
 function magmaShot(game, x, y, name, direction){
   this.direction = direction;
-  this.attackDamage=2;
+  this.attackDamage = config.magmaShotAttackDamage;
 
   if(this.direction==1){
-    entity.call(this, game, x+10, y, name);
+    entity.call(this, game, x + config.magmaShotOffset, y, name);
     this.initialPosition = x;
   }
   else if (this.direction==-1){
-    entity.call(this, game, x-10, y, name);
+    entity.call(this, game, x - config.magmaShotOffset, y, name);
     this.initialPosition = x;
   }
-
-  this.maximumDistance = 300;
 
   game.physics.arcade.enable(this);
   this.body.allowGravity = false;
@@ -31,8 +30,8 @@ magmaShot.prototype.update = function(){
 }
 
 magmaShot.prototype.move = function(){
-  if (this.direction == 1) this.body.velocity.x = 400;
-  else if(this.direction==-1) this.body.velocity.x = -400;
+  if (this.direction == 1) this.body.velocity.x = config.magmaShotVelocity;
+  else if(this.direction==-1) this.body.velocity.x = -config.magmaShotVelocity;
 }
 
 magmaShot.prototype.cycleOfLife = function(){
@@ -42,7 +41,7 @@ magmaShot.prototype.cycleOfLife = function(){
   } else{
     currentPosition = this.y;
   }
-  if (Math.abs(currentPosition - this.initialPosition) >= this.maximumDistance)
+  if (Math.abs(currentPosition - this.initialPosition) >= config.magmaShotDistance)
     this.kill();
 }
 

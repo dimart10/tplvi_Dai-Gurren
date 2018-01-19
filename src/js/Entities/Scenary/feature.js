@@ -1,2 +1,0 @@
-//feature.js
-'use strict'

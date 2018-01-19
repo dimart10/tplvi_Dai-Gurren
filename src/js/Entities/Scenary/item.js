@@ -2,6 +2,7 @@
 'use strict'
 
 var entity = require('../entity.js');
+var config = require('../../config.js');
 
 function item(game, x, y, name){
   entity.call(this, game, x, y, name);

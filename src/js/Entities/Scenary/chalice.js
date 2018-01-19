@@ -2,12 +2,13 @@
 'use strict'
 
 var item = require('./item.js');
+var config = require('../../config.js');
 
 function chalice(game, x, y, name, player){
   item.call(this, game, x, y, name);
   this.animations.add('chalice', [1], 0, false);
   this.animations.play('chalice');
-  this.scale.setTo(2.5,2.5);
+  this.scale.setTo(config.scale2, config.scale2);
   this.player = player;
 }
 
@@ -18,7 +19,7 @@ chalice.prototype.update = function(){
 }
 
 chalice.prototype.effect = function(){
-  this.player.health+=7;
+  this.player.health += config.chacliceHealing;
   if(this.player.health > this.player.maxHealth) {
     this.player.health = this.player.maxHealth;
   }

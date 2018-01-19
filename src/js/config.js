@@ -2,14 +2,14 @@
 'use strict'
 
 var config = {
-  //WORLD VARIABLES
+  //WORLD
   tileSize: 16,
   scale: 3.13,
   scale2: 2.5, //Special scale for some enemies
   maxVelocity: 800, //To avoid tunneling
 
-  //PIT VARIABLES
-  initialPitHealth: 500,
+  //PIT
+  initialPitHealth: 10,
   framesBetweenHit: 60,
   jumpTime: 10,
   initialDirection: 1,
@@ -31,7 +31,7 @@ var config = {
 
   level1initialPos: {x: 170, y: 8780},
 
-  //ENEMIES VARIABLES
+  //ENEMIES
     //Mcgoo
   mcgooW: 12,
   mcgooH: 20,
@@ -123,7 +123,35 @@ var config = {
   twinbellowsDirectionTimeRight: 150,
   twinbellowsDirectionTimeLeft: 40,
 
-  //HUD VARIABLES
+  //SCENARY
+  maxBottles: 8,
+
+    //Arrow
+  arrowAttackDamage: 1,
+  arrowDistance: 220,
+  arrowVelocity: 900,
+
+    //Barrel
+
+    //Bottle
+
+    //Chalice
+  chacliceHealing: 7,
+
+    //Heart
+  heartTime: 300,
+
+    //Item
+
+    //Level end
+
+    //Magma shot
+  magmaShotAttackDamage: 2,
+  magmaShotOffset: 10,
+  magmaShotDistance: 300,
+  magmaShotVelocity: 400,
+
+    //HUD VARIABLES
   barConfig: {x: 100, y: 50, width: 10, height: 25,
               bg: {color: '#000074'}, bar: {color: '#e20074'}},
   pixelsPerLifePoint: 15
