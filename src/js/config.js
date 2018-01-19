@@ -34,6 +34,26 @@ var config = {
   level3initialPos: {x: 170, y: 14800},
   level1endLevelPos: {x: 780, y: 500},
   level2endLevelPos: {x: 780, y: 500},
+  bossLevelinitialPos: {x: 170, y: 500},
+
+  level1colisionBlockID: 5761,
+  level1edgesBlockID: 5762,
+  level1platformsBlockID: 5764,
+  level1hazardBlockID: 5766,
+
+  level2colisionBlockID: 6721,
+  level2edgesBlockID: 6722,
+  level2platformsBlockID: 6724,
+  level2hazardBlockID: 6726,
+
+  level3colisionBlockID: 9601,
+  level3edgesBlockID: 9602,
+  level3platformsBlockID: 9604,
+  level3hazardBlockID: 9606,
+
+  bossLevelcolisionBlockID: 1,
+  bossLevelplatformsBlockID: 4,
+
 
   //ENEMIES
     //Mcgoo
@@ -158,6 +178,9 @@ var config = {
 
 //moving platforms
   movingPlatformVelocity: 150,
+
+  //hazards
+  hazardAttack: 1,
 
     //HUD VARIABLES
   barConfig: {x: 50, y: 50, width: 10, height: 25,

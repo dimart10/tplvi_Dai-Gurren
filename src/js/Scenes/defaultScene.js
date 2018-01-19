@@ -33,6 +33,7 @@ var defaultScene = {
   platformsLayer: undefined,
   enemiesLayer: undefined,
   itemLayer: undefined,
+  hazardLayer: undefined,
 
   preload: function(){
 
@@ -107,6 +108,7 @@ var defaultScene = {
     this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.colisionLayer);
     this.game.physics.arcade.overlap(this.game.groups.enemies, this.game.groups.arrows, arrowHit);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.enemies, passDamage);
+    this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.hazardLayer, hazardDamage);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.projectiles, passDamage);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.items, pickUp);
     this.game.physics.arcade.collide(defaultScene.myPit, this.game.groups.movingPlatforms);
@@ -124,6 +126,10 @@ var defaultScene = {
 
     function passDamage (victim, aggressor){
       victim.damage(aggressor.attackDamage);
+    }
+
+    function hazardDamage (victim, aggressor){
+      victim.damage(config.hazardAttack);
     }
 
     function pickUp (pit, item){
@@ -150,6 +156,7 @@ var defaultScene = {
     defaultScene.platformsLayer = null;
     defaultScene.enemiesLayer = null;
     defaultScene.itemLayer = null;
+    defaultScene.hazardLayer = null;
   },
 
   createTileMap: function(){
@@ -186,11 +193,18 @@ var defaultScene = {
     defaultScene.itemLayer.fixedCamera = false;
     defaultScene.itemLayer.visible = false;
 
+    defaultScene.hazardLayer = defaultScene.map.createLayer('Hazards');
+    defaultScene.hazardLayer.setScale(config.scale);
+    defaultScene.hazardLayer.fixedCamera = false;
+    defaultScene.hazardLayer.visible = false;
+
     defaultScene.mapLayer.resizeWorld();
 
     defaultScene.map.setCollision(this.colisionBlockID, true, 'Colisions');
     defaultScene.map.setCollision(this.edgesBlockID, true, 'Edges');
     defaultScene.map.setCollision(this.platformsBlockID, true, 'Platforms');
+    defaultScene.map.setCollision(this.hazardBlockID, true, 'Hazards');
+
 
     //Spawns enemies UNFINISHED
     defaultScene.map.forEach(function (tile){

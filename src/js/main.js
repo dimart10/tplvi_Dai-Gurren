@@ -5,6 +5,7 @@ module.exports.Phaser = Phaser;
 var level1 = require('./Scenes/level1.js');
 var level2 = require('./Scenes/level2.js');
 var level3 = require('./Scenes/level3.js');
+var bossLevel = require('./Scenes/bossLevel.js');
 var BootScene = {
   preload: function () {
     this.game.time.desiredFps = 60;
@@ -34,7 +35,7 @@ var BootScene = {
     this.game.load.audio('walk', 'audio/sfx/walk.mp3');
     this.game.load.audio('enemy_death', 'audio/sfx/enemy_death.mp3');
     this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
-    this.game.load.audio('boss_damage', 'audio/sfx/boss_death.mp3');
+    this.game.load.audio('boss_death', 'audio/sfx/boss_death.mp3');
     this.game.load.audio('boss_damage', 'audio/sfx/boss_damage.mp3');
 
   },
@@ -54,6 +55,7 @@ window.onload = function () {
   game.state.add('play', level1);
   game.state.add('level2', level2);
   game.state.add('level3', level3);
+  game.state.add('bossLevel', bossLevel);
 
   game.state.start('boot');
 };

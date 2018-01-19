@@ -16,9 +16,10 @@ var level1 = {
     this.game.load.tilemap('level', 'images/scenes/level1.json', null,
                             Phaser.Tilemap.TILED_JSON);
 
-    this.colisionBlockID = 5761;
-    this.edgesBlockID = 5762;
-    this.platformsBlockID = 5764;
+    this.colisionBlockID = config.level1colisionBlockID;
+    this.edgesBlockID = config.level1edgesBlockID;
+    this.platformsBlockID = config.level1platformsBlockID;
+    this.hazardBlockID = config.level1hazardBlockID;
 
     defaultScene.preload.call(this);
   },

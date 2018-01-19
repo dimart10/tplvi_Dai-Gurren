@@ -1,22 +1,20 @@
-//level3.js
+//bossLevel.js
 'use strict';
 
 var defaultScene = require('./defaultScene.js');
 var pit = require('../Entities/Characters/pit.js');
 var config = require('../config.js');
 
-var level3 = {
+var bossLevel = {
   preload: function(){
-    this.game.load.image('leveltileset', 'images/scenes/level3tileset.png');
+    this.game.load.image('leveltileset', 'images/scenes/bossleveltileset.png');
     this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
     this.game.load.image('EnemiesTileset', 'images/scenes/EnemiesTileset.png');
-    this.game.load.tilemap('level', 'images/scenes/level3.json', null,
+    this.game.load.tilemap('level', 'images/scenes/bossLevel.json', null,
                             Phaser.Tilemap.TILED_JSON);
 
-    this.colisionBlockID = config.level3colisionBlockID;
-    this.edgesBlockID = config.level3edgesBlockID;
-    this.platformsBlockID = config.level3platformsBlockID;
-    this.hazardBlockID = config.level3hazardBlockID;
+    this.colisionBlockID = config.bossLevelcolisionBlockID;
+    this.platformsBlockID = config.bossLevelplatformsBlockID;
 
     defaultScene.preload.call(this);
   },
@@ -24,8 +22,8 @@ var level3 = {
   create: function(){
     defaultScene.create.call(this);
 
-    defaultScene.myPit.x = config.level3initialPos.x;
-    defaultScene.myPit.y = config.level3initialPos.y;
+    defaultScene.myPit.x = config.bossLevelinitialPos.x;
+    defaultScene.myPit.y = config.bossLevelinitialPos.y;
   },
 
   update: function(){
@@ -38,4 +36,4 @@ var level3 = {
   }
 };
 
-module.exports = level3;
+module.exports = bossLevel;
