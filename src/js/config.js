@@ -9,11 +9,12 @@ var config = {
   maxVelocity: 800, //To avoid tunneling
 
   //PIT
-  initialPitHealth: 40,
+  initialPitHealth: 7,
   framesBetweenHit: 60,
   jumpTime: 10,
   initialDirection: 1,
   initialState: "normal",
+  deadScreenTime: 200,
 
   movementSpeed: 200,
 
@@ -36,6 +37,7 @@ var config = {
   level3initialPos: {x: 170, y: 14800},
   level1endLevelPos: {x: 780, y: 500},
   level2endLevelPos: {x: 780, y: 500},
+  level3endLevelPos: {x: 780, y: 500},
   bossLevelinitialPos: {x: 170, y: 500},
 
   level1colisionBlockID: 5761,

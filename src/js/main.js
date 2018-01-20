@@ -4,6 +4,7 @@
 module.exports.Phaser = Phaser;
 var initialMenu = require('./Scenes/initialMenu.js');
 var controlsMenu = require('./Scenes/controlsMenu.js');
+var deadMenu = require('./Scenes/deadMenu.js');
 var level1 = require('./Scenes/level1.js');
 var level2 = require('./Scenes/level2.js');
 var level3 = require('./Scenes/level3.js');
@@ -27,6 +28,7 @@ var BootScene = {
     this.game.load.image('controlsScreen', 'images/menus/controlsScreen.png');
     this.game.load.image('playButton', 'images/menus/playButton.png');
     this.game.load.image('controlsButton', 'images/menus/controlsButton.png');
+    this.game.load.image('deadScreen', 'images/menus/game_over.png');
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');
@@ -60,6 +62,7 @@ window.onload = function () {
   game.state.add('boot', BootScene);
   game.state.add('initialMenu', initialMenu);
   game.state.add('controlsMenu', controlsMenu);
+  game.state.add('deadMenu', deadMenu);
   game.state.add('play', level1);
   game.state.add('level2', level2);
   game.state.add('level3', level3);

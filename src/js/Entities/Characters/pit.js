@@ -147,8 +147,9 @@ pit.prototype.handleDead = function(){
     else{
     this.health = 1; //If not set to a value higher than 0, the restart
                     //will enter an infinite loop
+    this.game.restartLevel = this.game.state.current;
     this.game.sound.stopAll();
-    this.game.state.restart(false, false);
+    this.game.state.start('deadMenu' ,false, false);
     }
   }
 }
