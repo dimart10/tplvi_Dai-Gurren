@@ -34,12 +34,17 @@ var defaultScene = {
   enemiesLayer: undefined,
   itemLayer: undefined,
   hazardLayer: undefined,
+  exitKey: undefined,
 
   preload: function(){
 
   },
 
   create: function(){
+    //Input
+    this.exitKey = this.game.input.keyboard.addKey(config.exitKey);
+    this.exitKey.onDown.add(defaultScene.goToMenuCallback, this);
+
     //Groups
     this.game.groups= {};
     this.game.groups.enemies = this.game.add.group();
@@ -93,7 +98,6 @@ var defaultScene = {
     this.game.world.bringToTop(this.game.groups.items);
     this.game.world.bringToTop(this.game.groups.enemies);
     this.game.world.bringToTop(defaultScene.myPit);
-
 
     this.game.groups.movingPlatforms.add(new movingPlatform(this.game, 500, 14700, 'movingPlatform'));
   },
@@ -157,6 +161,7 @@ var defaultScene = {
     defaultScene.enemiesLayer = null;
     defaultScene.itemLayer = null;
     defaultScene.hazardLayer = null;
+    defaultScene.exitKey = null;
   },
 
   createTileMap: function(){
@@ -281,6 +286,10 @@ var defaultScene = {
 
     this.game.pitVariables.health = defaultScene.myPit.health;
     this.game.pitVariables.maxHealth = defaultScene.myPit.maxHealth;
+  },
+
+  goToMenuCallback: function(){
+    this.game.state.start('initialMenu');
   }
 };
 

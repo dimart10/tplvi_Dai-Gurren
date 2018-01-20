@@ -2,10 +2,13 @@
 'use strict';
 
 module.exports.Phaser = Phaser;
+var initialMenu = require('./Scenes/initialMenu.js');
+var controlsMenu = require('./Scenes/controlsMenu.js');
 var level1 = require('./Scenes/level1.js');
 var level2 = require('./Scenes/level2.js');
 var level3 = require('./Scenes/level3.js');
 var bossLevel = require('./Scenes/bossLevel.js');
+
 var BootScene = {
   preload: function () {
     this.game.time.desiredFps = 60;
@@ -20,7 +23,10 @@ var BootScene = {
     this.game.load.spritesheet('lifeWater', 'images/scenary/lifeWater.png', 10, 16, 2);
     this.game.load.spritesheet('powerUps', 'images/scenary/powerUps.png', 8, 16, 3);
     this.game.load.image('movingPlatform', 'images/scenary/movingPlatform.png');
-  
+    this.game.load.image('titleScreen', 'images/menus/title_screen.png');
+    this.game.load.image('controlsScreen', 'images/menus/controlsScreen.png');
+    this.game.load.image('playButton', 'images/menus/playButton.png');
+    this.game.load.image('controlsButton', 'images/menus/controlsButton.png');
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');
@@ -44,7 +50,7 @@ var BootScene = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 3500;
 
-    this.game.state.start('play');
+    this.game.state.start('initialMenu');
   }
 };
 
@@ -52,6 +58,8 @@ window.onload = function () {
   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 
   game.state.add('boot', BootScene);
+  game.state.add('initialMenu', initialMenu);
+  game.state.add('controlsMenu', controlsMenu);
   game.state.add('play', level1);
   game.state.add('level2', level2);
   game.state.add('level3', level3);

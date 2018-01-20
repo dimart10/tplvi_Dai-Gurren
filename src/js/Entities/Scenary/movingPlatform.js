@@ -12,7 +12,9 @@ function movingPlatform(game, x, y, name){
   this.direction=-1;
   this.velocity=config.movingPlatformVelocity;
   this.body.checkCollision.down = false;
-  
+  this.body.checkCollision.left = false;
+  this.body.checkCollision.right = false;
+
   this.body.immovable=true;
 }
 
