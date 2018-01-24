@@ -30,7 +30,9 @@ var level3 = {
 
     this.currentLevelEnd = new levelEnd(this.game, config.level3endLevelPos.x,
                         config.level3endLevelPos.y, 'currentLevelEnd', 'bossLevel');
-    this.game.groups.items.add (this.currentLevelEnd)
+    this.game.groups.items.add (this.currentLevelEnd);
+    this.game.sound.stopAll();
+    this.game.underworld.loopFull();
   },
 
   update: function(){

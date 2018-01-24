@@ -10,6 +10,7 @@ var level1 = {
   currentLevelEnd: undefined,
 
   preload: function(){
+
     this.game.load.image('leveltileset', 'images/scenes/level1tileset.png');
     this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
     this.game.load.image('EnemiesTileset', 'images/scenes/EnemiesTileset.png');
@@ -33,6 +34,8 @@ var level1 = {
 
     defaultScene.myPit.x = config.level1initialPos.x;
     defaultScene.myPit.y = config.level1initialPos.y;
+    this.game.sound.stopAll();
+    this.game.underworld.loopFull();
 
   },
 

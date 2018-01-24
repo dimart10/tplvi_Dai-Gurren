@@ -17,13 +17,16 @@ var bossLevel = {
     this.platformsBlockID = config.bossLevelplatformsBlockID;
 
     defaultScene.preload.call(this);
+
+
   },
 
   create: function(){
     defaultScene.create.call(this);
-
     defaultScene.myPit.x = config.bossLevelinitialPos.x;
     defaultScene.myPit.y = config.bossLevelinitialPos.y;
+    this.game.sound.stopAll();
+    this.game.boss_theme.loopFull();
   },
 
   update: function(){

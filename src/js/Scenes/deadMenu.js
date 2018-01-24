@@ -1,4 +1,4 @@
-//level1.js
+//deadMenu.js
 'use strict';
 
 var entity = require('../Entities/entity.js');

@@ -1,21 +1,23 @@
-//controlsMenu.js
+//endScene.js
 'use strict';
 
 var entity = require('../Entities/entity.js');
 var config = require('../config.js');
 
-var controlsMenu = {
+var endScene = {
   controlsScreen: undefined,
   exitKey: undefined,
 
   preload: function(){
-
+this.game.credits = this.game.add.audio('credits');
   },
 
   create: function(){
-    this.controlsScreen = new entity (this.game, 0, 0, 'controlsScreen');
-    this.controlsScreen.anchor.setTo(0, 0);
+    this.endScreen = new entity (this.game, 50, 0, 'endScreen');
+    this.endScreen.anchor.setTo(0, 0);
 
+    this.game.sound.stopAll();
+    this.game.credits.play();
     this.exitKey = this.game.input.keyboard.addKey(config.exitKey);
     this.exitKey.onDown.add(this.exitControlsCallback, this);
   },
@@ -34,4 +36,4 @@ var controlsMenu = {
   }
 };
 
-module.exports = controlsMenu;
+module.exports = endScene;

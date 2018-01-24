@@ -31,6 +31,8 @@ var level2 = {
     this.currentLevelEnd = new levelEnd(this.game, config.level2endLevelPos.x,
                         config.level2endLevelPos.y, 'currentLevelEnd', 'level3');
     this.game.groups.items.add (this.currentLevelEnd);
+    this.game.sound.stopAll();
+    this.game.underworld.loopFull();
   },
 
   update: function(){

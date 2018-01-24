@@ -9,6 +9,7 @@ var level1 = require('./Scenes/level1.js');
 var level2 = require('./Scenes/level2.js');
 var level3 = require('./Scenes/level3.js');
 var bossLevel = require('./Scenes/bossLevel.js');
+var endScene = require('./Scenes/endScene.js');
 
 var BootScene = {
   preload: function () {
@@ -26,10 +27,12 @@ var BootScene = {
     this.game.load.image('movingPlatform', 'images/scenary/movingPlatform.png');
     this.game.load.image('titleScreen', 'images/menus/title_screen.png');
     this.game.load.image('controlsScreen', 'images/menus/controlsScreen.png');
+    this.game.load.image('endScreen', 'images/menus/ending.png');
     this.game.load.image('playButton', 'images/menus/playButton.png');
     this.game.load.image('controlsButton', 'images/menus/controlsButton.png');
     this.game.load.image('deadScreen', 'images/menus/game_over.png');
     this.game.load.image('heartHud', 'images/scenary/hearthud.png');
+    this.game.load.image('chest', 'images/scenary/chest.png');
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');
@@ -46,13 +49,17 @@ var BootScene = {
     this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
     this.game.load.audio('boss_death', 'audio/sfx/boss_death.mp3');
     this.game.load.audio('boss_damage', 'audio/sfx/boss_damage.mp3');
+    this.game.load.audio('credits', 'audio/music/credits.mp3');
+    this.game.load.audio('titleTheme', 'audio/music/title_screen.mp3');
+    this.game.load.audio('boss_theme', 'audio/music/boss.mp3');
+    this.game.load.audio('victory', 'audio/music/victory.mp3');
   },
 
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 3500;
 
-    this.game.state.start('play');
+    this.game.state.start('initialMenu');
   }
 };
 
@@ -63,6 +70,7 @@ window.onload = function () {
   game.state.add('initialMenu', initialMenu);
   game.state.add('controlsMenu', controlsMenu);
   game.state.add('deadMenu', deadMenu);
+  game.state.add('endScene', endScene);
   game.state.add('play', level1);
   game.state.add('level2', level2);
   game.state.add('level3', level3);
