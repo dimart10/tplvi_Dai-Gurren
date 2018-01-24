@@ -47,11 +47,10 @@ twinbellows.prototype.update = function(){
     this.game.boss_damage.play();
 
     if(this.health<=0) {
-      var currentLevelEnd = new levelEnd(this.game, this.x, this.y-5, 'heartHud', 'initialMenu');
+      var currentLevelEnd = new levelEnd(this.game, this.x, this.y-5, 'chest', 'endScene');
       this.game.groups.items.add(currentLevelEnd);
-      currentLevelEnd.scale.setTo(10, 10);
-
-
+      currentLevelEnd.scale.setTo(3, 3);
+      this.game.victory.play();
       this.game.boss_death.play();
       this.destroy();
     }

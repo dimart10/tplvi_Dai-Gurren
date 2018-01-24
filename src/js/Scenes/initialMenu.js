@@ -1,4 +1,4 @@
-//level1.js
+//initialMenu.js
 'use strict';
 
 var defaultScene = require('./defaultScene.js');
@@ -14,7 +14,7 @@ var initialMenu = {
   buttons: [],
 
   preload: function(){
-
+    this.game.titleTheme = this.game.add.audio('titleTheme');
   },
 
   create: function(){
@@ -25,6 +25,9 @@ var initialMenu = {
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
     this.selectKey = this.game.input.keyboard.addKey(config.menuSelectKey);
+
+    this.game.sound.stopAll();
+    this.game.titleTheme.loopFull();
 
     this.cursors.down.onDown.add(this.selectionDown, this);
     this.cursors.up.onDown.add(this.selectionUp, this);

@@ -56,7 +56,6 @@ var defaultScene = {
 
     //Audio
     this.game.underworld = this.game.add.audio('underworld');
-    this.game.underworld.loopFull();
     this.game.arrow_shot = this.game.add.audio('arrow_shot');
     this.game.jump = this.game.add.audio('jump');
     this.game.pit_hit = this.game.add.audio('pit_hit');
@@ -69,6 +68,10 @@ var defaultScene = {
     this.game.power_up = this.game.add.audio('power_up');
     this.game.boss_damage = this.game.add.audio('boss_damage');
     this.game.boss_death = this.game.add.audio('boss_death');
+    this.game.boss_theme = this.game.add.audio('boss_theme');
+    this.game.victory = this.game.add.audio('victory');
+
+
 
     defaultScene.myPit = new pit(this.game, 0, 0, 'pit');
 
