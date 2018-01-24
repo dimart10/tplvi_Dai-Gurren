@@ -15,7 +15,7 @@ var deadMenu = {
 
   create: function(){
     this.deadScreen = new entity (this.game, 0, 0, 'deadScreen');
-    this.deadScreen.width = 1000;
+    this.deadScreen.width = 800;
     this.deadScreen.height = 600;
     this.deadScreen.anchor.setTo(0, 0);
 

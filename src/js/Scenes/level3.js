@@ -29,7 +29,7 @@ var level3 = {
     defaultScene.myPit.y = config.level3initialPos.y;
 
     this.currentLevelEnd = new levelEnd(this.game, config.level3endLevelPos.x,
-                        config.level3endLevelPos.y, 'currentLevelEnd', 'initialMenu');
+                        config.level3endLevelPos.y, 'currentLevelEnd', 'bossLevel');
     this.game.groups.items.add (this.currentLevelEnd)
   },
 

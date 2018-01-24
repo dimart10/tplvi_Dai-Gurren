@@ -4,6 +4,7 @@
 var terrestrial = require('./terrestrial.js');
 var magmaShot = require('../Scenary/magmaShot.js');
 var config = require('../../config.js');
+var levelEnd = require('../Scenary/levelEnd.js');
 
 function twinbellows(game, x, y, name, player){
   terrestrial.call(this, game, x, y, name);
@@ -46,6 +47,11 @@ twinbellows.prototype.update = function(){
     this.game.boss_damage.play();
 
     if(this.health<=0) {
+      var currentLevelEnd = new levelEnd(this.game, this.x, this.y-5, 'heartHud', 'initialMenu');
+      this.game.groups.items.add(currentLevelEnd);
+      currentLevelEnd.scale.setTo(10, 10);
+
+
       this.game.boss_death.play();
       this.destroy();
     }

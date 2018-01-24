@@ -33,12 +33,12 @@ var config = {
   exitKey: Phaser.Keyboard.ESC,
 
   level1initialPos: {x: 170, y: 8780},
-  level2initialPos: {x: 170, y: 10870},
+  level2initialPos: {x: 170, y: 10280},
   level3initialPos: {x: 170, y: 14800},
   level1endLevelPos: {x: 780, y: 500},
   level2endLevelPos: {x: 780, y: 500},
   level3endLevelPos: {x: 780, y: 500},
-  bossLevelinitialPos: {x: 170, y: 500},
+  bossLevelinitialPos: {x: 170, y: 415},
 
   level1colisionBlockID: 5761,
   level1edgesBlockID: 5762,
@@ -57,7 +57,6 @@ var config = {
 
   bossLevelcolisionBlockID: 1,
   bossLevelplatformsBlockID: 4,
-
 
   //ENEMIES
     //Mcgoo

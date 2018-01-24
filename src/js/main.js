@@ -46,14 +46,13 @@ var BootScene = {
     this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
     this.game.load.audio('boss_death', 'audio/sfx/boss_death.mp3');
     this.game.load.audio('boss_damage', 'audio/sfx/boss_damage.mp3');
-
   },
 
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 3500;
 
-    this.game.state.start('initialMenu');
+    this.game.state.start('play');
   }
 };
 
