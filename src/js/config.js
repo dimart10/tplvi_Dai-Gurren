@@ -189,7 +189,13 @@ var config = {
     //HUD VARIABLES
   barConfig: {x: 50, y: 50, width: 10, height: 25,
               bg: {color: '#000074'}, bar: {color: '#e20074'}},
-  pixelsPerLifePoint: 15
+  pixelsPerLifePoint: 15,
+
+  heartText: {x: 85, y: 25, startValue: 0,
+            color: '#ffffff', font: '24px Consolas',
+            strokeColor:'#0157dc', strokeThickness: 5},
+  heartHUD: {x: 50, y: 0, scale: 2.8},
+
 }
 
 module.exports = config;

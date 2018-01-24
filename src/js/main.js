@@ -29,6 +29,7 @@ var BootScene = {
     this.game.load.image('playButton', 'images/menus/playButton.png');
     this.game.load.image('controlsButton', 'images/menus/controlsButton.png');
     this.game.load.image('deadScreen', 'images/menus/game_over.png');
+    this.game.load.image('heartHud', 'images/scenary/heartHud.png');
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');

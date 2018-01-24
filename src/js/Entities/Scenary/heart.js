@@ -30,6 +30,7 @@ this.cycleOfLife();
 heart.prototype.effect = function(){
   this.game.hearts+=this.value;
   this.game.get_item.play();
+  this.game.heartText.setText(this.game.hearts);
 }
 
 //it dissapears after a given time
