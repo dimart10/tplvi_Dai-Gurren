@@ -1,10 +1,10 @@
-Ôªø# Kid Icarus (1986) clon using node.js
+# Kid Icarus (1986) clon using node.js
 
 ## Play it [here](https://dimart10.github.io/tplvi_Dai-Gurren/)!!!
 
 Created by
-[Sergio Abreu Garc√≠a](https://github.com/SAGGameDeveloper) and
-[Diego Mart√≠nez Simarro](https://github.com/dimart10).
+[Sergio Abreu GarcÌa](https://github.com/SAGGameDeveloper) and
+[Diego MartÌnez Simarro](https://github.com/dimart10).
 
 Initial scaffolding generated with [generator-gamejam](https://github.com/belen-albeza/generator-gamejam/).
 
@@ -70,104 +70,50 @@ gulp deploy:ghpages
 
 ## Objetivos generales
 
-Se pretende recrear el primer mundo de Kid Icarus, compuesto por los tres primeros niveles, la primera mazmorra y la primera fortaleza.
-Adicionalmente se implementar√° un modo f√°cil, en el que el scroll vertical de la pantalla sea reversible (no mueras al caer) y algunos
-cambios peque√±os en el gameplay para hacerlo m√°s sencillo. Algunos elementos que quedan dentro del corte que pretendemos recrear podr√≠an
-quedar fuera de la versi√≥n final, como salas de bonus y desaf√≠o.
+RecreaciÛn con ciertas licencias del juego Kid Icarus (1986). Se ha pretendido conservar el acabado del juego original (sprites, m˙sica, sfx...). TambiÈn hemos tratado de imitar el gameplay, aunque la dificultad ha sido algo reducida, en esta version el scroll vertical es reversible, comienzas con m·s vida, los objetos encontrados en las salas no cuestan corazones...
 
-## Comportamientos b√°sicos del escenario (los tres primeros niveles):
+El juego incluye los tres primeros niveles del juego original (underworld) y el primer jefe (Twinbellows), con los variados enemigos y elementos que aparecen en ellos. TambiÈn incluye varios objetos, (el arco bendito, que hace que las flechas atraviesen varios enemigos, objetos curativos, mejoras de stats...) aunque el efecto de algunos- Las salas extra que aparecen en el juego original tambiÈn han sido modificadas.
 
-* Scroll vertical (hacia arriba) de los niveles.
-Las zonas que quedan debajo de la pantalla pasan a comportarse como ca√≠das letales.
+## Controles
 
-* Movimiento toroidal por los lados, pueden pasar de un lado de la pantalla a otro el jugador,
-los enemigos terrestres y los disparos.
+El personaje se controla con las flechas de direcciÛn, puede moverse a derecha, izquierda, agacharse y apuntar hacia arriba. Con A dispara una flecha en la direcciÛn actual y salta con la barra espaciadora (el salto depende del tiempo que permanece pulsada). Los men˙s se maniobran con las flechas de direcciÛn y se eligen las opciones con intro. Pulsar escape devuelve al men˙ inicial.
 
-* Gravedad, los enemigos que no juegan y el jugador caen hacia el suelo.
+## ConclusiÛn
 
-## Comportamientos del protagonista:
-
-* Disparo, puede disparar hacia los lados y arriba, la flecha avanza una corta distancia y se destruye al impactar
-con enemigos u obst√°culos.
-
-* Agacharse, puede agacharse para esquivar ataques o esconderse.
-
-* Movimiento lateral, camina hacia los lados con peque√±a aceleraci√≥n y algo de resbale al parar.
-
-* Salto, la duraci√≥n se adapta al tiempo que se pulsa la tecla, la direcci√≥n puede modificarse al poco de saltar.
-
-* Recoger objetos al entrar en contacto con ellos (corazones, pociones...).
-
-## Tipos de enemigo:
-
-* **Serpientes:** Se desplazan por el suelo y se dirigen hacia el jugador, mueren de un disparo.
-
-* **Ojos voladores:** Enemigos que se desplazan por el aire en trayectorias el√≠pticas con el jugador como centro, mueren de un disparo.
-
-* **Esqueletos:** Enemigos que patrullan un √°rea de izquierda a derecha, si su linea de visi√≥n choca con el jugador se alarman,
-se drigen hacia este e invocan esqueletos menores, requieren muchos disparos para ser eliminados.
-
-* **Esqueletos menores:** Enemigos voladores que aparecen en un extremo de la pantalla y se dirigen hacia el jugador, mueren de un disparo.
-
-* **Agachados:** Enemigos que tienen el mismo movimiento que las serpientes pero se agachan para esquivar disparos y tienen m√°s vida.
-
-* **Caras:** Enemigos voladores con un patr√≥n diferente al de los ojos.
+RecreaciÛn del cl·sico que pretende acercar el original a jugadores que no lo hayan experimentado. Conserva la experiencia base y trata de hacerla m·s accesible. La intenciÛn es que aquellos que lo jueguen lo disfruten y les incite a jugar al original, un cl·sico con un nivel de profundidad sorprendente que a menudo es pasado por alto a pesar de sus grandes innovaciones.
 
 
-## Elementos del escenario:
+# PlanificaciÛn (modelo inicial)
 
-* **Lava:** Causa da√±o mientras se esta en ella.
-
-* **Zarzas:** Causa da√±o por contacto.
-
-* **Hielo:** Aumenta el deslizamiento.
-
-* **Termas:** Restauran salud al jugador.
-
-* **Puertas** que permiten desplazamiento entre salas.
-
-## Elementos no prioritarios, cuya implementaci√≥n podr√≠a descartarse seg√∫n el ritmo del proyecto
-
-* Salas de **bonificaci√≥n con jarrones**, revelas el contenido de jarrones, recibes su contenido a no ser que reveles un esqueleto,
-entonces pierdes todo lo que hubieras revelado.
-
-* Salas de **bonificaci√≥n enemigos**, en estas aparecen carss, el jugador puede acabar con ellas y ganar puntos o salir.
-
-* **Tiendas** en la que comprar objetos y potenciadores con los corazones recolectados.
-
-* **Salas de prueba**.
-
-# Planificaci√≥n (modelo inicial)
-
-Versi√≥n inicial de la planificaci√≥n por hitos
+VersiÛn inicial de la planificaciÛn por hitos
 
 ## Primer hito
 
-Este hito icluye una demostraci√≥n inicial del comportamiento del personaje y el escenario.
+Este hito icluye una demostraciÛn inicial del comportamiento del personaje y el escenario.
 
-* **F√≠sicas b√°sicas del escenario**. Construir un escenario b√°sico funcional en el que el jugador pueda desplazarse y saltar, con algunas
+* **FÌsicas b·sicas del escenario**. Construir un escenario b·sico funcional en el que el jugador pueda desplazarse y saltar, con algunas
 plataformas para probar el salto.
 
-* **Versi√≥n inicial del movimiento del personaje**. El personaje debe poder desplazarse a derecha e izqueirda, adem√°s de poder saltar.
-El salto ser√≠a una versi√≥n b√°sica sin tener que emular con gran precisi√≥n el comportamiento del juego original.
+* **VersiÛn inicial del movimiento del personaje**. El personaje debe poder desplazarse a derecha e izqueirda, adem·s de poder saltar.
+El salto serÌa una versiÛn b·sica sin tener que emular con gran precisiÛn el comportamiento del juego original.
 
 * **Disparo**. El personaje debe poder disparar flechas en las tres direcciones, esto incluye el comportamiento base de las flechas, 
-que se desplacen en la direcci√≥n que fueron lanzadas y desaparezcan tras cierto tiempo.
+que se desplacen en la direcciÛn que fueron lanzadas y desaparezcan tras cierto tiempo.
 
 ## Segundo hito
 
-Este hito supone el grueso del proyecto, en este deber√°n implementarse los diferentes elementos del escenario, enemigos, sus interacciones...
+Este hito supone el grueso del proyecto, en este deber·n implementarse los diferentes elementos del escenario, enemigos, sus interacciones...
 
-* Respecto al orden de implementacion se empezar√° con un **prototipo de enemigo** y el sistema de vida, para que dicho enemigo sea destruible y cause da√±o al jugador.
-A partir de esa base ya se podr√°n crear los diferentes enemigos con sus comportamientos espec√≠ficos.
+* Respecto al orden de implementacion se empezar· con un **prototipo de enemigo** y el sistema de vida, para que dicho enemigo sea destruible y cause daÒo al jugador.
+A partir de esa base ya se podr·n crear los diferentes enemigos con sus comportamientos especÌficos.
 
-* Tambi√©n es prioritario el sistema por el que el jugador **interact√∫a** con diferentes elementos (recolecci√≥n de objetos, elementos del escenario que causan da√±o etc)
-En base a esto se podr√°n crear las diferentes entidades con sus caracter√≠sticas y comportamientos propios.
+* TambiÈn es prioritario el sistema por el que el jugador **interact˙a** con diferentes elementos (recolecciÛn de objetos, elementos del escenario que causan daÒo etc)
+En base a esto se podr·n crear las diferentes entidades con sus caracterÌsticas y comportamientos propios.
 
-Al final de este hito deber√≠an estar hechos la mayor√≠a de enemigos, elementos del escenario etc. Teniendo un implementaci√≥n s√≥lida de los tres primeros niveles y la fortaleza.
+Al final de este hito deberÌan estar hechos la mayorÌa de enemigos, elementos del escenario etc. Teniendo un implementaciÛn sÛlida de los tres primeros niveles.
 
 ## Tercer hito
 
-Hito m√°s ampl√≠o que el primero pero m√°s limitado que el segundo, deber√≠a dedicarse a **pulir** elementos del juego como men√∫s, gr√°ficos, sonido, **balanceo** del gameplay e incluir alg√∫n elemento
+Hito m·s amplÌo que el primero pero m·s limitado que el segundo, deberÌa dedicarse a **pulir** elementos del juego como men˙s, gr·ficos, sonido, **balanceo** del gameplay e incluir alg˙n elemento
 que hubiera quedado fuera del hito 2.
 
