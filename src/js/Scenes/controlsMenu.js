@@ -4,7 +4,7 @@
 var entity = require('../Entities/entity.js');
 var config = require('../config.js');
 
-var initialMenu = {
+var controlsMenu = {
   controlsScreen: undefined,
   exitKey: undefined,
 
@@ -34,4 +34,4 @@ var initialMenu = {
   }
 };
 
-module.exports = initialMenu;
+module.exports = controlsMenu;

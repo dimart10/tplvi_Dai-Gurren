@@ -52,7 +52,7 @@ var BootScene = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 3500;
 
-    this.game.state.start('play');
+    this.game.state.start('level3');
   }
 };
 

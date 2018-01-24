@@ -24,6 +24,7 @@ var strengthArrow = require('../Entities/Scenary/strengthArrow.js');
 var angelFeather = require('../Entities/Scenary/angelFeather.js');
 var sacredBow = require('../Entities/Scenary/sacredBow.js');
 var movingPlatform = require('../Entities/Scenary/movingPlatform.js');
+var teleport = require('../Entities/Scenary/teleport.js');
 
 var defaultScene = {
   myPit: undefined,
@@ -242,6 +243,8 @@ var defaultScene = {
           case "strengthArrow": newItem = new strengthArrow(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
           case "angelFeather": newItem = new angelFeather(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
           case "sacredBow": newItem = new sacredBow(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
+          case "teleport": newItem = new teleport(this.game, tile.worldX+config.tileSize*config.scale/2, tile.worldY, config.teleportX,
+                                                  tile.worldY, 'door', false, defaultScene.myPit); break;
           default: newItem = null; break;
         }
       }

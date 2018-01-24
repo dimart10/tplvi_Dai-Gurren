@@ -15,6 +15,7 @@ var config = {
   initialDirection: 1,
   initialState: "normal",
   deadScreenTime: 200,
+  teleportX: 1640,
 
   movementSpeed: 200,
 
