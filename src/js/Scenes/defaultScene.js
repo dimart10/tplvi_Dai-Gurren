@@ -87,9 +87,9 @@ var defaultScene = {
     this.game.maxBottles = this.game.pitVariables.maxBottles;
     this.game.bonusDamage = this.game.pitVariables.bonusDamage;
     this.game.hasSacredBow = this.game.pitVariables.hasSacredBow;
-
-    defaultScene.myPit.health = this.game.pitVariables.health;
-    defaultScene.myPit.maxHealth = this.game.pitVariables.maxHealth;
+    this.game.pit = defaultScene.myPit;
+    this.game.pit.health = this.game.pitVariables.health;
+    this.game.pit.maxHealth = this.game.pitVariables.maxHealth
 
     defaultScene.createTileMap.call(this);
     HUD.create(this.game);
@@ -290,9 +290,8 @@ var defaultScene = {
     this.game.pitVariables.maxBottles = this.game.maxBottles;
     this.game.pitVariables.bonusDamage = this.game.bonusDamage;
     this.game.pitVariables.hasSacredBow = this.game.hasSacredBow;
-
-    this.game.pitVariables.health = defaultScene.myPit.health;
-    this.game.pitVariables.maxHealth = defaultScene.myPit.maxHealth;
+    this.game.pitVariables.health = this.game.pit.health;
+    this.game.pitVariables.maxHealth = this.game.pit.maxHealth;
   },
 
   goToMenuCallback: function(){

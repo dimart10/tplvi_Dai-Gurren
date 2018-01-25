@@ -3,6 +3,7 @@
 
 var item = require('./item.js');
 var config = require('../../config.js');
+var HUD = require('../../HUD/hud.js');
 
 function angelFeather(game, x, y, name){
   item.call(this, game, x, y, name);
@@ -18,6 +19,10 @@ angelFeather.prototype.update = function(){
 }
 
 angelFeather.prototype.effect = function(){
+  this.game.pit.health += config.angelFeatherHealth;
+  this.game.pit.maxHealth += config.angelFeatherHealth;
+  
+  HUD.createHealthBar();
   this.game.power_up.play();
 }
 

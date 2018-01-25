@@ -170,8 +170,8 @@ var config = {
     //Heart
   heartTime: 300,
 
-    //Item
-
+    //Angel Feather
+  angelFeatherHealth: 2,
     //Level end
 
     //Magma shot
@@ -180,7 +180,7 @@ var config = {
   magmaShotDistance: 300,
   magmaShotVelocity: 400,
 
-//moving platforms
+  //moving platforms
   movingPlatformVelocity: 150,
 
   //hazards

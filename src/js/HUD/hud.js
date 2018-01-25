@@ -11,14 +11,7 @@ var HUD = {
   create: function(game){
     this.game = game;
 
-    var barConfig = Object.assign({}, config.barConfig);
-
-    barConfig.width = this.game.pitVariables.maxHealth * config.pixelsPerLifePoint;
-    barConfig.x = barConfig.x + barConfig.width/2;
-
-    this.myHealthBar = new HealthBar(game, barConfig);
-    this.myHealthBar.setFixedToCamera(true);
-    this.myHealthBar.setPercent(this.game.pitVariables.health/this.game.pitVariables.maxHealth * 100);
+    this.createHealthBar();
 
     this.heartImage = game.add.sprite(config.heartHUD.x, config.heartHUD.y, 'heartHud');
     this.heartImage.scale.setTo(config.heartHUD.scale, config.heartHUD.scale);
@@ -35,6 +28,17 @@ var HUD = {
     this.game.heartText.fixedToCamera = true;
     this.game.heartText.anchor.setTo(0, 0.5);
 
+  },
+
+  createHealthBar: function(){
+    var barConfig = Object.assign({}, config.barConfig);
+
+    barConfig.width = this.game.pit.maxHealth * config.pixelsPerLifePoint;
+    barConfig.x = barConfig.x + barConfig.width/2;
+
+    this.myHealthBar = new HealthBar(this.game, barConfig);
+    this.myHealthBar.setFixedToCamera(true);
+    this.myHealthBar.setPercent(this.game.pit.health/this.game.pit.maxHealth * 100);
   }
 }
 
