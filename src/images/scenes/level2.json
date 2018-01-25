@@ -106,6 +106,20 @@
          "spacing":0,
          "tilecount":9,
          "tileheight":16,
+         "tileproperties":
+            {
+             "3":
+                {
+                 "movingPlatform":true
+                }
+            },
+         "tilepropertytypes":
+            {
+             "3":
+                {
+                 "movingPlatform":"bool"
+                }
+            },
          "tilewidth":16
         }, 
         {

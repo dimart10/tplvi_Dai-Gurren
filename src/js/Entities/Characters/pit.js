@@ -44,6 +44,7 @@ function pit(game, x, y, name){
   this.arrowTimer=0;
   this.canBeHit = true;
   this.hitTimer = 0;
+  this.canJump = false;
 
   this.state = config.initialState;
 }
@@ -110,7 +111,7 @@ pit.prototype.move = function(){
 pit.prototype.jump = function(){
   if (this.state = "jumping" && this.body.velocity.y >= 0) this.state = "normal";
 
-  if(this.spacebar.isDown && this.body.onFloor()) {
+  if(this.spacebar.isDown && this.canJump) {
     this.state = "jumping";
     this.jumptimer=1;
     this.body.velocity.y =-this.body.maxVelocity.y;
@@ -135,6 +136,8 @@ pit.prototype.jump = function(){
   else if (this.jumptimer != 0){
     this.jumptimer=0;
   }
+
+  this.canJump = this.body.onFloor();
 }
 
 pit.prototype.handleDead = function(){

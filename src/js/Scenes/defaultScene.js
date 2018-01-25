@@ -72,7 +72,6 @@ var defaultScene = {
     this.game.victory = this.game.add.audio('victory');
 
 
-
     defaultScene.myPit = new pit(this.game, 0, 0, 'pit');
 
     //Those will be the variables that are kept across all levels
@@ -102,8 +101,6 @@ var defaultScene = {
     this.game.world.bringToTop(this.game.groups.items);
     this.game.world.bringToTop(this.game.groups.enemies);
     this.game.world.bringToTop(defaultScene.myPit);
-
-    this.game.groups.movingPlatforms.add(new movingPlatform(this.game, 500, 14700, 'movingPlatform'));
   },
 
   update: function(){
@@ -119,9 +116,13 @@ var defaultScene = {
     this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.hazardLayer, hazardDamage);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.projectiles, passDamage);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.items, pickUp);
-    this.game.physics.arcade.collide(defaultScene.myPit, this.game.groups.movingPlatforms);
+    this.game.physics.arcade.collide(defaultScene.myPit, this.game.groups.movingPlatforms, resetJump);
     this.game.physics.arcade.collide(this.game.groups.movingPlatforms, defaultScene.colisionLayer);
 
+    function resetJump(pit){
+      if (pit.body.velocity.y == 0)
+        pit.canJump = true;
+    }
 
     function killCollObj(obj, coll){
       obj.kill();
@@ -257,7 +258,7 @@ var defaultScene = {
       }
     }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.itemLayer);
 
-  /*  //Spawns platforms
+    //Spawns platforms
     defaultScene.map.forEach(function (tile){
       var newMovingPlatform = null;
       if (tile.properties != undefined && tile.properties.movingPlatform != undefined){
@@ -267,14 +268,14 @@ var defaultScene = {
       if (newMovingPlatform != null){
         this.game.groups.movingPlatforms.add(newMovingPlatform);
       }
-    }, ;*/
+    }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.colisionLayer);
 
     //Sets platforms specific side collisions
     defaultScene.map.forEach(function (tile){
       tile.collideDown = false;
       tile.collideRight = false;
       tile.collideLeft = false;
-    }, this.game, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.platformsLayer);
+    }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.platformsLayer);
 
     //Set the bounds to use only the first map of the tilemap
     this.game.world.setBounds(config.tileSize*config.scale+1, 0,

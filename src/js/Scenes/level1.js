@@ -34,6 +34,7 @@ var level1 = {
 
     defaultScene.myPit.x = config.level1initialPos.x;
     defaultScene.myPit.y = config.level1initialPos.y;
+    
     this.game.sound.stopAll();
     this.game.underworld.loopFull();
 
