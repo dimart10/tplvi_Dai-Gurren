@@ -3,6 +3,7 @@
 
 var terrestrial = require('./terrestrial.js');
 var reapette = require('./reapette.js');
+var heart = require('../Scenary/heart.js');
 var config = require('../../config.js');
 
 function reaper(game, x, y, name, direction, player, edgeLayer){
@@ -22,14 +23,16 @@ function reaper(game, x, y, name, direction, player, edgeLayer){
   this.animations.add('patrolLeft', [24], 0, false);
   this.animations.add('alertLeft', [22,23], 5, true);
 
-  if(this.direction==1) this.animations.play('patrolRight');
-  else if(this.direction==-1) this.animations.play('patrolLeft');
+
 
   this.turn=false;
   this.turnTimer=0;
   this.alertTimer=0;
   this.alert=false;
   this.direction=direction;
+
+  if(this.direction==1) this.animations.play('patrolRight');
+  else if(this.direction==-1) this.animations.play('patrolLeft');
 
   this.edgeLayer = edgeLayer;
 }
@@ -47,6 +50,10 @@ reaper.prototype.receiveDamage = function(damage){
 }
 
 reaper.prototype.update = function(){
+  if(this.alert){
+    this.alertTimer++;
+    if(this.alertTimer > config.reaperTimeToTurn) this.exitAlert();
+  }
   if (this.inCamera){
     if(!this.alert) this.detectPit();
     this.game.physics.arcade.collide(this, this.edgeLayer);
@@ -65,6 +72,23 @@ reaper.prototype.detectPit = function(){
     }
 }
 
+//Redefines enemy.receiveDamage(reaper must stop the music)
+reaper.prototype.receiveDamage = function(damage){
+  this.health-=damage;
+  this.game.enemy_damage.play();
+
+  if(this.health<=0) {
+    this.game.reaper_spotted.stop();
+    this.game.underworld.loopFull();
+    this.game.enemy_death.play();
+    if(this.heartValue!=0){
+      this.game.groups.items.add(new heart(this.game, this.position.x, this.position.y, 'heart', this.heartValue));
+    }
+    this.destroy();
+  }
+}
+
+
 //Moves until it runs into a wall or edge, then in switches direction
 reaper.prototype.movement = function(){
 if(!this.alert){
@@ -74,10 +98,7 @@ if(!this.alert){
     else if(this.direction==-1) this.animations.play('patrolLeft');
   }
 }
-else{
-  this.alertTimer++;
-  if(this.alertTimer > config.reaperTimeToTurn) this.exitAlert();
-}
+
 if(!this.turn) {
    this.horizMove(this.velocity);
    if(this.turnTimer > config.reaperTimeToTurn) this.onTurn();
