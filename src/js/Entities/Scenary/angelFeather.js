@@ -18,10 +18,11 @@ angelFeather.prototype.update = function(){
 
 }
 
+//Increases pits health and maxehealth 
 angelFeather.prototype.effect = function(){
   this.game.pit.health += config.angelFeatherHealth;
   this.game.pit.maxHealth += config.angelFeatherHealth;
-  
+
   HUD.createHealthBar();
   this.game.power_up.play();
 }

@@ -22,6 +22,7 @@ movingPlatform.prototype.update = function(){
   this.movement();
 }
 
+//Moves in a directin until it collides with a wall, then it switches directions
 movingPlatform.prototype.movement = function(){
   if(this.body.onWall()) {
     this.direction = this.direction*(-1);

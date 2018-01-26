@@ -65,18 +65,17 @@ pit.prototype.update = function(){
   this.arrowTimer++;
 }
 
+//Pit's moves depending on the key pressed, points up or crouches
 pit.prototype.move = function(){
   if (this.cursors.left.isDown) {
 		    this.body.velocity.x = -config.movementSpeed;
         if (this.state == "normal") this.animations.play("walkLeft");
         this.direction=-1;
-        //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if (this.cursors.right.isDown){
 		    this.body.velocity.x = config.movementSpeed;
         if (this.state == "normal") this.animations.play("walkRight");
         this.direction=1;
-        //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if(this.cursors.up.isDown){
         if (this.state == "normal") this.animations.play("stillUp");
@@ -87,6 +86,7 @@ pit.prototype.move = function(){
         if (this.state == "normal") this.animations.play("stillDown");
         this.direction=2;
         this.body.velocity.x=0;
+        this.position.y += config.crouchFall;
       }
 
       else{
@@ -108,6 +108,7 @@ pit.prototype.move = function(){
       this.game.world.wrap(this, 0, false, true, false);
 }
 
+//Pit jumps when the spacebar is pressed, if it is held he jumps higher
 pit.prototype.jump = function(){
   if (this.state = "jumping" && this.body.velocity.y >= 0) this.state = "normal";
 
@@ -140,6 +141,8 @@ pit.prototype.jump = function(){
   this.canJump = this.body.onFloor();
 }
 
+//If his health reaches 0 it is first checked if he has healing maxBottles
+//if he hasnt the deadScreen appears and the level restarts
 pit.prototype.handleDead = function(){
   if (this.health <= 0){
     if(this.game.bottles>0){
@@ -157,6 +160,7 @@ pit.prototype.handleDead = function(){
   }
 }
 
+//Pits life is reduced and he becomes invulnerable for a brief time
 pit.prototype.damage = function(points){
   if (this.canBeHit){
     this.health -= points;
@@ -166,10 +170,12 @@ pit.prototype.damage = function(points){
   }
 }
 
+//updates the bar to show the current health
 pit.prototype.updateHealthBar = function(){
   HUD.myHealthBar.setPercent((this.health/this.maxHealth) * 100);
 }
 
+//Manages pits invulnerability and the blinking effect
 pit.prototype.hitCount = function(){
   if (!this.canBeHit){
     if (this.hitTimer < config.framesBetweenHit) {
@@ -185,6 +191,7 @@ pit.prototype.hitCount = function(){
   }
 }
 
+//Pit fires an arrow in the current direction
 pit.prototype.shoot = function(){
   if(this.direction!=2 && this.arrowTimer>=30){
       this.game.groups.arrows.add(new arrow(this.game, this.position.x,

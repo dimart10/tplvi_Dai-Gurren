@@ -42,6 +42,9 @@ twinbellows.prototype.update = function(){
     }
   }
 
+  //Receivedamage is redefinded so that it plays the right sound
+  //when he receives damage and dies, plus spawning the chest that leads
+  //to the ending scene
   twinbellows.prototype.receiveDamage = function(damage){
     this.health-=damage;
     this.game.boss_damage.play();
@@ -62,6 +65,7 @@ twinbellows.prototype.attack = function(){
   else this.shoot(-1);
 }
 
+//Shoots a magmaShot
 twinbellows.prototype.shoot = function(direction){
   this.game.groups.projectiles.add(new magmaShot(this.game, this.position.x,
     this.position.y, "magmaShot", direction));

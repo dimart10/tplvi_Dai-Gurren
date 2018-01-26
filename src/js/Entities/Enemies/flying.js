@@ -16,7 +16,7 @@ function flying(game, x, y, name, player){
 
 flying.prototype = Object.create(enemy.prototype);//inherit from enemy
 
-//goal does a W trajectory around the player, this chases the goal
+//goal does a W trajectory around the player, enemy chases the goal
 flying.prototype.swoop = function(){
   var fixRatio= this.radius;
   if(Math.round(Math.cos((this.rotateangle)))==-1) fixRatio*=-1;
