@@ -9,7 +9,7 @@ var config = {
   maxVelocity: 800, //To avoid tunneling
 
   //PIT
-  initialPitHealth: 7,
+  initialPitHealth: 10,
   framesBetweenHit: 60,
   jumpTime: 10,
   initialDirection: 1,
