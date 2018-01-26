@@ -42,10 +42,6 @@ var initialMenu = {
     this.buttons[this.selection].selected = true;
   },
 
-  update: function(){
-
-  },
-
   selectionUp: function(){
     this.buttons[this.selection].selected = false;
 

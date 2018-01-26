@@ -9,10 +9,6 @@ var deadMenu = {
   exitKey: undefined,
   timer: 0,
 
-  preload: function(){
-
-  },
-
   create: function(){
     this.deadScreen = new entity (this.game, 50, 0, 'deadScreen');
     this.deadScreen.width = 800;

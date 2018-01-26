@@ -17,7 +17,7 @@ sacredBow.prototype.update = function(){
 
 }
 
-//Sets hasSacredBow as true
+//Sets hasSacredBow as true (this makes the arrows pierce)
 sacredBow.prototype.effect = function(){
   this.game.hasSacredBow=true;
   this.game.power_up.play();

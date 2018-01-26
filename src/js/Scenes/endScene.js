@@ -22,10 +22,6 @@ this.game.credits = this.game.add.audio('credits');
     this.exitKey.onDown.add(this.exitControlsCallback, this);
   },
 
-  update: function(){
-
-  },
-
   exitControlsCallback: function(){
     this.game.state.start('initialMenu', true, false);
   },
