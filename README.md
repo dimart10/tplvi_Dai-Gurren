@@ -1,4 +1,4 @@
-# Kid Icarus (1986) clon using node.js
+# Kid Icarus (1986) reduced version using Phaser
 
 ## Play it [here](https://dimart10.github.io/tplvi_Dai-Gurren/)!!!
 
