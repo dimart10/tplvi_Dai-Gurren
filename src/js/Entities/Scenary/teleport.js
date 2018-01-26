@@ -5,6 +5,8 @@ var config = require('../../config.js');
 
 function teleport(game, x, y, destinyX, destinyY, name, comeback, pit){
   item.call(this, game, x, y, name);
+  this.visible = false;
+
   this.myPit = pit;
   this.destinyX = destinyX;
   this.destinyY = destinyY;
@@ -20,7 +22,7 @@ teleport.prototype.effect = function(){
                               //The ''-1' fixes the vagueness caused by the division/multiplication
 
     var comebackTeleport = new teleport(this.game, this.destinyX+config.tileSize*config.scale+18, this.destinyY,
-                                        this.x, this.y, 'pit', true, this.myPit);
+                                        this.x, this.y, 'testSprite', true, this.myPit);
     this.game.groups.items.add(comebackTeleport);
 
     this.myPit.x = this.destinyX;

@@ -248,7 +248,7 @@ var defaultScene = {
           case "angelFeather": newItem = new angelFeather(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
           case "sacredBow": newItem = new sacredBow(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
           case "teleport": newItem = new teleport(this.game, tile.worldX+config.tileSize*config.scale/2, tile.worldY, config.teleportX,
-                                                  tile.worldY, 'door', false, defaultScene.myPit); break;
+                                                  tile.worldY, 'testSprite', false, defaultScene.myPit); break;
           default: newItem = null; break;
         }
       }

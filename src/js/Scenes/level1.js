@@ -29,12 +29,12 @@ var level1 = {
     defaultScene.create.call(this);
 
     this.currentLevelEnd = new levelEnd(this.game, config.level1endLevelPos.x,
-                        config.level1endLevelPos.y, 'currentLevelEnd', 'level2');
+                        config.level1endLevelPos.y, 'testSprite', 'level2');
     this.game.groups.items.add (this.currentLevelEnd);
 
     defaultScene.myPit.x = config.level1initialPos.x;
     defaultScene.myPit.y = config.level1initialPos.y;
-    
+
     this.game.sound.stopAll();
     this.game.underworld.loopFull();
 

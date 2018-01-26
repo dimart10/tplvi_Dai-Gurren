@@ -29,9 +29,9 @@ var level2 = {
     defaultScene.myPit.y = config.level2initialPos.y;
 
     this.currentLevelEnd = new levelEnd(this.game, config.level2endLevelPos.x,
-                        config.level2endLevelPos.y, 'currentLevelEnd', 'level3');
+                        config.level2endLevelPos.y, 'testSprite', 'level3');
     this.game.groups.items.add (this.currentLevelEnd);
-    
+
     this.game.sound.stopAll();
     this.game.underworld.loopFull();
   },
