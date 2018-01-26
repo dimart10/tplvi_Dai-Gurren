@@ -18,7 +18,7 @@ var HUD = {
     this.heartImage.fixedToCamera = true;
 
     this.game.heartText = this.game.add.text(config.heartText.x, config.heartText.y,
-      config.heartText.startValue, {
+      this.game.pitVariables.hearts, {
         font: config.heartText.font,
         fill: config.heartText.color,
         align: "center"

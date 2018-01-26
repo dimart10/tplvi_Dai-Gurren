@@ -5,7 +5,7 @@ var config = require('../../config.js');
 
 function teleport(game, x, y, destinyX, destinyY, name, comeback, pit){
   item.call(this, game, x, y, name);
-  this.visible = false;
+  this.alpha = 0;
 
   this.myPit = pit;
   this.destinyX = destinyX;

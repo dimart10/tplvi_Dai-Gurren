@@ -5,7 +5,7 @@ var config = require('../../config.js');
 
 function levelEnd(game, x, y, name, nextState){
   item.call(this, game, x, y, name);
-  this.visible = false;
+  this.alpha = 0;
 
   this.nextState = nextState;
 }

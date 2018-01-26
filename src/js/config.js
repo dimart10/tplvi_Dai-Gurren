@@ -11,17 +11,17 @@ var config = {
   //PIT
   initialPitHealth: 10,
   framesBetweenHit: 60,
-  jumpTime: 10,
+  jumpTime: 13,
   initialDirection: 1,
   initialState: "normal",
   deadScreenTime: 200,
   teleportX: 1640,
 
-  movementSpeed: 200,
+  movementSpeed: 230,
 
-  normalW: 13,
+  normalW: 8,
   normalH: 24,
-  normalOX: 7, //Normal body X offset
+  normalOX: 9, //Normal body X offset
   normalOY: 0,
   crouchW: 13,
   crouchH: 13,
