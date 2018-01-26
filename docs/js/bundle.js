@@ -45,6 +45,7 @@ function pit(game, x, y, name){
   this.arrowTimer=0;
   this.canBeHit = true;
   this.hitTimer = 0;
+  this.canJump = false;
 
   this.state = config.initialState;
 }
@@ -65,18 +66,17 @@ pit.prototype.update = function(){
   this.arrowTimer++;
 }
 
+//Pit's moves depending on the key pressed, points up or crouches
 pit.prototype.move = function(){
   if (this.cursors.left.isDown) {
 		    this.body.velocity.x = -config.movementSpeed;
         if (this.state == "normal") this.animations.play("walkLeft");
         this.direction=-1;
-        //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if (this.cursors.right.isDown){
 		    this.body.velocity.x = config.movementSpeed;
         if (this.state == "normal") this.animations.play("walkRight");
         this.direction=1;
-        //if(!this.game.walk.isPlaying) this.game.walk.loopFull();
       }
       else if(this.cursors.up.isDown){
         if (this.state == "normal") this.animations.play("stillUp");
@@ -87,6 +87,7 @@ pit.prototype.move = function(){
         if (this.state == "normal") this.animations.play("stillDown");
         this.direction=2;
         this.body.velocity.x=0;
+        this.position.y += config.crouchFall;
       }
 
       else{
@@ -108,10 +109,11 @@ pit.prototype.move = function(){
       this.game.world.wrap(this, 0, false, true, false);
 }
 
+//Pit jumps when the spacebar is pressed, if it is held he jumps higher
 pit.prototype.jump = function(){
   if (this.state = "jumping" && this.body.velocity.y >= 0) this.state = "normal";
 
-  if(this.spacebar.isDown && this.body.onFloor()) {
+  if(this.spacebar.isDown && this.canJump) {
     this.state = "jumping";
     this.jumptimer=1;
     this.body.velocity.y =-this.body.maxVelocity.y;
@@ -136,8 +138,12 @@ pit.prototype.jump = function(){
   else if (this.jumptimer != 0){
     this.jumptimer=0;
   }
+
+  this.canJump = this.body.onFloor();
 }
 
+//If his health reaches 0 it is first checked if he has healing maxBottles
+//if he hasnt the deadScreen appears and the level restarts
 pit.prototype.handleDead = function(){
   if (this.health <= 0){
     if(this.game.bottles>0){
@@ -148,12 +154,14 @@ pit.prototype.handleDead = function(){
     else{
     this.health = 1; //If not set to a value higher than 0, the restart
                     //will enter an infinite loop
+    this.game.restartLevel = this.game.state.current;
     this.game.sound.stopAll();
-    this.game.state.restart(false, false);
+    this.game.state.start('deadMenu' ,false, false);
     }
   }
 }
 
+//Pits life is reduced and he becomes invulnerable for a brief time
 pit.prototype.damage = function(points){
   if (this.canBeHit){
     this.health -= points;
@@ -163,20 +171,28 @@ pit.prototype.damage = function(points){
   }
 }
 
+//updates the bar to show the current health
 pit.prototype.updateHealthBar = function(){
   HUD.myHealthBar.setPercent((this.health/this.maxHealth) * 100);
 }
 
+//Manages pits invulnerability and the blinking effect
 pit.prototype.hitCount = function(){
   if (!this.canBeHit){
-    if (this.hitTimer < config.framesBetweenHit) this.hitTimer++;
+    if (this.hitTimer < config.framesBetweenHit) {
+      if (this.hitTimer % 2 === 0)this.alpha=0;
+      else if (this.hitTimer % 2 !== 0)this.alpha=1;
+      this.hitTimer++;
+    }
     else{
      this.canBeHit = true;
+     this.alpha=1;
      this.hitTimer = 0;
     }
   }
 }
 
+//Pit fires an arrow in the current direction
 pit.prototype.shoot = function(){
   if(this.direction!=2 && this.arrowTimer>=30){
       this.game.groups.arrows.add(new arrow(this.game, this.position.x,
@@ -188,7 +204,7 @@ pit.prototype.shoot = function(){
 
 module.exports = pit;
 
-},{"../../HUD/hud.js":25,"../../config.js":31,"../Scenary/arrow.js":13,"../entity.js":24}],2:[function(require,module,exports){
+},{"../../HUD/hud.js":27,"../../config.js":38,"../Scenary/arrow.js":14,"../entity.js":26}],2:[function(require,module,exports){
 //enemy.js
 'use strict';
 
@@ -226,7 +242,7 @@ enemy.prototype.receiveDamage =function(damage){
 
 module.exports = enemy;
 
-},{"../../config.js":31,"../Scenary/heart.js":17,"../entity.js":24}],3:[function(require,module,exports){
+},{"../../config.js":38,"../Scenary/heart.js":18,"../entity.js":26}],3:[function(require,module,exports){
 //flying.js
 'use strict';
 
@@ -245,7 +261,7 @@ function flying(game, x, y, name, player){
 
 flying.prototype = Object.create(enemy.prototype);//inherit from enemy
 
-//goal does a W trajectory around the player, this chases the goal
+//goal does a W trajectory around the player, enemy chases the goal
 flying.prototype.swoop = function(){
   var fixRatio= this.radius;
   if(Math.round(Math.cos((this.rotateangle)))==-1) fixRatio*=-1;
@@ -262,7 +278,7 @@ flying.prototype.swoop = function(){
 
 module.exports = flying;
 
-},{"../../config.js":31,"./enemy.js":2}],4:[function(require,module,exports){
+},{"../../config.js":38,"./enemy.js":2}],4:[function(require,module,exports){
 //mcgoo.js
 'use strict'
 
@@ -337,7 +353,7 @@ mcgoo.prototype.shoot = function(direction){
 
 module.exports = mcgoo;
 
-},{"../../config.js":31,"../Scenary/magmaShot.js":20,"./terrestrial.js":10}],5:[function(require,module,exports){
+},{"../../config.js":38,"../Scenary/magmaShot.js":21,"./terrestrial.js":10}],5:[function(require,module,exports){
 //monoeye.js
 'use strict'
 
@@ -379,7 +395,7 @@ monoeye.prototype.update = function(){
 
 module.exports = monoeye;
 
-},{"../../config.js":31,"./flying.js":3}],6:[function(require,module,exports){
+},{"../../config.js":38,"./flying.js":3}],6:[function(require,module,exports){
 //nettler.js
 'use strict'
 
@@ -483,12 +499,13 @@ nettler.prototype.detectPit = function(){
 
 module.exports = nettler;
 
-},{"../../config.js":31,"./terrestrial.js":10}],7:[function(require,module,exports){
+},{"../../config.js":38,"./terrestrial.js":10}],7:[function(require,module,exports){
 //reaper.js
 'use strict'
 
 var terrestrial = require('./terrestrial.js');
 var reapette = require('./reapette.js');
+var heart = require('../Scenary/heart.js');
 var config = require('../../config.js');
 
 function reaper(game, x, y, name, direction, player, edgeLayer){
@@ -508,14 +525,16 @@ function reaper(game, x, y, name, direction, player, edgeLayer){
   this.animations.add('patrolLeft', [24], 0, false);
   this.animations.add('alertLeft', [22,23], 5, true);
 
-  if(this.direction==1) this.animations.play('patrolRight');
-  else if(this.direction==-1) this.animations.play('patrolLeft');
+
 
   this.turn=false;
   this.turnTimer=0;
   this.alertTimer=0;
   this.alert=false;
   this.direction=direction;
+
+  if(this.direction==1) this.animations.play('patrolRight');
+  else if(this.direction==-1) this.animations.play('patrolLeft');
 
   this.edgeLayer = edgeLayer;
 }
@@ -533,6 +552,10 @@ reaper.prototype.receiveDamage = function(damage){
 }
 
 reaper.prototype.update = function(){
+  if(this.alert){
+    this.alertTimer++;
+    if(this.alertTimer > config.reaperTimeToTurn) this.exitAlert();
+  }
   if (this.inCamera){
     if(!this.alert) this.detectPit();
     this.game.physics.arcade.collide(this, this.edgeLayer);
@@ -551,6 +574,23 @@ reaper.prototype.detectPit = function(){
     }
 }
 
+//Redefines enemy.receiveDamage(reaper must stop the music)
+reaper.prototype.receiveDamage = function(damage){
+  this.health-=damage;
+  this.game.enemy_damage.play();
+
+  if(this.health<=0) {
+    this.game.reaper_spotted.stop();
+    this.game.underworld.loopFull();
+    this.game.enemy_death.play();
+    if(this.heartValue!=0){
+      this.game.groups.items.add(new heart(this.game, this.position.x, this.position.y, 'heart', this.heartValue));
+    }
+    this.destroy();
+  }
+}
+
+
 //Moves until it runs into a wall or edge, then in switches direction
 reaper.prototype.movement = function(){
 if(!this.alert){
@@ -560,10 +600,7 @@ if(!this.alert){
     else if(this.direction==-1) this.animations.play('patrolLeft');
   }
 }
-else{
-  this.alertTimer++;
-  if(this.alertTimer > config.reaperTimeToTurn) this.exitAlert();
-}
+
 if(!this.turn) {
    this.horizMove(this.velocity);
    if(this.turnTimer > config.reaperTimeToTurn) this.onTurn();
@@ -623,7 +660,7 @@ reaper.prototype.exitTurn = function(){
 
 module.exports = reaper;
 
-},{"../../config.js":31,"./reapette.js":8,"./terrestrial.js":10}],8:[function(require,module,exports){
+},{"../../config.js":38,"../Scenary/heart.js":18,"./reapette.js":8,"./terrestrial.js":10}],8:[function(require,module,exports){
 //reapette.js
 'use strict'
 
@@ -666,7 +703,7 @@ reapette.prototype.update = function(){
 
 module.exports = reapette;
 
-},{"../../config.js":31,"./flying.js":3}],9:[function(require,module,exports){
+},{"../../config.js":38,"./flying.js":3}],9:[function(require,module,exports){
 //shemum.js
 'use strict'
 
@@ -711,7 +748,7 @@ shemum.prototype.movement = function(){
 }
 module.exports = shemum;
 
-},{"../../config.js":31,"./terrestrial.js":10}],10:[function(require,module,exports){
+},{"../../config.js":38,"./terrestrial.js":10}],10:[function(require,module,exports){
 //terrestrial.js
 'use strict';
 
@@ -739,13 +776,14 @@ terrestrial.prototype.horizMove = function(velocity){
 
 module.exports = terrestrial;
 
-},{"../../config.js":31,"./enemy.js":2}],11:[function(require,module,exports){
+},{"../../config.js":38,"./enemy.js":2}],11:[function(require,module,exports){
 //twinbellows.js
 'use strict'
 
 var terrestrial = require('./terrestrial.js');
 var magmaShot = require('../Scenary/magmaShot.js');
 var config = require('../../config.js');
+var levelEnd = require('../Scenary/levelEnd.js');
 
 function twinbellows(game, x, y, name, player){
   terrestrial.call(this, game, x, y, name);
@@ -783,11 +821,18 @@ twinbellows.prototype.update = function(){
     }
   }
 
+  //Receivedamage is redefinded so that it plays the right sound
+  //when he receives damage and dies, plus spawning the chest that leads
+  //to the ending scene
   twinbellows.prototype.receiveDamage = function(damage){
     this.health-=damage;
     this.game.boss_damage.play();
 
     if(this.health<=0) {
+      var currentLevelEnd = new levelEnd(this.game, this.x, this.y-5, 'chest', 'endScene');
+      this.game.groups.items.add(currentLevelEnd);
+      currentLevelEnd.scale.setTo(3, 3);
+      this.game.victory.play();
       this.game.boss_death.play();
       this.destroy();
     }
@@ -799,6 +844,7 @@ twinbellows.prototype.attack = function(){
   else this.shoot(-1);
 }
 
+//Shoots a magmaShot
 twinbellows.prototype.shoot = function(direction){
   this.game.groups.projectiles.add(new magmaShot(this.game, this.position.x,
     this.position.y, "magmaShot", direction));
@@ -836,12 +882,37 @@ twinbellows.prototype.jump = function(){
 
 module.exports = twinbellows;
 
-},{"../../config.js":31,"../Scenary/magmaShot.js":20,"./terrestrial.js":10}],12:[function(require,module,exports){
+},{"../../config.js":38,"../Scenary/levelEnd.js":20,"../Scenary/magmaShot.js":21,"./terrestrial.js":10}],12:[function(require,module,exports){
+//entity.js
+'use strict'
+
+var entity = require('../entity.js');
+
+function button(game, x, y, name, onClickCallback){
+  Phaser.Sprite.call(this, game, x, y, name);
+  game.add.existing(this);
+  this.anchor.setTo(0.5, 0.5);
+
+  this.selected = false;
+  this.onClickCallback = onClickCallback;
+}
+
+button.prototype = Object.create(entity.prototype);
+
+button.prototype.update = function(){
+  if (this.selected) this.alpha = 1;
+  else this.alpha = 0.7;
+}
+
+module.exports = button;
+
+},{"../entity.js":26}],13:[function(require,module,exports){
 //angelFeather.js
 'use strict'
 
 var item = require('./item.js');
 var config = require('../../config.js');
+var HUD = require('../../HUD/hud.js');
 
 function angelFeather(game, x, y, name){
   item.call(this, game, x, y, name);
@@ -856,14 +927,19 @@ angelFeather.prototype.update = function(){
 
 }
 
+//Increases pits health and maxehealth 
 angelFeather.prototype.effect = function(){
+  this.game.pit.health += config.angelFeatherHealth;
+  this.game.pit.maxHealth += config.angelFeatherHealth;
+
+  HUD.createHealthBar();
   this.game.power_up.play();
 }
 
 
 module.exports = angelFeather;
 
-},{"../../config.js":31,"./item.js":18}],13:[function(require,module,exports){
+},{"../../HUD/hud.js":27,"../../config.js":38,"./item.js":19}],14:[function(require,module,exports){
 //arrow.js
 'use strict'
 
@@ -938,7 +1014,7 @@ arrow.prototype.onHit = function(){
 
 module.exports = arrow;
 
-},{"../../config.js":31,"../entity.js":24}],14:[function(require,module,exports){
+},{"../../config.js":38,"../entity.js":26}],15:[function(require,module,exports){
 //barrel.js
 'use strict'
 
@@ -965,7 +1041,7 @@ barrel.prototype.effect = function(){
 
 module.exports = barrel;
 
-},{"../../config.js":31,"./item.js":18}],15:[function(require,module,exports){
+},{"../../config.js":38,"./item.js":19}],16:[function(require,module,exports){
 //bottle.js
 'use strict'
 
@@ -998,7 +1074,7 @@ bottle.prototype.effect = function(){
 
 module.exports = bottle;
 
-},{"../../config.js":31,"./item.js":18}],16:[function(require,module,exports){
+},{"../../config.js":38,"./item.js":19}],17:[function(require,module,exports){
 //chalice.js
 'use strict'
 
@@ -1032,7 +1108,7 @@ chalice.prototype.effect = function(){
 
 module.exports = chalice;
 
-},{"../../config.js":31,"./item.js":18}],17:[function(require,module,exports){
+},{"../../config.js":38,"./item.js":19}],18:[function(require,module,exports){
 //heart.js
 'use strict'
 
@@ -1065,6 +1141,7 @@ this.cycleOfLife();
 heart.prototype.effect = function(){
   this.game.hearts+=this.value;
   this.game.get_item.play();
+  this.game.heartText.setText(this.game.hearts);
 }
 
 //it dissapears after a given time
@@ -1075,7 +1152,7 @@ heart.prototype.cycleOfLife = function(){
 
 module.exports = heart;
 
-},{"../../config.js":31,"./item.js":18}],18:[function(require,module,exports){
+},{"../../config.js":38,"./item.js":19}],19:[function(require,module,exports){
 //item.js
 'use strict'
 
@@ -1105,7 +1182,7 @@ item.prototype.effect = function(){
 
 module.exports = item;
 
-},{"../../config.js":31,"../entity.js":24}],19:[function(require,module,exports){
+},{"../../config.js":38,"../entity.js":26}],20:[function(require,module,exports){
 //levelEnd.js
 
 var item = require('./item.js');
@@ -1113,6 +1190,8 @@ var config = require('../../config.js');
 
 function levelEnd(game, x, y, name, nextState){
   item.call(this, game, x, y, name);
+  this.alpha = 0;
+
   this.nextState = nextState;
 }
 
@@ -1125,7 +1204,7 @@ levelEnd.prototype.effect = function(){
 
 module.exports = levelEnd;
 
-},{"../../config.js":31,"./item.js":18}],20:[function(require,module,exports){
+},{"../../config.js":38,"./item.js":19}],21:[function(require,module,exports){
 //magmaShot.js
 'use strict'
 
@@ -1177,7 +1256,7 @@ magmaShot.prototype.cycleOfLife = function(){
 
 module.exports = magmaShot;
 
-},{"../../config.js":31,"../entity.js":24}],21:[function(require,module,exports){
+},{"../../config.js":38,"../entity.js":26}],22:[function(require,module,exports){
 //movingPlatform.js
 'use strict';
 
@@ -1191,9 +1270,8 @@ function movingPlatform(game, x, y, name){
   this.body.allowGravity = false;
   this.direction=-1;
   this.velocity=config.movingPlatformVelocity;
-  this.body.collideDown=false;
-  this.body.collideRight=false;
-  this.body.collideLeft= false;
+  this.body.checkCollision.down = false;
+
   this.body.immovable=true;
 }
 
@@ -1203,6 +1281,7 @@ movingPlatform.prototype.update = function(){
   this.movement();
 }
 
+//Moves in a directin until it collides with a wall, then it switches directions
 movingPlatform.prototype.movement = function(){
   if(this.body.onWall()) {
     this.direction = this.direction*(-1);
@@ -1221,7 +1300,7 @@ movingPlatform.prototype.movement = function(){
 
 module.exports = movingPlatform;
 
-},{"../../config.js":31,"../entity.js":24}],22:[function(require,module,exports){
+},{"../../config.js":38,"../entity.js":26}],23:[function(require,module,exports){
 //sacredBow.js
 'use strict'
 
@@ -1241,7 +1320,7 @@ sacredBow.prototype.update = function(){
 
 }
 
-//Sets hasSacredBow as true
+//Sets hasSacredBow as true (this makes the arrows pierce)
 sacredBow.prototype.effect = function(){
   this.game.hasSacredBow=true;
   this.game.power_up.play();
@@ -1250,7 +1329,7 @@ sacredBow.prototype.effect = function(){
 
 module.exports = sacredBow;
 
-},{"../../config.js":31,"./item.js":18}],23:[function(require,module,exports){
+},{"../../config.js":38,"./item.js":19}],24:[function(require,module,exports){
 //strengthArrow.js
 'use strict'
 
@@ -1279,7 +1358,52 @@ strengthArrow.prototype.effect = function(){
 
 module.exports = strengthArrow;
 
-},{"../../config.js":31,"./item.js":18}],24:[function(require,module,exports){
+},{"../../config.js":38,"./item.js":19}],25:[function(require,module,exports){
+//levelEnd.js
+
+var item = require('./item.js');
+var config = require('../../config.js');
+
+function teleport(game, x, y, destinyX, destinyY, name, comeback, pit){
+  item.call(this, game, x, y, name);
+  this.alpha = 0;
+
+  this.myPit = pit;
+  this.destinyX = destinyX;
+  this.destinyY = destinyY;
+  this.comeback = comeback;
+}
+
+teleport.prototype = Object.create(item.prototype);
+
+teleport.prototype.effect = function(){
+  if (!this.comeback){
+    //Set the bounds to use only the second map of the tilemap
+    this.game.world.setBounds(config.tileSize*19*config.scale + 1, 0, config.tileSize*config.scale*16,this.game.world.bounds.height);
+                              //The ''-1' fixes the vagueness caused by the division/multiplication
+
+    var comebackTeleport = new teleport(this.game, this.destinyX+config.tileSize*config.scale+18, this.destinyY,
+                                        this.x, this.y, 'testSprite', true, this.myPit);
+    this.game.groups.items.add(comebackTeleport);
+
+    this.myPit.x = this.destinyX;
+    this.myPit.y = this.destinyY;
+  }
+  else{
+    //Set the bounds to use only the first map of the tilemap
+    this.game.world.setBounds(config.tileSize*config.scale+1, 0,
+                              config.tileSize*config.scale*16,
+                              this.game.world.bounds.height);
+                              //The ''-1' fixes the vagueness caused by the division/multiplication
+
+    this.myPit.x = this.destinyX;
+    this.myPit.y = this.destinyY;
+  }
+}
+
+module.exports = teleport;
+
+},{"../../config.js":38,"./item.js":19}],26:[function(require,module,exports){
 //entity.js
 'use strict'
 
@@ -1298,7 +1422,7 @@ entity.prototype.update = function() {}
 
 module.exports = entity;
 
-},{"../main.js":32}],25:[function(require,module,exports){
+},{"../main.js":39}],27:[function(require,module,exports){
 //hud.js
 'use strict'
 
@@ -1312,20 +1436,152 @@ var HUD = {
   create: function(game){
     this.game = game;
 
+    this.createHealthBar();
+
+    this.heartImage = game.add.sprite(config.heartHUD.x, config.heartHUD.y, 'heartHud');
+    this.heartImage.scale.setTo(config.heartHUD.scale, config.heartHUD.scale);
+    this.heartImage.fixedToCamera = true;
+
+    this.game.heartText = this.game.add.text(config.heartText.x, config.heartText.y,
+      this.game.pitVariables.hearts, {
+        font: config.heartText.font,
+        fill: config.heartText.color,
+        align: "center"
+    });
+    this.game.heartText.stroke = config.heartText.strokeColor;
+    this.game.heartText.strokeThickness = config.heartText.strokeThickness;
+    this.game.heartText.fixedToCamera = true;
+    this.game.heartText.anchor.setTo(0, 0.5);
+
+  },
+
+  createHealthBar: function(){
     var barConfig = Object.assign({}, config.barConfig);
 
-    barConfig.width = this.game.pitVariables.maxHealth * config.pixelsPerLifePoint;
+    barConfig.width = this.game.pit.maxHealth * config.pixelsPerLifePoint;
     barConfig.x = barConfig.x + barConfig.width/2;
 
-    this.myHealthBar = new HealthBar(game, barConfig);
+    this.myHealthBar = new HealthBar(this.game, barConfig);
     this.myHealthBar.setFixedToCamera(true);
-    this.myHealthBar.setPercent(this.game.pitVariables.health/this.game.pitVariables.maxHealth * 100);
+    this.myHealthBar.setPercent(this.game.pit.health/this.game.pit.maxHealth * 100);
   }
 }
 
 module.exports = HUD;
 
-},{"../Utilities/HealthBar.js":30,"../config.js":31}],26:[function(require,module,exports){
+},{"../Utilities/HealthBar.js":37,"../config.js":38}],28:[function(require,module,exports){
+//bossLevel.js
+'use strict';
+
+var defaultScene = require('./defaultScene.js');
+var pit = require('../Entities/Characters/pit.js');
+var config = require('../config.js');
+
+var bossLevel = {
+  preload: function(){
+    this.game.load.image('leveltileset', 'images/scenes/bossleveltileset.png');
+    this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
+    this.game.load.image('EnemiesTileset', 'images/scenes/EnemiesTileset.png');
+    this.game.load.tilemap('level', 'images/scenes/bossLevel.json', null,
+                            Phaser.Tilemap.TILED_JSON);
+
+    this.colisionBlockID = config.bossLevelcolisionBlockID;
+    this.platformsBlockID = config.bossLevelplatformsBlockID;
+
+    defaultScene.preload.call(this);
+
+
+  },
+
+  create: function(){
+    defaultScene.create.call(this);
+    defaultScene.myPit.x = config.bossLevelinitialPos.x;
+    defaultScene.myPit.y = config.bossLevelinitialPos.y;
+    this.game.sound.stopAll();
+    this.game.boss_theme.loopFull();
+  },
+
+  update: function(){
+    defaultScene.update.call(this);
+  },
+
+  shutdown: function(){
+    //Cleans up the memory
+    defaultScene.shutdown.call(this);
+  }
+};
+
+module.exports = bossLevel;
+
+},{"../Entities/Characters/pit.js":1,"../config.js":38,"./defaultScene.js":31}],29:[function(require,module,exports){
+//controlsMenu.js
+'use strict';
+
+var entity = require('../Entities/entity.js');
+var config = require('../config.js');
+
+var controlsMenu = {
+  controlsScreen: undefined,
+  exitKey: undefined,
+
+  create: function(){
+    this.controlsScreen = new entity (this.game, 0, 0, 'controlsScreen');
+    this.controlsScreen.anchor.setTo(0, 0);
+
+    this.exitKey = this.game.input.keyboard.addKey(config.exitKey);
+    this.exitKey.onDown.add(this.exitControlsCallback, this);
+  },
+
+  exitControlsCallback: function(){
+    this.game.state.start('initialMenu', true, false);
+  },
+
+  shutdown: function(){
+    this.controlsScreen = null;
+    this.exitKey = null;
+  }
+};
+
+module.exports = controlsMenu;
+
+},{"../Entities/entity.js":26,"../config.js":38}],30:[function(require,module,exports){
+//deadMenu.js
+'use strict';
+
+var entity = require('../Entities/entity.js');
+var config = require('../config.js');
+
+var deadMenu = {
+  controlsScreen: undefined,
+  exitKey: undefined,
+  timer: 0,
+
+  create: function(){
+    this.deadScreen = new entity (this.game, 50, 0, 'deadScreen');
+    this.deadScreen.width = 800;
+    this.deadScreen.height = 600;
+    this.deadScreen.anchor.setTo(0, 0);
+
+    this.game.game_over.play();
+  },
+
+  update: function(){
+    if (this.timer >= config.deadScreenTime){
+      this.game.state.start(this.game.restartLevel, true, false);
+      this.game.sound.stopAll();
+    } else {
+      this.timer++;
+    }
+  },
+
+  shutdown: function(){
+    this.deadScreen = null;
+  }
+};
+
+module.exports = deadMenu;
+
+},{"../Entities/entity.js":26,"../config.js":38}],31:[function(require,module,exports){
 //defaultScene.js
 'use strict';
 
@@ -1352,6 +1608,7 @@ var strengthArrow = require('../Entities/Scenary/strengthArrow.js');
 var angelFeather = require('../Entities/Scenary/angelFeather.js');
 var sacredBow = require('../Entities/Scenary/sacredBow.js');
 var movingPlatform = require('../Entities/Scenary/movingPlatform.js');
+var teleport = require('../Entities/Scenary/teleport.js');
 
 var defaultScene = {
   myPit: undefined,
@@ -1361,12 +1618,18 @@ var defaultScene = {
   platformsLayer: undefined,
   enemiesLayer: undefined,
   itemLayer: undefined,
+  hazardLayer: undefined,
+  exitKey: undefined,
 
   preload: function(){
 
   },
 
   create: function(){
+    //Input
+    this.exitKey = this.game.input.keyboard.addKey(config.exitKey);
+    this.exitKey.onDown.add(defaultScene.goToMenuCallback, this);
+
     //Groups
     this.game.groups= {};
     this.game.groups.enemies = this.game.add.group();
@@ -1377,7 +1640,6 @@ var defaultScene = {
 
     //Audio
     this.game.underworld = this.game.add.audio('underworld');
-    this.game.underworld.loopFull();
     this.game.arrow_shot = this.game.add.audio('arrow_shot');
     this.game.jump = this.game.add.audio('jump');
     this.game.pit_hit = this.game.add.audio('pit_hit');
@@ -1390,6 +1652,9 @@ var defaultScene = {
     this.game.power_up = this.game.add.audio('power_up');
     this.game.boss_damage = this.game.add.audio('boss_damage');
     this.game.boss_death = this.game.add.audio('boss_death');
+    this.game.boss_theme = this.game.add.audio('boss_theme');
+    this.game.victory = this.game.add.audio('victory');
+
 
     defaultScene.myPit = new pit(this.game, 0, 0, 'pit');
 
@@ -1406,9 +1671,9 @@ var defaultScene = {
     this.game.maxBottles = this.game.pitVariables.maxBottles;
     this.game.bonusDamage = this.game.pitVariables.bonusDamage;
     this.game.hasSacredBow = this.game.pitVariables.hasSacredBow;
-
-    defaultScene.myPit.health = this.game.pitVariables.health;
-    defaultScene.myPit.maxHealth = this.game.pitVariables.maxHealth;
+    this.game.pit = defaultScene.myPit;
+    this.game.pit.health = this.game.pitVariables.health;
+    this.game.pit.maxHealth = this.game.pitVariables.maxHealth
 
     defaultScene.createTileMap.call(this);
     HUD.create(this.game);
@@ -1420,9 +1685,6 @@ var defaultScene = {
     this.game.world.bringToTop(this.game.groups.items);
     this.game.world.bringToTop(this.game.groups.enemies);
     this.game.world.bringToTop(defaultScene.myPit);
-
-
-    this.game.groups.movingPlatforms.add(new movingPlatform(this.game, 2000, 14700, 'movingPlatform'));
   },
 
   update: function(){
@@ -1435,11 +1697,16 @@ var defaultScene = {
     this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.colisionLayer);
     this.game.physics.arcade.overlap(this.game.groups.enemies, this.game.groups.arrows, arrowHit);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.enemies, passDamage);
+    this.game.physics.arcade.collide(defaultScene.myPit, defaultScene.hazardLayer, hazardDamage);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.projectiles, passDamage);
     this.game.physics.arcade.overlap(defaultScene.myPit, this.game.groups.items, pickUp);
-    this.game.physics.arcade.collide(defaultScene.myPit, this.game.groups.movingPlatforms);
+    this.game.physics.arcade.collide(defaultScene.myPit, this.game.groups.movingPlatforms, resetJump);
     this.game.physics.arcade.collide(this.game.groups.movingPlatforms, defaultScene.colisionLayer);
 
+    function resetJump(pit){
+      if (pit.body.velocity.y == 0)
+        pit.canJump = true;
+    }
 
     function killCollObj(obj, coll){
       obj.kill();
@@ -1452,6 +1719,10 @@ var defaultScene = {
 
     function passDamage (victim, aggressor){
       victim.damage(aggressor.attackDamage);
+    }
+
+    function hazardDamage (victim, aggressor){
+      victim.damage(config.hazardAttack);
     }
 
     function pickUp (pit, item){
@@ -1478,6 +1749,8 @@ var defaultScene = {
     defaultScene.platformsLayer = null;
     defaultScene.enemiesLayer = null;
     defaultScene.itemLayer = null;
+    defaultScene.hazardLayer = null;
+    defaultScene.exitKey = null;
   },
 
   createTileMap: function(){
@@ -1514,11 +1787,18 @@ var defaultScene = {
     defaultScene.itemLayer.fixedCamera = false;
     defaultScene.itemLayer.visible = false;
 
+    defaultScene.hazardLayer = defaultScene.map.createLayer('Hazards');
+    defaultScene.hazardLayer.setScale(config.scale);
+    defaultScene.hazardLayer.fixedCamera = false;
+    defaultScene.hazardLayer.visible = false;
+
     defaultScene.mapLayer.resizeWorld();
 
     defaultScene.map.setCollision(this.colisionBlockID, true, 'Colisions');
     defaultScene.map.setCollision(this.edgesBlockID, true, 'Edges');
     defaultScene.map.setCollision(this.platformsBlockID, true, 'Platforms');
+    defaultScene.map.setCollision(this.hazardBlockID, true, 'Hazards');
+
 
     //Spawns enemies UNFINISHED
     defaultScene.map.forEach(function (tile){
@@ -1551,6 +1831,8 @@ var defaultScene = {
           case "strengthArrow": newItem = new strengthArrow(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
           case "angelFeather": newItem = new angelFeather(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
           case "sacredBow": newItem = new sacredBow(this.game, tile.worldX, tile.worldY, 'powerUps'); break;
+          case "teleport": newItem = new teleport(this.game, tile.worldX+config.tileSize*config.scale/2, tile.worldY, config.teleportX,
+                                                  tile.worldY, 'testSprite', false, defaultScene.myPit); break;
           default: newItem = null; break;
         }
       }
@@ -1560,7 +1842,7 @@ var defaultScene = {
       }
     }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.itemLayer);
 
-  /*  //Spawns platforms
+    //Spawns platforms
     defaultScene.map.forEach(function (tile){
       var newMovingPlatform = null;
       if (tile.properties != undefined && tile.properties.movingPlatform != undefined){
@@ -1570,14 +1852,14 @@ var defaultScene = {
       if (newMovingPlatform != null){
         this.game.groups.movingPlatforms.add(newMovingPlatform);
       }
-    }, ;*/
+    }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.colisionLayer);
 
     //Sets platforms specific side collisions
     defaultScene.map.forEach(function (tile){
       tile.collideDown = false;
       tile.collideRight = false;
       tile.collideLeft = false;
-    }, this.game, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.platformsLayer);
+    }, this, 0, 0, defaultScene.map.width, defaultScene.map.height, defaultScene.platformsLayer);
 
     //Set the bounds to use only the first map of the tilemap
     this.game.world.setBounds(config.tileSize*config.scale+1, 0,
@@ -1592,15 +1874,141 @@ var defaultScene = {
     this.game.pitVariables.maxBottles = this.game.maxBottles;
     this.game.pitVariables.bonusDamage = this.game.bonusDamage;
     this.game.pitVariables.hasSacredBow = this.game.hasSacredBow;
+    this.game.pitVariables.health = this.game.pit.health;
+    this.game.pitVariables.maxHealth = this.game.pit.maxHealth;
+  },
 
-    this.game.pitVariables.health = defaultScene.myPit.health;
-    this.game.pitVariables.maxHealth = defaultScene.myPit.maxHealth;
+  goToMenuCallback: function(){
+    this.game.state.start('initialMenu');
   }
 };
 
 module.exports = defaultScene;
 
-},{"../Entities/Characters/pit.js":1,"../Entities/Enemies/mcgoo.js":4,"../Entities/Enemies/monoeye.js":5,"../Entities/Enemies/nettler.js":6,"../Entities/Enemies/reaper.js":7,"../Entities/Enemies/reapette.js":8,"../Entities/Enemies/shemum.js":9,"../Entities/Enemies/twinbellows.js":11,"../Entities/Scenary/angelFeather.js":12,"../Entities/Scenary/barrel.js":14,"../Entities/Scenary/bottle.js":15,"../Entities/Scenary/chalice.js":16,"../Entities/Scenary/movingPlatform.js":21,"../Entities/Scenary/sacredBow.js":22,"../Entities/Scenary/strengthArrow.js":23,"../HUD/hud.js":25,"../config.js":31}],27:[function(require,module,exports){
+},{"../Entities/Characters/pit.js":1,"../Entities/Enemies/mcgoo.js":4,"../Entities/Enemies/monoeye.js":5,"../Entities/Enemies/nettler.js":6,"../Entities/Enemies/reaper.js":7,"../Entities/Enemies/reapette.js":8,"../Entities/Enemies/shemum.js":9,"../Entities/Enemies/twinbellows.js":11,"../Entities/Scenary/angelFeather.js":13,"../Entities/Scenary/barrel.js":15,"../Entities/Scenary/bottle.js":16,"../Entities/Scenary/chalice.js":17,"../Entities/Scenary/movingPlatform.js":22,"../Entities/Scenary/sacredBow.js":23,"../Entities/Scenary/strengthArrow.js":24,"../Entities/Scenary/teleport.js":25,"../HUD/hud.js":27,"../config.js":38}],32:[function(require,module,exports){
+//endScene.js
+'use strict';
+
+var entity = require('../Entities/entity.js');
+var config = require('../config.js');
+
+var endScene = {
+  controlsScreen: undefined,
+  exitKey: undefined,
+
+  preload: function(){
+this.game.credits = this.game.add.audio('credits');
+  },
+
+  create: function(){
+    this.endScreen = new entity (this.game, 50, 0, 'endScreen');
+    this.endScreen.anchor.setTo(0, 0);
+
+    this.game.sound.stopAll();
+    this.game.credits.play();
+    this.exitKey = this.game.input.keyboard.addKey(config.exitKey);
+    this.exitKey.onDown.add(this.exitControlsCallback, this);
+  },
+
+  exitControlsCallback: function(){
+    this.game.state.start('initialMenu', true, false);
+  },
+
+  shutdown: function(){
+    this.controlsScreen = null;
+    this.exitKey = null;
+  }
+};
+
+module.exports = endScene;
+
+},{"../Entities/entity.js":26,"../config.js":38}],33:[function(require,module,exports){
+//initialMenu.js
+'use strict';
+
+var defaultScene = require('./defaultScene.js');
+var entity = require('../Entities/entity.js');
+var button = require('../Entities/Menus/button.js')
+var config = require('../config.js');
+
+var initialMenu = {
+  titleScreen: undefined,
+  cursors: undefined,
+  selectKey: undefined,
+  selection: 0,
+  buttons: [],
+
+  preload: function(){
+    this.game.titleTheme = this.game.add.audio('titleTheme');
+  },
+
+  create: function(){
+    this.game.world.setBounds(0, 0, 800, 600);
+
+    this.titleScreen = new entity (this.game, 0, 0, 'titleScreen');
+    this.titleScreen.anchor.setTo(0, 0);
+
+    this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.selectKey = this.game.input.keyboard.addKey(config.menuSelectKey);
+
+    this.game.sound.stopAll();
+    this.game.titleTheme.loopFull();
+
+    this.cursors.down.onDown.add(this.selectionDown, this);
+    this.cursors.up.onDown.add(this.selectionUp, this);
+    this.selectKey.onDown.add(this.selectButton, this);
+
+    var playButton = new button(this.game, 400, 350, 'playButton', this.level1Callback)
+    this.buttons.push(playButton);
+
+    var controlsButton = new button(this.game, 400, 450, 'controlsButton', this.controlsCallback)
+    this.buttons.push(controlsButton);
+
+    this.buttons[this.selection].selected = true;
+  },
+
+  selectionUp: function(){
+    this.buttons[this.selection].selected = false;
+
+    if (this.selection < this.buttons.length-1) this.selection++;
+    else this.selection = 0;
+
+    this.buttons[this.selection].selected = true;
+  },
+
+  selectionDown: function(){
+    this.buttons[this.selection].selected = false;
+
+    if (this.selection > 0) this.selection--;
+    else this.selection = this.buttons.length - 1;
+
+    this.buttons[this.selection].selected = true;
+  },
+
+  selectButton: function(){
+    this.buttons[this.selection].onClickCallback();
+  },
+
+  level1Callback: function(){
+    this.game.state.start('play', true, false);
+  },
+
+  controlsCallback: function(){
+    this.game.state.start('controlsMenu', true, false);
+  },
+
+  shutdown: function(){
+    this.titleScreen = null;
+    this.cursors = null;
+    this.selectKey = null;
+    this.selection = 0;
+    this.buttons = [];
+  }
+};
+
+module.exports = initialMenu;
+
+},{"../Entities/Menus/button.js":12,"../Entities/entity.js":26,"../config.js":38,"./defaultScene.js":31}],34:[function(require,module,exports){
 //level1.js
 'use strict';
 
@@ -1613,15 +2021,17 @@ var level1 = {
   currentLevelEnd: undefined,
 
   preload: function(){
+
     this.game.load.image('leveltileset', 'images/scenes/level1tileset.png');
     this.game.load.image('ColisionsTile', 'images/scenes/ColisionsTileset.png');
     this.game.load.image('EnemiesTileset', 'images/scenes/EnemiesTileset.png');
     this.game.load.tilemap('level', 'images/scenes/level1.json', null,
                             Phaser.Tilemap.TILED_JSON);
 
-    this.colisionBlockID = 5761;
-    this.edgesBlockID = 5762;
-    this.platformsBlockID = 5764;
+    this.colisionBlockID = config.level1colisionBlockID;
+    this.edgesBlockID = config.level1edgesBlockID;
+    this.platformsBlockID = config.level1platformsBlockID;
+    this.hazardBlockID = config.level1hazardBlockID;
 
     defaultScene.preload.call(this);
   },
@@ -1630,11 +2040,14 @@ var level1 = {
     defaultScene.create.call(this);
 
     this.currentLevelEnd = new levelEnd(this.game, config.level1endLevelPos.x,
-                        config.level1endLevelPos.y, 'currentLevelEnd', 'level2');
+                        config.level1endLevelPos.y, 'testSprite', 'level2');
     this.game.groups.items.add (this.currentLevelEnd);
 
     defaultScene.myPit.x = config.level1initialPos.x;
     defaultScene.myPit.y = config.level1initialPos.y;
+
+    this.game.sound.stopAll();
+    this.game.underworld.loopFull();
 
   },
 
@@ -1650,7 +2063,7 @@ var level1 = {
 
 module.exports = level1;
 
-},{"../Entities/Characters/pit.js":1,"../Entities/Scenary/levelEnd.js":19,"../config.js":31,"./defaultScene.js":26}],28:[function(require,module,exports){
+},{"../Entities/Characters/pit.js":1,"../Entities/Scenary/levelEnd.js":20,"../config.js":38,"./defaultScene.js":31}],35:[function(require,module,exports){
 //level1.js
 'use strict';
 
@@ -1667,9 +2080,10 @@ var level2 = {
     this.game.load.tilemap('level', 'images/scenes/level2.json', null,
                             Phaser.Tilemap.TILED_JSON);
 
-    this.colisionBlockID = 6721;
-    this.edgesBlockID = 6722;
-    this.platformsBlockID = 6724;
+    this.colisionBlockID = config.level2colisionBlockID;
+    this.edgesBlockID = config.level2edgesBlockID;
+    this.platformsBlockID = config.level2platformsBlockID;
+    this.hazardBlockID = config.level2hazardBlockID;
 
     defaultScene.preload.call(this);
   },
@@ -1681,8 +2095,11 @@ var level2 = {
     defaultScene.myPit.y = config.level2initialPos.y;
 
     this.currentLevelEnd = new levelEnd(this.game, config.level2endLevelPos.x,
-                        config.level2endLevelPos.y, 'currentLevelEnd', 'level3');
+                        config.level2endLevelPos.y, 'testSprite', 'level3');
     this.game.groups.items.add (this.currentLevelEnd);
+
+    this.game.sound.stopAll();
+    this.game.underworld.loopFull();
   },
 
   update: function(){
@@ -1697,13 +2114,14 @@ var level2 = {
 
 module.exports = level2;
 
-},{"../Entities/Characters/pit.js":1,"../Entities/Scenary/levelEnd.js":19,"../config.js":31,"./defaultScene.js":26}],29:[function(require,module,exports){
+},{"../Entities/Characters/pit.js":1,"../Entities/Scenary/levelEnd.js":20,"../config.js":38,"./defaultScene.js":31}],36:[function(require,module,exports){
 //level3.js
 'use strict';
 
 var defaultScene = require('./defaultScene.js');
 var pit = require('../Entities/Characters/pit.js');
 var config = require('../config.js');
+var levelEnd = require('../Entities/Scenary/levelEnd.js');
 
 var level3 = {
   preload: function(){
@@ -1713,9 +2131,10 @@ var level3 = {
     this.game.load.tilemap('level', 'images/scenes/level3.json', null,
                             Phaser.Tilemap.TILED_JSON);
 
-    this.colisionBlockID = 9601;
-    this.edgesBlockID = 9602;
-    this.platformsBlockID = 9604;
+    this.colisionBlockID = config.level3colisionBlockID;
+    this.edgesBlockID = config.level3edgesBlockID;
+    this.platformsBlockID = config.level3platformsBlockID;
+    this.hazardBlockID = config.level3hazardBlockID;
 
     defaultScene.preload.call(this);
   },
@@ -1725,6 +2144,13 @@ var level3 = {
 
     defaultScene.myPit.x = config.level3initialPos.x;
     defaultScene.myPit.y = config.level3initialPos.y;
+
+    this.currentLevelEnd = new levelEnd(this.game, config.level3endLevelPos.x,
+                        config.level3endLevelPos.y, 'testSprite', 'bossLevel');
+    this.game.groups.items.add (this.currentLevelEnd);
+
+    this.game.sound.stopAll();
+    this.game.underworld.loopFull();
   },
 
   update: function(){
@@ -1739,7 +2165,7 @@ var level3 = {
 
 module.exports = level3;
 
-},{"../Entities/Characters/pit.js":1,"../config.js":31,"./defaultScene.js":26}],30:[function(require,module,exports){
+},{"../Entities/Characters/pit.js":1,"../Entities/Scenary/levelEnd.js":20,"../config.js":38,"./defaultScene.js":31}],37:[function(require,module,exports){
 /**
   https://github.com/bmarwane/phaser.healthbar
 
@@ -1928,7 +2354,7 @@ function hexToRgb(hex) {
     } : null;
 }
 
-},{}],31:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 //config.js
 'use strict'
 
@@ -1940,17 +2366,20 @@ var config = {
   maxVelocity: 800, //To avoid tunneling
 
   //PIT
-  initialPitHealth: 40,
+  initialPitHealth: 10,
   framesBetweenHit: 60,
-  jumpTime: 10,
+  jumpTime: 13,
   initialDirection: 1,
   initialState: "normal",
+  deadScreenTime: 200,
+  teleportX: 1640,
+  crouchFall: 4,
 
-  movementSpeed: 200,
+  movementSpeed: 230,
 
-  normalW: 13,
+  normalW: 8,
   normalH: 24,
-  normalOX: 7, //Normal body X offset
+  normalOX: 9, //Normal body X offset
   normalOY: 0,
   crouchW: 13,
   crouchH: 13,
@@ -1959,12 +2388,34 @@ var config = {
 
   shootKey: Phaser.Keyboard.A,
   jumpKey: Phaser.Keyboard.SPACEBAR,
+  menuSelectKey: Phaser.Keyboard.ENTER,
+  exitKey: Phaser.Keyboard.ESC,
 
   level1initialPos: {x: 170, y: 8780},
-  level2initialPos: {x: 170, y: 500},
+  level2initialPos: {x: 170, y: 10280},
   level3initialPos: {x: 170, y: 14800},
   level1endLevelPos: {x: 780, y: 500},
   level2endLevelPos: {x: 780, y: 500},
+  level3endLevelPos: {x: 780, y: 500},
+  bossLevelinitialPos: {x: 170, y: 415},
+
+  level1colisionBlockID: 5761,
+  level1edgesBlockID: 5762,
+  level1platformsBlockID: 5764,
+  level1hazardBlockID: 5766,
+
+  level2colisionBlockID: 6721,
+  level2edgesBlockID: 6722,
+  level2platformsBlockID: 6724,
+  level2hazardBlockID: 6726,
+
+  level3colisionBlockID: 9601,
+  level3edgesBlockID: 9602,
+  level3platformsBlockID: 9604,
+  level3hazardBlockID: 9606,
+
+  bossLevelcolisionBlockID: 1,
+  bossLevelplatformsBlockID: 4,
 
   //ENEMIES
     //Mcgoo
@@ -2077,8 +2528,8 @@ var config = {
     //Heart
   heartTime: 300,
 
-    //Item
-
+    //Angel Feather
+  angelFeatherHealth: 2,
     //Level end
 
     //Magma shot
@@ -2087,25 +2538,40 @@ var config = {
   magmaShotDistance: 300,
   magmaShotVelocity: 400,
 
-//moving platforms
+  //moving platforms
   movingPlatformVelocity: 150,
+
+  //hazards
+  hazardAttack: 1,
 
     //HUD VARIABLES
   barConfig: {x: 50, y: 50, width: 10, height: 25,
               bg: {color: '#000074'}, bar: {color: '#e20074'}},
-  pixelsPerLifePoint: 15
+  pixelsPerLifePoint: 15,
+
+  heartText: {x: 85, y: 25, startValue: 0,
+            color: '#ffffff', font: '24px Consolas',
+            strokeColor:'#0157dc', strokeThickness: 5},
+  heartHUD: {x: 50, y: 0, scale: 2.8},
+
 }
 
 module.exports = config;
 
-},{}],32:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 //main.js
 'use strict';
 
 module.exports.Phaser = Phaser;
+var initialMenu = require('./Scenes/initialMenu.js');
+var controlsMenu = require('./Scenes/controlsMenu.js');
+var deadMenu = require('./Scenes/deadMenu.js');
 var level1 = require('./Scenes/level1.js');
 var level2 = require('./Scenes/level2.js');
 var level3 = require('./Scenes/level3.js');
+var bossLevel = require('./Scenes/bossLevel.js');
+var endScene = require('./Scenes/endScene.js');
+
 var BootScene = {
   preload: function () {
     this.game.time.desiredFps = 60;
@@ -2120,7 +2586,15 @@ var BootScene = {
     this.game.load.spritesheet('lifeWater', 'images/scenary/lifeWater.png', 10, 16, 2);
     this.game.load.spritesheet('powerUps', 'images/scenary/powerUps.png', 8, 16, 3);
     this.game.load.image('movingPlatform', 'images/scenary/movingPlatform.png');
-    this.game.load.image('titleScreen', 'images/scenes/title_screen.png');
+    this.game.load.image('titleScreen', 'images/menus/title_screen.png');
+    this.game.load.image('controlsScreen', 'images/menus/controlsScreen.png');
+    this.game.load.image('endScreen', 'images/menus/ending.png');
+    this.game.load.image('playButton', 'images/menus/playButton.png');
+    this.game.load.image('controlsButton', 'images/menus/controlsButton.png');
+    this.game.load.image('deadScreen', 'images/menus/game_over.png');
+    this.game.load.image('heartHud', 'images/scenary/hearthud.png');
+    this.game.load.image('chest', 'images/scenary/chest.png');
+    this.game.load.image('testSprite', 'images/scenary/testSprite.png');
 
     this.game.load.audio('underworld', 'audio/music/underworld.mp3');
     this.game.load.audio('game_over', 'audio/music/game_over.mp3');
@@ -2131,20 +2605,22 @@ var BootScene = {
     this.game.load.audio('get_item', 'audio/sfx/get_item.mp3');
     this.game.load.audio('jump', 'audio/sfx/jump.mp3');
     this.game.load.audio('pit_hit', 'audio/sfx/pit_hit.mp3');
-    this.game.load.audio('reaper_alert', 'audio/sfx/reaper_alert.mp3');
     this.game.load.audio('walk', 'audio/sfx/walk.mp3');
     this.game.load.audio('enemy_death', 'audio/sfx/enemy_death.mp3');
     this.game.load.audio('power_up', 'audio/sfx/power_up.mp3');
-    this.game.load.audio('boss_damage', 'audio/sfx/boss_death.mp3');
+    this.game.load.audio('boss_death', 'audio/sfx/boss_death.mp3');
     this.game.load.audio('boss_damage', 'audio/sfx/boss_damage.mp3');
-
+    this.game.load.audio('credits', 'audio/music/credits.mp3');
+    this.game.load.audio('titleTheme', 'audio/music/title_screen.mp3');
+    this.game.load.audio('boss_theme', 'audio/music/boss.mp3');
+    this.game.load.audio('victory', 'audio/music/victory.mp3');
   },
 
   create: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 3500;
 
-    this.game.state.start('play');
+    this.game.state.start('initialMenu');
   }
 };
 
@@ -2152,11 +2628,16 @@ window.onload = function () {
   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 
   game.state.add('boot', BootScene);
+  game.state.add('initialMenu', initialMenu);
+  game.state.add('controlsMenu', controlsMenu);
+  game.state.add('deadMenu', deadMenu);
+  game.state.add('endScene', endScene);
   game.state.add('play', level1);
   game.state.add('level2', level2);
   game.state.add('level3', level3);
+  game.state.add('bossLevel', bossLevel);
 
   game.state.start('boot');
 };
 
-},{"./Scenes/level1.js":27,"./Scenes/level2.js":28,"./Scenes/level3.js":29}]},{},[32]);
+},{"./Scenes/bossLevel.js":28,"./Scenes/controlsMenu.js":29,"./Scenes/deadMenu.js":30,"./Scenes/endScene.js":32,"./Scenes/initialMenu.js":33,"./Scenes/level1.js":34,"./Scenes/level2.js":35,"./Scenes/level3.js":36}]},{},[39]);
