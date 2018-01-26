@@ -2368,14 +2368,14 @@ var config = {
   //PIT
   initialPitHealth: 10,
   framesBetweenHit: 60,
-  jumpTime: 13,
+  jumpTime: 11,
   initialDirection: 1,
   initialState: "normal",
   deadScreenTime: 200,
   teleportX: 1640,
   crouchFall: 4,
 
-  movementSpeed: 230,
+  movementSpeed: 215,
 
   normalW: 8,
   normalH: 24,
